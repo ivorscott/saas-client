@@ -41,8 +41,12 @@
     "typescript": "~3.7.2"
   },
   "scripts": {
-    "start": "HTTPS=true react-scripts start",
-    "build": "react-scripts build",
+    "start": "cross-env REACT_APP_ENV=local HTTPS=true react-scripts start",
+    "dev": "cross-env REACT_APP_ENV=dev HTTPS=true react-scripts start",
+    "stage": "cross-env REACT_APP_ENV=stage HTTPS=true react-scripts start",
+    "build:dev": "cross-env REACT_APP_ENV=dev react-scripts build",
+    "build:stage": "cross-env REACT_APP_ENV=stage react-scripts build",
+    "build:prod": "cross-env REACT_APP_ENV=prod react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -60,5 +64,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.2"
   }
 }
