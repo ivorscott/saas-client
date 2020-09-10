@@ -5,9 +5,10 @@ import prod from "./prod";
 
 type Environment = {
   backend: string | undefined;
-  audience: string | undefined;
-  clientId: string | undefined;
   domain: string | undefined;
+  audience: string | undefined;
+  client_id: string | undefined;
+  redirect_uri: string | undefined;
 };
 
 let environment: Environment;

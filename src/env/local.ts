@@ -1,8 +1,9 @@
-const environments = {
+const environment = {
   backend: process.env.REACT_APP_LOCAL_BACKEND,
   domain: process.env.REACT_APP_DEVELOPMENT_AUTH_DOMAIN,
   audience: process.env.REACT_APP_DEVELOPMENT_AUTH_AUDIENCE,
-  clientId: process.env.REACT_APP_DEVELOPMENT_AUTH_CLIENT,
+  client_id: process.env.REACT_APP_DEVELOPMENT_AUTH_CLIENT,
+  redirect_uri: window.location.origin,
 };
 
-export default environments;
+export default environment;
