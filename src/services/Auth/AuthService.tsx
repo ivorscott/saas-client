@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import { Auth0Client } from "@auth0/auth0-spa-js";
-import { IdentityPayload } from "./types";
-import { transform } from "./helpers";
 import { actions } from "./reducers";
+import { history } from "../../history";
+import { transform } from "./helpers";
+import { Auth0Client } from "@auth0/auth0-spa-js";
 import { useDispatch } from "react-redux";
+import { IdentityPayload } from "./types";
 import client from "../ClientService";
-import history from "../../history";
 import env from "../../env";
 
 const { authenticateUser } = actions;
@@ -18,7 +18,7 @@ export const auth0Client = new Auth0Client({
   redirect_uri: env.redirect_uri || "",
 });
 
-const Auth0Provider = ({ children }: any) => {
+const Auth0Provider: React.FC<{ children: any }> = ({ children }) => {
   const [isError, setIsError] = useState(false);
   const [isLoading, setLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -88,4 +88,4 @@ const Auth0Provider = ({ children }: any) => {
   return <div />;
 };
 
-export default Auth0Provider;
+export { Auth0Provider };

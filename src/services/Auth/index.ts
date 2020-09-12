@@ -1,5 +1,5 @@
-import AuthService from "./AuthService";
+import { User as UserType } from "./types";
+export { Auth0Provider } from "./AuthService";
 export { auth0Client } from "./AuthService";
 export { reducer as authReducer } from "./reducers";
-
-export default AuthService;
+export type User = UserType;
