@@ -1,0 +1,24 @@
+@font-face {
+  font-family: 'ProximaNova-Regular';
+  font-weight: normal;
+  font-style: normal;
+  src: url('./ProximaNova-Regular.otf');
+}
+
+@font-face {
+  font-family: 'ProximaNova-Semibold';
+  font-weight: normal;
+  font-style: normal;
+  src: url('./ProximaNova-Semibold.otf');
+}
+
+@font-face {
+  font-family: 'ProximaNova-Thin';
+  font-weight: normal;
+  font-style: normal;
+  src: url('./ProximaNova-Thin.otf');
+}
+
+html {
+  font-size: 62.5%; /* 62.5% of 16px = 10px */
+}
