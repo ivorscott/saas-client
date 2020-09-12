@@ -1,13 +1,24 @@
 import React from "react";
-import "./App.css";
-import LoggedIn from "../LoggedIn";
+import { withStyles, WithStyles, CssBaseline } from "@material-ui/core";
+import { Layout } from "../Layout";
+import { SideBar } from "../../shared/components/Sidebar";
+import { Footer } from "../../shared/components/Footer";
+import { styles } from "./styles";
 
-const App = () => {
+interface Props extends WithStyles<typeof styles> {}
+
+const app: React.FC<Props> = ({ classes }) => {
   return (
     <div className="App">
-      <LoggedIn />
+      <CssBaseline />
+      <div className={classes.root}>
+        <SideBar />
+        <Layout />
+      </div>
+
+      <Footer />
     </div>
   );
 };
 
-export default App;
+export const App = withStyles(styles)(app);
