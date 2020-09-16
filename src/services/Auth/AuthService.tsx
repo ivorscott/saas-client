@@ -6,7 +6,7 @@ import { transform } from "./helpers";
 import { Auth0Client } from "@auth0/auth0-spa-js";
 import { useDispatch } from "react-redux";
 import { IdentityPayload } from "./types";
-import client from "../ClientService";
+import client from "../Client";
 import env from "../../env";
 
 const { authenticateUser } = actions;
@@ -51,8 +51,7 @@ const Auth0Provider: React.FC<{ children: any }> = ({ children }) => {
               const newUser = transform(auth0User);
               const result = await client.post("/users", newUser);
               if (!result.error) {
-                setIsAuthenticated(ok);
-                dispatch(authenticateUser({ ...user, roles }));
+                await auth0Client.loginWithRedirect();
               }
             }
           }
