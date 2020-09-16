@@ -63,6 +63,7 @@ const styles = ({ palette, breakpoints }: Theme) =>
     menu: {
       display: "flex",
       alignItems: "center",
+      margin: "10px 0",
       [breakpoints.down("sm")]: {
         paddingLeft: "1rem",
       },
@@ -99,6 +100,7 @@ const styles = ({ palette, breakpoints }: Theme) =>
     },
     nav: {
       padding: 0,
+      margin: "10px 0",
       listStyleType: "none",
       display: "flex",
     },
