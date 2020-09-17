@@ -29,12 +29,14 @@ const styles = ({ palette }: Theme) =>
       height: "33px",
       marginRight: "1rem",
       borderRadius: "50px !important",
+      background: "#bbb",
     },
     profilePicLarge: {
       width: "64px",
       height: "62px",
       marginRight: "18px",
       borderRadius: "50px",
+      background: "#bbb",
     },
   });
 

@@ -16,7 +16,7 @@ import {
   ListItemAvatar,
 } from "@material-ui/core";
 import { MenuLink } from "../MenuLink";
-import ImageViewer from "../ImageViewer";
+// import ImageViewer from "../ImageViewer";
 import { User } from "../../../services/Auth/types";
 import { styles } from "./styles";
 import { Link } from "react-router-dom";
@@ -49,13 +49,15 @@ const menu: React.FC<Props> = ({
         aria-haspopup="true"
         onClick={onToggle}
       >
-        {user?.picture && (
-          <ImageViewer
-            className={classes.profilePic}
-            alt="current user image"
-            url={user.picture}
-          />
-        )}
+        <div className={classes.profilePic}>
+          {user?.picture && (
+            <img
+              className={classes.profilePic}
+              alt="current user"
+              src={user.picture}
+            />
+          )}
+        </div>
         <span className={classes.name}>{user.firstName}</span>
       </Button>
       <Popper
@@ -89,33 +91,33 @@ const menu: React.FC<Props> = ({
                         alignItems="flex-start"
                       >
                         <ListItemAvatar>
-                          <>
-                            {user?.picture ? (
-                              <ImageViewer
+                          <div className={classes.profilePicLarge}>
+                            {user?.picture && (
+                              <img
                                 className={classes.profilePicLarge}
-                                alt="current user image"
-                                url={user.picture}
+                                alt="current user"
+                                src={user.picture}
                               />
-                            ) : (
-                              <div className={classes.profilePicLarge} />
                             )}
-                          </>
+                          </div>
                         </ListItemAvatar>
                         <ListItemText
                           primary={
-                            <div className={classes.capitalize}>
+                            <Typography
+                              component="div"
+                              className={classes.capitalize}
+                              color="textPrimary"
+                            >
                               {`${user.firstName} ${user?.lastName || ""}`}
-                            </div>
+                            </Typography>
                           }
                           secondary={
                             <>
-                              <Typography component="div" color="textPrimary">
+                              <Typography component="span" color="textPrimary">
                                 {user.email}
                               </Typography>
-
-                              <div className={classes.capitalize}>
-                                {user.roles.includes("admin") && "admin"}
-                              </div>
+                              <br />
+                              {user.roles.includes("admin") && "admin"}
                             </>
                           }
                         />
