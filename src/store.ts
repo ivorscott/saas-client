@@ -1,11 +1,14 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { authReducer } from "./services/Auth";
 import { projectsReducer } from "./features/Projects";
-// import { useDispatch } from "react-redux";
+import { projectReducer } from "./features/Project";
+import { reducer as formReducer } from "redux-form";
 
 const store = configureStore({
   reducer: {
+    form: formReducer,
     auth: authReducer,
+    project: projectReducer,
     projects: projectsReducer,
     // columns: columnsReducer,
     // tasks: tasksReducer,
@@ -13,8 +16,6 @@ const store = configureStore({
 });
 
 export type RootState = ReturnType<typeof store.getState>;
-
-// export type AppDispatch = typeof store.dispatch;
-// export const useAppDispatch = () => useDispatch<AppDispatch>();
+export type AppDispatch = typeof store.dispatch;
 
 export { store };

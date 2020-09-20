@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
-import CircularProgress from "@material-ui/core/CircularProgress";
 import { actions } from "./reducers";
-import { history } from "../../history";
 import { transform } from "./helpers";
 import { Auth0Client } from "@auth0/auth0-spa-js";
 import { useDispatch } from "react-redux";
 import { IdentityPayload } from "./types";
-import client from "../Client";
+import { history } from "../../history";
+import { client } from "../Client";
 import env from "../../env";
+import { Loading } from "../../shared/components/Loading";
 
 const { authenticateUser } = actions;
 
@@ -28,11 +28,10 @@ const Auth0Provider: React.FC<{ children: any }> = ({ children }) => {
     const authenticate = async () => {
       try {
         const { search, pathname } = window.location;
+
         if (search.includes("code=") && search.includes("state=")) {
           const { appState } = await auth0Client.handleRedirectCallback();
-          history.push(
-            appState && appState.targetUrl ? appState.targetUrl : pathname
-          );
+          history.push(appState ? appState : pathname);
         }
 
         const ok = await auth0Client.isAuthenticated();
@@ -56,12 +55,15 @@ const Auth0Provider: React.FC<{ children: any }> = ({ children }) => {
             }
           }
         } else {
-          await auth0Client.loginWithRedirect();
+          await auth0Client.loginWithRedirect({
+            appState: pathname,
+          });
         }
       } catch (err) {
         if (err.message === "Invalid state") {
           await auth0Client.loginWithRedirect();
         } else {
+          console.log(err);
           setIsError(true);
           throw new Error("unknown authentication error");
         }
@@ -72,11 +74,7 @@ const Auth0Provider: React.FC<{ children: any }> = ({ children }) => {
   }, [dispatch]);
 
   if (isLoading) {
-    return (
-      <div style={{ textAlign: "center", marginTop: "50vh" }}>
-        <CircularProgress />
-      </div>
-    );
+    return <Loading />;
   }
   if (isError) {
     return <h1>Something went Wrong!</h1>;

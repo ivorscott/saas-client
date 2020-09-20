@@ -66,4 +66,4 @@ class ClientService {
       });
   }
 }
-export default new ClientService();
+export const client = new ClientService();

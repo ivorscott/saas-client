@@ -1,37 +1,37 @@
 import React, { useState, useEffect } from "react";
-import {
-  useDispatch,
-  useSelector,
-  // TypedUseSelectorHook
-} from "react-redux";
+import { unwrapResult } from "@reduxjs/toolkit";
+import { AppDispatch, RootState } from "../../store";
+import { useSelector, useDispatch } from "react-redux";
+import { createProject } from "../Project/reducer";
+import { fetchProjects } from "./reducer";
+import { history } from "../../history";
 import { List } from "./List";
-import { fetchProjects, createProject } from "./reducer";
-import { RootState } from "../../store";
-// import { history } from "../../history";
 
 const Projects: React.FC = () => {
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
   const [isOpen, setOpen] = useState(false);
 
   useEffect(() => {
-    dispatch(fetchProjects());
+    const fetch = async () => await dispatch(fetchProjects());
+    fetch();
   }, [dispatch]);
 
-  const { projects, loading } = useSelector(
+  const { entities, loading } = useSelector(
     (state: RootState) => state.projects
   );
-  // console.log(projects);
 
   const toggleModal = () => {
     setOpen(!isOpen);
   };
 
   const handleNewProject = async (name: string) => {
-    await dispatch(createProject(name));
-    // if (createProject.fulfilled.match(resultAction)) {
-    //   toggleModal();
-    //   history.push(`/manage/projects/${resultAction.payload.id}`);
-    // }
+    const resultAction = await dispatch(createProject(name));
+
+    if (createProject.fulfilled.match(resultAction)) {
+      toggleModal();
+      const { id } = unwrapResult(resultAction);
+      history.push(`/manage/projects/${id}`);
+    }
   };
 
   return (
@@ -40,7 +40,7 @@ const Projects: React.FC = () => {
       loading={loading}
       onSubmit={handleNewProject}
       onToggle={toggleModal}
-      projects={projects}
+      projects={entities}
     />
   );
 };

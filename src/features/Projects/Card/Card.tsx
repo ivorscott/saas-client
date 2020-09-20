@@ -2,19 +2,23 @@ import React from "react";
 import { WithStyles } from "@material-ui/core";
 import { withStyles, Paper, Typography } from "@material-ui/core";
 import { Link } from "react-router-dom";
-import { Project } from "..";
+import { Project } from "../../Project";
 import { styles } from "./styles";
 import { useDispatch } from "react-redux";
-import { actions } from "../reducer";
+import { actions } from "../../Project";
 
 const { setProject } = actions;
+
+interface ParentProps {
+  project: Project;
+}
 
 interface Props extends WithStyles<typeof styles> {
   project: Project;
   onClick: () => void;
 }
 
-const jsx: React.FC<Props> = ({ classes, project, onClick }) => {
+const Component = withStyles(styles)(({ classes, project, onClick }: Props) => {
   return (
     <Link
       data-test="component-projects-card"
@@ -30,19 +34,11 @@ const jsx: React.FC<Props> = ({ classes, project, onClick }) => {
       </Paper>
     </Link>
   );
-};
+});
 
-const Component = withStyles(styles)(jsx);
-
-const Card: React.FC<{
-  project: Project;
-}> = ({ project }) => {
+const Card = ({ project }: ParentProps) => {
   const dispatch = useDispatch();
-
-  const handleSetProject = () => {
-    dispatch(setProject(project));
-  };
-
+  const handleSetProject = () => dispatch(setProject(project));
   return <Component onClick={handleSetProject} project={project} />;
 };
 
