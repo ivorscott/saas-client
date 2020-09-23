@@ -1,0 +1,13 @@
+diff --git a/node_modules/exif-react-avatar-edit/src/avatar.d.ts b/node_modules/exif-react-avatar-edit/src/avatar.d.ts
+index 0e2ac33..0187adb 100644
+--- a/node_modules/exif-react-avatar-edit/src/avatar.d.ts
++++ b/node_modules/exif-react-avatar-edit/src/avatar.d.ts
+@@ -18,7 +18,7 @@ export interface Props {
+   /**
+    * The width of the editor
+    */
+-  width: number;
++  width: number | string;
+ 
+   /**
+    * The height of the editor (image will fit to this height)

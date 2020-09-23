@@ -1,0 +1,45 @@
+diff --git a/node_modules/aws-amplify/dist/aws-amplify.js b/node_modules/aws-amplify/dist/aws-amplify.js
+index 5359a0f..b56ade6 100644
+--- a/node_modules/aws-amplify/dist/aws-amplify.js
++++ b/node_modules/aws-amplify/dist/aws-amplify.js
+@@ -175408,16 +175408,6 @@ function () {
+     return !!obj && typeof obj.getItem === 'function' && typeof obj.setItem === 'function' && typeof obj.removeItem === 'function' && typeof obj.clear === 'function';
+   };
+ 
+-  AuthClass.prototype.noUserPoolErrorHandler = function (config) {
+-    if (config) {
+-      if (!config.userPoolId || !config.identityPoolId) {
+-        return _types_Auth__WEBPACK_IMPORTED_MODULE_7__["AuthErrorTypes"].MissingAuthConfig;
+-      }
+-    }
+-
+-    return _types_Auth__WEBPACK_IMPORTED_MODULE_7__["AuthErrorTypes"].NoConfig;
+-  };
+-
+   AuthClass.prototype.rejectAuthError = function (type) {
+     return Promise.reject(new _Errors__WEBPACK_IMPORTED_MODULE_6__["AuthError"](type));
+   };
+@@ -175540,14 +175530,6 @@ function (_super) {
+ 
+ 
+ var authErrorMessages = {
+-  noConfig: {
+-    message: _common_AuthErrorStrings__WEBPACK_IMPORTED_MODULE_1__["AuthErrorStrings"].DEFAULT_MSG,
+-    log: "\n            Error: Amplify has not been configured correctly.\n            This error is typically caused by one of the following scenarios:\n\n            1. Make sure you're passing the awsconfig object to Amplify.configure() in your app's entry point\n                See https://aws-amplify.github.io/docs/js/authentication#configure-your-app for more information\n            \n            2. There might be multiple conflicting versions of aws-amplify or amplify packages in your node_modules.\n                Try deleting your node_modules folder and reinstalling the dependencies with `yarn install`\n        "
+-  },
+-  missingAuthConfig: {
+-    message: _common_AuthErrorStrings__WEBPACK_IMPORTED_MODULE_1__["AuthErrorStrings"].DEFAULT_MSG,
+-    log: "\n            Error: Amplify has not been configured correctly. \n            The configuration object is missing required auth properties. \n            Did you run `amplify push` after adding auth via `amplify add auth`?\n            See https://aws-amplify.github.io/docs/js/authentication#amplify-project-setup for more information\n        "
+-  },
+   emptyUsername: {
+     message: _common_AuthErrorStrings__WEBPACK_IMPORTED_MODULE_1__["AuthErrorStrings"].EMPTY_USERNAME
+   },
+@@ -176406,8 +176388,6 @@ function isCognitoHostedOpts(oauth) {
+ var AuthErrorTypes;
+ 
+ (function (AuthErrorTypes) {
+-  AuthErrorTypes["NoConfig"] = "noConfig";
+-  AuthErrorTypes["MissingAuthConfig"] = "missingAuthConfig";
+   AuthErrorTypes["EmptyUsername"] = "emptyUsername";
+   AuthErrorTypes["InvalidUsername"] = "invalidUsername";
+   AuthErrorTypes["EmptyPassword"] = "emptyPassword";
