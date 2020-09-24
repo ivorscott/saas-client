@@ -9,22 +9,26 @@ type Environment = {
   audience: string | undefined;
   client_id: string | undefined;
   redirect_uri: string | undefined;
+  identity_pool_id: string | undefined;
+  cognito_region: string | undefined;
+  s3_bucket: string | undefined;
+  s3_bucket_region: string | undefined;
 };
 
-let environment: Environment;
+let env: Environment;
 
 switch (process.env.REACT_APP_ENV) {
   case "local":
-    environment = local;
+    env = local;
     break;
   case "dev":
-    environment = dev;
+    env = dev;
     break;
   case "stage":
-    environment = stage;
+    env = stage;
     break;
   case "prod":
-    environment = prod;
+    env = prod;
     break;
   default:
     throw new Error(
@@ -32,4 +36,4 @@ switch (process.env.REACT_APP_ENV) {
     );
 }
 
-export default environment;
+export { env };
