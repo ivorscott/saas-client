@@ -3,6 +3,7 @@ import { withStyles, WithStyles } from "@material-ui/core";
 import AvatarEditor from "exif-react-avatar-edit";
 import { Modal } from "../../../shared/components/Modal";
 import styles from "./styles";
+import ImageViewer from "../../../shared/components/ImageViewer";
 
 interface Actions {
   onToggle: () => void;
@@ -62,6 +63,7 @@ class Avatar extends React.Component<Props, State> {
           data-test="component-update-task-modal"
           open={isOpen}
           title="Edit Photo"
+          className={classes.avatarModal}
           onClose={onToggle}
           onSubmit={this.handlePreview}
           callToActionText={"Save"}
@@ -71,8 +73,8 @@ class Avatar extends React.Component<Props, State> {
             <AvatarEditor
               width="100%"
               height={150}
-              cropRadius={60}
-              minCropRadius={60}
+              cropRadius={35}
+              minCropRadius={35}
               onCrop={this.handleCrop}
               onClose={this.handleClose}
               src={this.state.src}

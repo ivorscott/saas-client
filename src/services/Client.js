@@ -1,5 +1,5 @@
 import { auth0Client } from "./Auth/AuthService";
-import env from "../env";
+import { env } from "../env";
 
 class ClientService {
   constructor() {
@@ -37,13 +37,13 @@ class ClientService {
 
   async request(method, path, data) {
     const url = `${this.baseUrl}${path}`;
-    const token = await auth0Client.getTokenSilently();
+    const accessToken = await auth0Client.getTokenSilently();
     const options = {
       method,
       body: JSON.stringify(data),
       headers: {
         ...this.headers,
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${accessToken}`,
       },
     };
 

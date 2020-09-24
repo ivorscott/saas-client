@@ -1,25 +1,28 @@
-import { createStyles, Theme } from '@material-ui/core';
+import { createStyles } from "@material-ui/core";
 
-const styles = (theme: Theme) =>
+const styles = () =>
   createStyles({
+    avatarModal: {
+      width: 350,
+    },
     contentWrapper: {
-      display: 'flex',
+      display: "flex",
       flex: 1,
-      flexDirection: 'column',
-      justifyContent: 'center',
-      alignItems: 'center',
-      '& > div': {
-        width: '100%'
-      }
+      flexDirection: "column",
+      justifyContent: "center",
+      alignItems: "center",
+      "& > div": {
+        width: "100%",
+      },
     },
     avatarEditor: {
-      '& .konvajs-content': {
-        position: 'inherit'
-      }
+      "& .konvajs-content": {
+        position: "inherit",
+      },
     },
     preview: {
-      marginTop: '2rem'
-    }
+      margin: "2rem 5rem 0",
+    },
   });
 
 export default styles;

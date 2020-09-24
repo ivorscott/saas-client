@@ -1,5 +1,5 @@
 import React from "react";
-import { Grid, Typography, withStyles, WithStyles } from "@material-ui/core";
+import { Grid, Typography } from "@material-ui/core";
 import { useParams } from "react-router-dom";
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
@@ -8,19 +8,18 @@ import { history } from "../../history";
 import { RootState } from "../../store";
 import { SprintControls } from "./SprintControls";
 import { SprintBoard } from "./SprintBoard";
-import { styles } from "./styles";
 import { Loading } from "../../shared/components/Loading";
 
 interface Params {
   id: string;
 }
 
-interface Props extends WithStyles<typeof styles> {
+interface Props {
   project: null | Project;
   onDelete: () => void;
 }
 
-const Component = withStyles(styles)(({ project, onDelete }: Props) => {
+const Component = ({ project, onDelete }: Props) => {
   if (!project) {
     return <Loading />;
   } else {
@@ -44,7 +43,7 @@ const Component = withStyles(styles)(({ project, onDelete }: Props) => {
       </Grid>
     );
   }
-});
+};
 
 const SelectedProject: React.FC = () => {
   const params: Params = useParams();

@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchImage, uploadImage } from "./reducer";
-import { RootState } from "../../store";
+import { uploadImage } from "./reducer";
+import { AppDispatch, RootState } from "../../store";
 import AvatarModal from "./Avatar";
 import styles from "./styles";
 import {
@@ -44,7 +44,7 @@ export const Component = withStyles(styles)(
             {defaultAvatar ? (
               <div className={classes.overlay}>
                 <ImageViewer
-                  alt=""
+                  alt="avatar"
                   className={classes.avatar}
                   url={defaultAvatar}
                 />
@@ -70,28 +70,22 @@ export const Component = withStyles(styles)(
 );
 
 const Account: React.FC = () => {
+  const dispatch: AppDispatch = useDispatch();
   const [isOpen, setOpen] = useState(false);
-  const auth = useSelector((state: RootState) => state.auth);
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    const fetch = async () => {
-      dispatch(fetchImage());
-    };
-    fetch();
-  }, [dispatch]);
+  const user = useSelector((state: RootState) => state.auth);
+  const { image } = useSelector((state: RootState) => state.account);
 
   const toggle = () => setOpen(!isOpen);
 
-  const upload = async (image: string) => {
-    await dispatch(uploadImage(image));
+  const upload = async (blob: Blob) => {
+    await dispatch(uploadImage({ blob, auth0Id: user.auth0Id }));
   };
 
   return (
     <Component
-      user={auth}
+      user={user}
       isOpen={isOpen}
-      defaultAvatar={auth.picture}
+      defaultAvatar={image}
       onToggle={toggle}
       onSubmit={upload}
     />

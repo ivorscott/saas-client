@@ -5,6 +5,9 @@ const styles = ({ palette }: Theme) =>
     root: {
       display: "flex",
     },
+    identity: {
+      margin: "8px 0px 0px 18px",
+    },
     dropdownMenu: {
       zIndex: 1,
       left: "-.5rem !important",
@@ -13,6 +16,7 @@ const styles = ({ palette }: Theme) =>
     name: {
       textTransform: "lowercase",
       color: `${palette.grey[800]}`,
+      marginLeft: 9,
     },
     item: {
       padding: 12,
@@ -27,14 +31,12 @@ const styles = ({ palette }: Theme) =>
     profilePic: {
       width: "33px",
       height: "33px",
-      marginRight: "1rem",
       borderRadius: "50px !important",
       background: "#bbb",
     },
     profilePicLarge: {
       width: "64px",
-      height: "62px",
-      marginRight: "18px",
+      height: "64px",
       borderRadius: "50px",
       background: "#bbb",
     },

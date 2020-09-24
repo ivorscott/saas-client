@@ -1,5 +1,12 @@
 import { client } from "../../../services/Client";
-import { Board, Task, AddTask, UpdateTask, DeleteTask } from "../types";
+import {
+  Board,
+  Task,
+  AddTask,
+  UpdateTask,
+  DeleteTask,
+  MoveTask,
+} from "../types";
 import { makeColumnsDict, makeTasksDict } from "./helpers";
 
 export const fetchBoard = async (projectId: string) => {
@@ -35,8 +42,22 @@ export const deleteTask = async ({
   projectId,
   columnId,
   taskId,
-}: DeleteTask) => {
+}: DeleteTask): Promise<void> => {
   return await client.delete(
     `/projects/${projectId}/columns/${columnId}/tasks/${taskId}`
   );
+};
+
+export const moveTask = async ({
+  projectId,
+  to,
+  from,
+  taskId,
+  taskIds,
+}: MoveTask): Promise<void> => {
+  await client.patch(`/projects/${projectId}/tasks/${taskId}/move`, {
+    to,
+    from,
+    taskIds,
+  });
 };

@@ -1,21 +1,34 @@
 import React, { useState, useEffect } from "react";
 import { actions } from "./reducers";
-import { transform } from "./helpers";
+import { AWSConnect, transformUser } from "./helpers";
 import { Auth0Client } from "@auth0/auth0-spa-js";
 import { useDispatch } from "react-redux";
 import { IdentityPayload } from "./types";
 import { history } from "../../history";
 import { client } from "../Client";
-import env from "../../env";
+import { env } from "../../env";
 import { Loading } from "../../shared/components/Loading";
+import { fetchImage } from "../../features/Account/reducer";
+
+const {
+  domain,
+  audience,
+  client_id,
+  redirect_uri,
+  identity_pool_id,
+  s3_bucket,
+  s3_bucket_region,
+  cognito_region,
+} = env;
 
 const { authenticateUser } = actions;
 
 export const auth0Client = new Auth0Client({
-  domain: env.domain || "",
-  audience: env.audience || "",
-  client_id: env.client_id || "",
-  redirect_uri: env.redirect_uri || "",
+  domain: domain as string,
+  audience: audience as string,
+  client_id: client_id as string,
+  redirect_uri: redirect_uri as string,
+  useRefreshTokens: true,
 });
 
 const Auth0Provider: React.FC<{ children: any }> = ({ children }) => {
@@ -37,17 +50,31 @@ const Auth0Provider: React.FC<{ children: any }> = ({ children }) => {
         const ok = await auth0Client.isAuthenticated();
 
         if (ok) {
-          const auth0User = (await auth0Client.getUser()) as IdentityPayload;
+          const auth0_user = (await auth0Client.getUser()) as IdentityPayload;
+          const access_token = await auth0Client.getTokenSilently();
           const claims = await auth0Client.getIdTokenClaims();
           const roles = claims["https://client.devpie.io/claims/roles"];
           const user = await client.get("/users/me");
 
+          await AWSConnect({
+            auth0_user,
+            auth0_id_token: claims.__raw,
+            auth0_id_token_exp: claims.exp as number,
+            auth0_domain: domain as string,
+            auth0_access_token: access_token as string,
+            cognito_region: cognito_region as string,
+            cognito_identity_pool_id: identity_pool_id as string,
+            s3_bucket: s3_bucket as string,
+            s3_bucket_region: s3_bucket_region as string,
+          });
+
           if (!user.error) {
             setIsAuthenticated(ok);
             dispatch(authenticateUser({ ...user, roles }));
+            dispatch(fetchImage(auth0_user.sub));
           } else {
             if (claims["https://client.devpie.io/claims/is_new"]) {
-              const newUser = transform(auth0User);
+              const newUser = transformUser(auth0_user);
               const result = await client.post("/users", newUser);
               if (!result.error) {
                 await auth0Client.loginWithRedirect();

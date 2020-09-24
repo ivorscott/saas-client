@@ -3,6 +3,7 @@ import React from "react";
 import { isIOS } from "react-device-detect";
 import getOrientation, { convertRotationToDegrees } from "./ImageUtils";
 import { withStyles, WithStyles } from "@material-ui/core";
+import "./animate.css";
 import styles from "./styles";
 
 interface Props extends WithStyles<typeof styles> {
@@ -98,7 +99,11 @@ class ImageViewer extends React.Component<Props, State> {
 
     return (
       <div className={classes.wrapperStyles}>
-        <img alt={alt} className={imageClasses} src={this.state.imageUrl} />
+        <img
+          alt={alt}
+          className={`viewer-image ${imageClasses}`}
+          src={this.state.imageUrl}
+        />
       </div>
     );
   }

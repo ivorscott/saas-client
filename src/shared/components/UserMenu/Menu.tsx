@@ -16,13 +16,14 @@ import {
   ListItemAvatar,
 } from "@material-ui/core";
 import { MenuLink } from "../MenuLink";
-// import ImageViewer from "../ImageViewer";
 import { User } from "../../../services/Auth/types";
 import { styles } from "./styles";
 import { Link } from "react-router-dom";
+import ImageViewer from "../ImageViewer";
 
 interface Props extends WithStyles<typeof styles> {
   user: User;
+  image: string;
   anchorRef: RefObject<HTMLButtonElement>;
   isOpen: boolean;
   onClose: (event: React.MouseEvent<EventTarget>) => void;
@@ -36,6 +37,7 @@ const menu: React.FC<Props> = ({
   isOpen,
   anchorRef,
   user,
+  image,
   onClose,
   onToggle,
   onLogOut,
@@ -51,10 +53,10 @@ const menu: React.FC<Props> = ({
       >
         <div className={classes.profilePic}>
           {user?.picture && (
-            <img
+            <ImageViewer
               className={classes.profilePic}
               alt="current user"
-              src={user.picture}
+              url={image}
             />
           )}
         </div>
@@ -93,15 +95,16 @@ const menu: React.FC<Props> = ({
                         <ListItemAvatar>
                           <div className={classes.profilePicLarge}>
                             {user?.picture && (
-                              <img
+                              <ImageViewer
                                 className={classes.profilePicLarge}
                                 alt="current user"
-                                src={user.picture}
+                                url={image}
                               />
                             )}
                           </div>
                         </ListItemAvatar>
                         <ListItemText
+                          className={classes.identity}
                           primary={
                             <Typography
                               component="div"

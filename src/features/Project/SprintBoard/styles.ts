@@ -1,6 +1,6 @@
-import { createStyles } from "@material-ui/core";
+import { createStyles, Theme } from "@material-ui/core";
 
-const styles = () =>
+const styles = ({ breakpoints }: Theme) =>
   createStyles({
     board: {
       padding: "12px 8px !important",
@@ -12,8 +12,9 @@ const styles = () =>
       justifyContent: "space-between",
       height: "70vh",
       maxWidth: "100%",
-      overflow: "scroll",
-      overflowX: "scroll",
+      [breakpoints.down("sm")]: {
+        overflowX: "scroll",
+      },
     },
   });
 

@@ -48,3 +48,11 @@ export interface DeleteTask {
   columnId: string;
   taskId: string;
 }
+
+export interface MoveTask {
+  projectId: string;
+  to: string;
+  from: string;
+  taskId: string;
+  taskIds: string[];
+}

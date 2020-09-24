@@ -14,8 +14,8 @@ import { styles } from "./styles";
 export interface Props extends WithStyles<typeof styles> {
   open: boolean;
   title: string;
-  classes: any;
   children: any;
+  className?: string;
   callToActionText: string;
   callToActionColor: "primary" | "secondary";
   onClose: () => void;
@@ -29,11 +29,12 @@ const Modal = withStyles(styles)(
         open,
         title,
         classes,
-        onClose,
         children,
-        onSubmit,
+        className,
         callToActionText,
         callToActionColor,
+        onClose,
+        onSubmit,
         ...props
       } = this.props;
 
@@ -43,7 +44,9 @@ const Modal = withStyles(styles)(
           aria-labelledby="customized-dialog-title"
           open={open}
           PaperProps={{
-            classes: { root: classes.paperWidth },
+            classes: {
+              root: className ? className : classes.paperWidth,
+            },
           }}
           {...props}
         >

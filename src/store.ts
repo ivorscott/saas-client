@@ -1,5 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { authReducer } from "./services/Auth";
+import { accountReducer } from "./features/Account";
 import { projectsReducer } from "./features/Projects";
 import { projectReducer } from "./features/Project";
 import { reducer as formReducer } from "redux-form";
@@ -10,6 +11,7 @@ const store = configureStore({
     auth: authReducer,
     project: projectReducer,
     projects: projectsReducer,
+    account: accountReducer,
     // columns: columnsReducer,
     // tasks: tasksReducer,
   },
