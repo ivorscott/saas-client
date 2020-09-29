@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import { initialize } from "redux-form";
 import { UpdateTask } from "./UpdateTask";
-import { Typography, withStyles, WithStyles } from "@material-ui/core";
+import { Typography } from "@material-ui/core";
+import { withStyles, WithStyles } from "@material-ui/core/styles";
 import { Draggable } from "react-beautiful-dnd";
 import { Task } from "../types";
-import { styles } from "./styles";
 import { useDispatch } from "react-redux";
+import { styles } from "./styles";
 
 interface Actions {
   onDeleteTask: (columnKey: string, taskId: string) => void;

@@ -1,5 +1,6 @@
 import React from "react";
-import { withStyles, WithStyles, CssBaseline } from "@material-ui/core";
+import { CssBaseline } from "@material-ui/core";
+import { withStyles, WithStyles } from "@material-ui/core/styles";
 import { Layout } from "./Layout";
 import { SideBar } from "../../shared/components/Sidebar";
 import { Footer } from "../../shared/components/Footer";

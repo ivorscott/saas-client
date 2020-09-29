@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { actions } from "./reducers";
-import { AWSConnect, transformUser } from "./helpers";
+import { AWSConnect, getAuthDetails, transformUser } from "./helpers";
 import { Auth0Client } from "@auth0/auth0-spa-js";
 import { useDispatch } from "react-redux";
-import { IdentityPayload } from "./types";
 import { history } from "../../history";
 import { client } from "../Client";
 import { env } from "../../env";
 import { Loading } from "../../shared/components/Loading";
 import { fetchImage } from "../../features/Account/reducer";
+import { UserPayload } from "./types";
 
 const {
   domain,
@@ -50,18 +50,18 @@ const Auth0Provider: React.FC<{ children: any }> = ({ children }) => {
         const ok = await auth0Client.isAuthenticated();
 
         if (ok) {
-          const auth0_user = (await auth0Client.getUser()) as IdentityPayload;
-          const access_token = await auth0Client.getTokenSilently();
-          const claims = await auth0Client.getIdTokenClaims();
+          const authResult = await getAuthDetails(auth0Client);
+          const { auth0_user, access_token, claims } = authResult;
+
           const roles = claims["https://client.devpie.io/claims/roles"];
-          const user = await client.get("/users/me");
+          const user = (await client.get("/users/me")) as UserPayload;
 
           await AWSConnect({
             auth0_user,
             auth0_id_token: claims.__raw,
             auth0_id_token_exp: claims.exp as number,
             auth0_domain: domain as string,
-            auth0_access_token: access_token as string,
+            auth0_access_token: access_token,
             cognito_region: cognito_region as string,
             cognito_identity_pool_id: identity_pool_id as string,
             s3_bucket: s3_bucket as string,
@@ -90,9 +90,8 @@ const Auth0Provider: React.FC<{ children: any }> = ({ children }) => {
         if (err.message === "Invalid state") {
           await auth0Client.loginWithRedirect();
         } else {
-          console.log(err);
+          console.log(err); // Todo: log to Sentry
           setIsError(true);
-          throw new Error("unknown authentication error");
         }
       }
       setLoading(false);

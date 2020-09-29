@@ -1,12 +1,7 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
-import {
-  TextField,
-  Button,
-  Typography,
-  withStyles,
-  WithStyles,
-} from "@material-ui/core";
+import { TextField, Button, Typography } from "@material-ui/core";
+import { withStyles, WithStyles } from "@material-ui/core/styles";
 import { Add } from "@material-ui/icons";
 import { RootState } from "../../../../store";
 import classnames from "classnames";

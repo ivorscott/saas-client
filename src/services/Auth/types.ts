@@ -39,3 +39,6 @@ export interface GoogleOauth2 extends CommonFields {
 
 export interface UsernamePasswordAuthentication extends CommonFields {}
 export type IdentityPayload = UsernamePasswordAuthentication & GoogleOauth2;
+export type UserPayload = User & {
+  error?: string;
+};

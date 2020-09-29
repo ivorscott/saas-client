@@ -1,4 +1,5 @@
-import { withStyles, Paper, WithStyles } from "@material-ui/core";
+import { withStyles, WithStyles } from "@material-ui/core/styles";
+import { Paper } from "@material-ui/core";
 import { Copyright } from "@material-ui/icons";
 import React from "react";
 import styles from "./styles";

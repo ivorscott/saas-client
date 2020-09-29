@@ -1,12 +1,11 @@
 import {
-  withStyles,
-  WithStyles,
   Button,
   Dialog,
   DialogActions,
   DialogContent,
   Typography,
 } from "@material-ui/core";
+import { withStyles, WithStyles } from "@material-ui/core/styles";
 import React from "react";
 import DialogTitle from "./DialogTitle";
 import { styles } from "./styles";

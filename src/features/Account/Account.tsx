@@ -4,13 +4,8 @@ import { uploadImage } from "./reducer";
 import { AppDispatch, RootState } from "../../store";
 import AvatarModal from "./Avatar";
 import styles from "./styles";
-import {
-  withStyles,
-  WithStyles,
-  Grid,
-  IconButton,
-  Typography,
-} from "@material-ui/core";
+import { WithStyles, Grid, IconButton, Typography } from "@material-ui/core";
+import { withStyles } from "@material-ui/core/styles";
 import PhotoCameraIcon from "@material-ui/icons/PhotoCamera";
 import ImageViewer from "../../shared/components/ImageViewer";
 

@@ -1,5 +1,6 @@
 import React from "react";
-import { Typography, withStyles, WithStyles } from "@material-ui/core";
+import { Typography } from "@material-ui/core";
+import { withStyles, WithStyles } from "@material-ui/core/styles";
 import { Layers, Person } from "@material-ui/icons";
 import { Link } from "react-router-dom";
 import { styles } from "./styles";

@@ -1,5 +1,6 @@
 import React from "react";
-import { withStyles, WithStyles, TextField } from "@material-ui/core";
+import { TextField } from "@material-ui/core";
+import { withStyles, WithStyles } from "@material-ui/core/styles";
 import { WrappedFieldProps } from "redux-form";
 import { styles } from "./styles";
 

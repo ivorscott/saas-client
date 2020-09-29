@@ -1,8 +1,7 @@
 import classnames from "classnames";
 import React from "react";
-import { isIOS } from "react-device-detect";
-import getOrientation, { convertRotationToDegrees } from "./ImageUtils";
-import { withStyles, WithStyles } from "@material-ui/core";
+import { isIOS, getOrientation, convertRotationToDegrees } from "./ImageUtils";
+import { withStyles, WithStyles } from "@material-ui/core/styles";
 import "./animate.css";
 import styles from "./styles";
 

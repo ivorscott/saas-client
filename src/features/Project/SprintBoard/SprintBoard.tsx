@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Grid, withStyles, WithStyles } from "@material-ui/core";
+import { Grid } from "@material-ui/core";
+import { withStyles, WithStyles } from "@material-ui/core/styles";
 import { addTask, updateTask, deleteTask, moveTask, fetchBoard } from "./api";
 import { Loading } from "../../../shared/components/Loading";
 import { SprintColumn } from "../SprintColumn";

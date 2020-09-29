@@ -1,4 +1,4 @@
-import { createStyles, Theme } from "@material-ui/core";
+import { createStyles, Theme } from "@material-ui/core/styles";
 
 const styles = ({ breakpoints }: Theme) =>
   createStyles({
@@ -40,27 +40,15 @@ const styles = ({ breakpoints }: Theme) =>
       alignItems: "center",
       justifyContent: "center",
       background: "#efefef",
-      border: "12px solid #ffffff",
+      border: "6px solid #ffffff",
       borderRadius: "50%",
       boxShadow: `0 1px 3px rgba(0,0,0,0.12), 
                   0 1px 2px rgba(0,0,0,0.24);`,
       marginTop: "1rem",
       marginBottom: "1rem",
       transition: "all .5s",
-      [breakpoints.down("sm")]: {
-        height: 125,
-        width: 125,
-        border: "4px solid #ffffff",
-      },
-      [breakpoints.up("md")]: {
-        height: 150,
-        width: 150,
-        border: "8px solid #ffffff",
-      },
-      [breakpoints.up("lg")]: {
-        height: 175,
-        width: 175,
-      },
+      width: "120px",
+      height: "120px",
     },
     uploadButton: {
       flex: 1,

@@ -1,7 +1,7 @@
 import React from "react";
+import { withStyles } from "@material-ui/core/styles";
+import { Button, Menu, MenuItem } from "@material-ui/core";
 import styles from "./styles";
-
-import { withStyles, Button, Menu, MenuItem } from "@material-ui/core";
 
 interface Props {
   classes: any;

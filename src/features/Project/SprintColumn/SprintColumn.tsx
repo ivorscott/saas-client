@@ -1,12 +1,12 @@
 import React from "react";
 import { SprintTask } from "../SprintTask";
 import { AddTask } from "../SprintTask";
-import { withStyles, Paper, Typography } from "@material-ui/core";
+import { Paper, Typography } from "@material-ui/core";
 import { Droppable } from "react-beautiful-dnd";
 import { styles } from "./styles";
 import "./css.css";
 import { Column, Task, TaskDict } from "../types";
-import { WithStyles } from "@material-ui/styles";
+import { withStyles, WithStyles } from "@material-ui/core/styles";
 
 interface Actions {
   onAddTask: (task: string) => void;

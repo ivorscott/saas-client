@@ -1,6 +1,6 @@
 import React from "react";
-import { WithStyles } from "@material-ui/core";
-import { withStyles, Paper, Typography } from "@material-ui/core";
+import { withStyles, WithStyles } from "@material-ui/core/styles";
+import { Paper, Typography } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import { Project } from "../../Project";
 import { styles } from "./styles";

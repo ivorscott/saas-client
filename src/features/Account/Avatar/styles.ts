@@ -1,9 +1,9 @@
-import { createStyles } from "@material-ui/core";
+import { createStyles } from "@material-ui/core/styles";
 
 const styles = () =>
   createStyles({
     avatarModal: {
-      width: 350,
+      width: 400,
     },
     contentWrapper: {
       display: "flex",

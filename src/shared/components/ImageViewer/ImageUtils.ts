@@ -1,11 +1,27 @@
+function isIOSPlatform() {
+  return (
+    [
+      "iPad Simulator",
+      "iPhone Simulator",
+      "iPod Simulator",
+      "iPad",
+      "iPhone",
+      "iPod",
+    ].includes(navigator.platform) ||
+    // iPad on iOS 13 detection
+    (navigator.userAgent.includes("Mac") && "ontouchend" in document)
+  );
+}
+export const isIOS = isIOSPlatform();
+
 /**
- * https://stackoverflow.com/a/32490603
+ * Get the Exif (Exchangeable image file format) data of an image.
+ * https://bit.ly/3crKeZD
  *
  * @param imageFile The image file to inspect
  * @param onRotationFound callback when the rotation is discovered. Will return 0 if if it fails, otherwise 0, 90, 180, or 270
  */
-
-export default function getOrientation(
+export function getOrientation(
   imageFile: File,
   onRotationFound: (rotationInDegrees: number) => void
 ) {

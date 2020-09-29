@@ -8,13 +8,12 @@ import {
   Grow,
   Paper,
   Popper,
-  withStyles,
-  WithStyles,
   Typography,
   ClickAwayListener,
   ListItemText,
   ListItemAvatar,
 } from "@material-ui/core";
+import { withStyles, WithStyles } from "@material-ui/core/styles";
 import { MenuLink } from "../MenuLink";
 import { User } from "../../../services/Auth/types";
 import { styles } from "./styles";

@@ -1,3 +1,3 @@
-import {UpdateTask} from './reduxForm';
+import { UpdateTask } from "./UpdateTask";
 
-export {UpdateTask};
+export { UpdateTask };

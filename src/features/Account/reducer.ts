@@ -10,7 +10,7 @@ interface AccountState {
 
 const initialState: AccountState = {
   loading: idle,
-  image: "",
+  image: placeholder,
 };
 
 interface S3GetPayload {

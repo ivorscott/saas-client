@@ -1,6 +1,7 @@
 import AWS from "aws-sdk";
 import Amplify, { Auth } from "aws-amplify";
 import { AWSConnectOptions, IdentityPayload, User } from "./types";
+import { Auth0Client } from "@auth0/auth0-spa-js";
 
 export function transformUser(user: IdentityPayload): Partial<User> {
   return {
@@ -12,6 +13,24 @@ export function transformUser(user: IdentityPayload): Partial<User> {
     picture: user.picture || "",
     locale: user.locale || "",
   };
+}
+
+export async function getAuthDetails(auth0Client: Auth0Client) {
+  return Promise.all([
+    auth0Client.getUser() as Promise<IdentityPayload>,
+    auth0Client.getTokenSilently() as Promise<string>,
+    auth0Client.getIdTokenClaims(),
+  ])
+    .then(([auth0_user, access_token, claims]) => {
+      return {
+        auth0_user,
+        access_token,
+        claims,
+      };
+    })
+    .catch(() => {
+      throw new Error("error retrieving auth details");
+    });
 }
 
 export async function AWSConnect(options: AWSConnectOptions) {

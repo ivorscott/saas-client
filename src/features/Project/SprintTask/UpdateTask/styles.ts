@@ -1,20 +1,20 @@
-import { createStyles, Theme } from '@material-ui/core';
-import { red } from '@material-ui/core/colors';
+import { createStyles } from "@material-ui/core/styles";
+import { red } from "@material-ui/core/colors";
 
-const styles = (theme: Theme) =>
+const styles = () =>
   createStyles({
     confirmDialog: {
-      display: 'flex',
+      display: "flex",
       flex: 1,
-      justifyContent: 'flex-end',
-      marginTop: 20
+      justifyContent: "flex-end",
+      marginTop: 20,
     },
     confirmAction: {
       color: red[300],
-      textDecoration: 'underline',
-      cursor: 'pointer',
-      paddingLeft: 20
-    }
+      textDecoration: "underline",
+      cursor: "pointer",
+      paddingLeft: 20,
+    },
   });
 
-export default styles;
+export { styles };
