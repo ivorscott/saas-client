@@ -54,7 +54,7 @@ const SelectedProject: React.FC = () => {
     const fetch = async (params: Params) => {
       await dispatch(fetchProject(params.id));
     };
-    fetch(params);
+    // fetch(params);
   }, [params, dispatch]);
 
   const handleDeleteProject = async () => {

@@ -13,7 +13,7 @@ const Projects: React.FC = () => {
 
   useEffect(() => {
     const fetch = async () => await dispatch(fetchProjects());
-    fetch();
+    // fetch();
   }, [dispatch]);
 
   const { entities, loading } = useSelector(

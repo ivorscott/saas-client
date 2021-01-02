@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
+  id: "",
   auth0Id: "",
   email: "",
   emailVerified: false,
@@ -8,6 +9,7 @@ const initialState = {
   lastName: "",
   picture: "",
   locale: "",
+  created: "",
   roles: [],
 };
 

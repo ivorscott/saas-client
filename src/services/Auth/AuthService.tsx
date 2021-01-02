@@ -50,6 +50,8 @@ const Auth0Provider: React.FC<{ children: any }> = ({ children }) => {
         const ok = await auth0Client.isAuthenticated();
 
         if (ok) {
+          setIsAuthenticated(ok);
+
           const authResult = await getAuthDetails(auth0Client);
           const { auth0_user, access_token, claims } = authResult;
 
@@ -69,17 +71,12 @@ const Auth0Provider: React.FC<{ children: any }> = ({ children }) => {
           });
 
           if (!user.error) {
-            setIsAuthenticated(ok);
             dispatch(authenticateUser({ ...user, roles }));
             dispatch(fetchImage(auth0_user.sub));
           } else {
-            if (claims["https://client.devpie.io/claims/is_new"]) {
-              const newUser = transformUser(auth0_user);
-              const result = await client.post("/users", newUser);
-              if (!result.error) {
-                await auth0Client.loginWithRedirect();
-              }
-            }
+            const newUser = transformUser(auth0_user);
+            dispatch(authenticateUser({ ...newUser, roles }));
+            await client.post("/users", newUser);
           }
         } else {
           await auth0Client.loginWithRedirect({
