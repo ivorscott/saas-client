@@ -1,6 +1,6 @@
 import React from "react";
-import { Page } from "../../shared/components/Page";
-import { TopBar } from "../../shared/components/TopBar";
+import { Page } from "./Page";
+import { TopBar } from "./TopBar";
 import Routes from "./Routes";
 
 import { createStyles, withStyles, WithStyles } from "@material-ui/core/styles";
