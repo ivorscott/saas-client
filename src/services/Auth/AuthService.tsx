@@ -9,6 +9,33 @@ import { env } from "../../env";
 import { Loading } from "../../shared/components/Loading";
 import { fetchImage } from "../../features/Account/reducer";
 import { UserPayload } from "./types";
+import environment from "../../env/local";
+
+interface FreshAuthOptions {
+  [index:string]: string
+}
+
+const freshbooks = {
+  loginWithRedirect: async (options: FreshAuthOptions) => {
+
+    const _buildAuthorizeUrl = (options: FreshAuthOptions) => {
+      const baseUrl = `https://auth.freshbooks.com/service/auth/oauth/authorize`
+
+      const queryString = Object.keys(options).reduce((acc, key,) => {
+        if (!options[key]) {
+          return acc
+        }
+        return acc + "&" + options[key]
+      },"")
+
+      return baseUrl + `?${queryString}`
+    }
+
+    const url = _buildAuthorizeUrl(options)
+    window.location.assign(url)
+  }
+}
+
 
 const {
   domain,
@@ -41,9 +68,6 @@ const Auth0Provider: React.FC<{ children: any }> = ({ children }) => {
     const authenticate = async () => {
       try {
         const { search, pathname } = window.location;
-        // check pathname
-        // if pathname = fresh then handle freshbooks authorization code
-        // otherwise continue
 
         if (search.includes("code=") && search.includes("state=")) {
           const { appState } = await auth0Client.handleRedirectCallback();
@@ -93,6 +117,27 @@ const Auth0Provider: React.FC<{ children: any }> = ({ children }) => {
           console.log(err); // Todo: log to Sentry
           setIsError(true);
         }
+      }
+
+      try {
+
+        freshbooks.loginWithRedirect({ 
+          client_id: environment.freshbooks_client_id || "", 
+          response_type: "code", 
+          redirect_uri: "https://localhost:3000" 
+        })
+
+        const { search, pathname } = window.location;
+
+        // Handle redirect callback
+        if (search.includes("code=")) {
+          // Get Authorization code
+          // Get Acess Token and refresh token
+          history.push(pathname);
+        }
+    
+      } catch {
+
       }
       setLoading(false);
     };
