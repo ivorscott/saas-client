@@ -13,6 +13,11 @@ type Environment = {
   cognito_region: string | undefined;
   s3_bucket: string | undefined;
   s3_bucket_region: string | undefined;
+  freshbooks_client_id: string | undefined;
+  freshbooks_client_secret: string | undefined;
+  freshbooks_authorization_url: string | undefined;
+  freshbooks_token_url: string | undefined;
+  freshbooks_api_url: string | undefined;
 };
 
 let env: Environment;

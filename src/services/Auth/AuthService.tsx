@@ -9,33 +9,53 @@ import { env } from "../../env";
 import { Loading } from "../../shared/components/Loading";
 import { fetchImage } from "../../features/Account/reducer";
 import { UserPayload } from "./types";
-import environment from "../../env/local";
 
-interface FreshAuthOptions {
-  [index:string]: string
+export function fbLoginWithRedirect() {
+  window.location.assign(`${env.freshbooks_authorization_url}?client_id=${env.freshbooks_client_id}&response_type=code&redirect_uri=${env.redirect_uri}`)
 }
 
-const freshbooks = {
-  loginWithRedirect: async (options: FreshAuthOptions) => {
-
-    const _buildAuthorizeUrl = (options: FreshAuthOptions) => {
-      const baseUrl = `https://auth.freshbooks.com/service/auth/oauth/authorize`
-
-      const queryString = Object.keys(options).reduce((acc, key,) => {
-        if (!options[key]) {
-          return acc
+// verify freshbooks token by attempting to access users me endpoint
+export async function isFbTokenVerifed(): Promise<boolean> {
+  return new Promise( async (res)=> {
+    try {
+      const token = localStorage.getItem('fbtk')
+      const response = await fetch(`${env.freshbooks_api_url}/users/me`, {
+        headers: {
+          'Authorization': `Bearer ${token}`
         }
-        return acc + "&" + options[key]
-      },"")
+      })
 
-      return baseUrl + `?${queryString}`
+      if (response.status === 200) {
+        return res(true)
+      } 
+    } catch(e) {
+      console.log(e)
+      return res(false)
     }
-
-    const url = _buildAuthorizeUrl(options)
-    window.location.assign(url)
-  }
+  })
 }
 
+async function fbHandleRedirect() {
+  const authorization_code = window.location.search.substr(6)
+  const data = {
+    grant_type: "authorization_code",
+    client_id: env.freshbooks_client_id,
+    code: authorization_code,
+    client_secret: env.freshbooks_client_secret,
+    redirect_uri: env.redirect_uri
+  }
+
+  const response = await fetch(`${env.freshbooks_token_url}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type':'application/json'
+    }, 
+    body: JSON.stringify(data)
+  })
+
+  const json = await response.json()
+  localStorage.setItem('fbtk', json.access_token)
+}
 
 const {
   domain,
@@ -69,6 +89,13 @@ const Auth0Provider: React.FC<{ children: any }> = ({ children }) => {
       try {
         const { search, pathname } = window.location;
 
+        // handle freshbooks redirect
+        if (search.includes("code=") && !search.includes("state=")) {
+          console.log("test")
+          await fbHandleRedirect()
+        }
+
+        // handle auth0 redirect
         if (search.includes("code=") && search.includes("state=")) {
           const { appState } = await auth0Client.handleRedirectCallback();
           history.push(appState ? appState : pathname);
@@ -105,6 +132,7 @@ const Auth0Provider: React.FC<{ children: any }> = ({ children }) => {
             dispatch(authenticateUser({ ...newUser, roles }));
             await client.post("/users", newUser);
           }
+
         } else {
           await auth0Client.loginWithRedirect({
             appState: pathname,
@@ -114,31 +142,10 @@ const Auth0Provider: React.FC<{ children: any }> = ({ children }) => {
         if (err.message === "Invalid state") {
           await auth0Client.loginWithRedirect();
         } else {
-          console.log(err); // Todo: log to Sentry
           setIsError(true);
         }
       }
 
-      try {
-
-        freshbooks.loginWithRedirect({ 
-          client_id: environment.freshbooks_client_id || "", 
-          response_type: "code", 
-          redirect_uri: "https://localhost:3000" 
-        })
-
-        const { search, pathname } = window.location;
-
-        // Handle redirect callback
-        if (search.includes("code=")) {
-          // Get Authorization code
-          // Get Acess Token and refresh token
-          history.push(pathname);
-        }
-    
-      } catch {
-
-      }
       setLoading(false);
     };
     authenticate();

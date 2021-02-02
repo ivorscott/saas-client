@@ -4,11 +4,14 @@ import {
   withStyles,
   WithStyles,
 } from "@material-ui/core/styles";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { CssBaseline } from "@material-ui/core";
 import { SideBar } from "../../shared/components/Sidebar";
 import { Layout } from "../../shared/components/Layout";
 import { Footer } from "../../shared/components/Footer";
+import { Modal } from "./Modal";
+import { fbLoginWithRedirect, isFbTokenVerifed } from "../../services/Auth/AuthService";
+
 
 export const styles = ({ breakpoints }: Theme) =>
   createStyles({
@@ -26,8 +29,20 @@ export const styles = ({ breakpoints }: Theme) =>
 
 interface Props extends WithStyles<typeof styles> {}
 
+
 const Component: React.FC<Props> = ({ classes }) => {
 
+  const [isOpen, setOpen] = useState(false);
+
+  useEffect(()=> {
+      isFbTokenVerifed().then(isVerified => {
+        setOpen(!isVerified)
+      })
+  })
+
+  const toggleModal = () => {
+    setOpen(!isOpen);
+  };
 
   return (
     <div className="App">
@@ -37,6 +52,7 @@ const Component: React.FC<Props> = ({ classes }) => {
         <Layout />
       </div>
       <Footer />
+      <Modal open={isOpen} onContinue={fbLoginWithRedirect} />
     </div>
   );
 };
