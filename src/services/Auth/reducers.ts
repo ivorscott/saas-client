@@ -5,6 +5,7 @@ const initialState = {
   auth0Id: "",
   email: "",
   emailVerified: false,
+  accountingEnabled: false,
   firstName: "",
   lastName: "",
   picture: "",

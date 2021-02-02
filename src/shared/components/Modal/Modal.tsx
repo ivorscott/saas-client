@@ -16,7 +16,7 @@ export interface Props extends WithStyles<typeof styles> {
   children: any;
   className?: string;
   callToActionText: string;
-  callToActionColor: "primary" | "secondary";
+  callToActionColor? : "primary" | "secondary";
   onClose: () => void;
   onSubmit: (data?: any) => void;
 }
@@ -59,7 +59,7 @@ const Modal = withStyles(styles)(
             <Button onClick={onClose} color="primary">
               cancel
             </Button>
-            <Button onClick={onSubmit} color={callToActionColor}>
+            <Button onClick={onSubmit} color={callToActionColor || "secondary"}>
               {callToActionText}
             </Button>
           </DialogActions>

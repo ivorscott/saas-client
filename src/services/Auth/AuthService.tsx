@@ -41,6 +41,9 @@ const Auth0Provider: React.FC<{ children: any }> = ({ children }) => {
     const authenticate = async () => {
       try {
         const { search, pathname } = window.location;
+        // check pathname
+        // if pathname = fresh then handle freshbooks authorization code
+        // otherwise continue
 
         if (search.includes("code=") && search.includes("state=")) {
           const { appState } = await auth0Client.handleRedirectCallback();
