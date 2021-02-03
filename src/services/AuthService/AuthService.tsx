@@ -50,7 +50,6 @@ const Auth0Provider: React.FC<{ children: any }> = ({ children }) => {
 
           const authResult = await getAuthDetails(auth0Client);
           const { auth0_user, access_token, claims } = authResult;
-
           const roles = claims["https://client.devpie.io/claims/roles"];
           const user = (await devpieClient.get("/users/me")) as UserPayload;
 
@@ -58,12 +57,11 @@ const Auth0Provider: React.FC<{ children: any }> = ({ children }) => {
             auth0_user,
             auth0_id_token: claims.__raw,
             auth0_id_token_exp: claims.exp as number,
-            auth0_domain: env.AUTH0_AUDIENCE,
+            auth0_domain: env.AUTH0_DOMAIN,
             auth0_access_token: access_token,
-            cognito_region: env.AWS_REGION,
-            cognito_identity_pool_id: env.AWS_COGNITO_IDENTITY, 
-            s3_bucket: env.AWS_S3_BUCKET,
-            s3_bucket_region: env.AWS_REGION,
+            aws_cognito_identity_pool_id: env.AWS_COGNITO_IDENTITY, 
+            aws_s3_bucket: env.AWS_S3_BUCKET,
+            aws_region: env.AWS_REGION,
           });
 
           if (!user.error) {

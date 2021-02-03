@@ -4,10 +4,9 @@ export interface AWSConnectOptions {
   auth0_id_token: string;
   auth0_id_token_exp: number;
   auth0_access_token: string;
-  cognito_identity_pool_id: string;
-  cognito_region: string;
-  s3_bucket: string;
-  s3_bucket_region: string;
+  aws_cognito_identity_pool_id: string;
+  aws_s3_bucket: string;
+  aws_region: string;
 }
 
 export interface User {

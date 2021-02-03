@@ -35,10 +35,9 @@ export async function getAuthDetails(auth0Client: Auth0Client) {
 
 export async function AWSConnect(options: AWSConnectOptions) {
   // Pass Auth0 authentication to Cognito
-
-  AWS.config.region = options.cognito_region;
+  AWS.config.region = options.aws_region;
   AWS.config.credentials = new AWS.CognitoIdentityCredentials({
-    IdentityPoolId: options.cognito_identity_pool_id,
+    IdentityPoolId: options.aws_cognito_identity_pool_id,
     Logins: {
       [`${options.auth0_domain}`]: options.auth0_access_token,
     },
@@ -48,13 +47,13 @@ export async function AWSConnect(options: AWSConnectOptions) {
 
   Amplify.configure({
     Auth: {
-      identityPoolId: options.cognito_identity_pool_id,
-      region: options.cognito_region,
+      identityPoolId: options.aws_cognito_identity_pool_id,
+      region: options.aws_region,
     },
     Storage: {
       AWSS3: {
-        bucket: options.s3_bucket,
-        region: options.s3_bucket_region,
+        bucket: options.aws_s3_bucket,
+        region: options.aws_region,
       },
     },
   });
