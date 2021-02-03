@@ -8,12 +8,14 @@ interface FBOptions {
     client_id: string;
     client_secret: string;
     redirect_uri: string;
+    access_token?: string;
 }
 
 class FreshBooks {
     public client_id: string;
     public client_secret: string;
     public redirect_uri: string;
+    public access_token?: string;
 
     constructor(options: FBOptions) {
         this.client_id = options.client_id;
@@ -29,7 +31,13 @@ class FreshBooks {
     // verify freshbooks token by attempting to access users me endpoint
     async isTokenVerifed() {
        return new Promise<boolean>(async (resolve, reject)=> {
+
         const token = localStorage.getItem('fbtk')
+
+        if(!token) {
+            reject()
+        }
+
         const response = await fetch(`${API_URL}/users/me`, {
             headers: {
                 'Authorization': `Bearer ${token}`
@@ -37,7 +45,8 @@ class FreshBooks {
         })
 
         if (response.status === 200) {
-           resolve(true)
+            this.access_token = token as string
+            resolve(true)
         }
         
         reject()
@@ -76,7 +85,7 @@ class FreshBooks {
 const options = { 
     client_id: env.FRESHBOOKS_CLIENT_ID,
     client_secret: env.FRESHBOOKS_CLIENT_SECRET,
-    redirect_uri: env.REDIRECT_URI
+    redirect_uri: env.REDIRECT_URI,
 }       
 
 export const client = new FreshBooks(options)

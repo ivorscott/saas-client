@@ -12,10 +12,11 @@ import {
 } from "@material-ui/core";
 
 import { client as freshClient } from "../../services/FreshService";
+import { client as devpieClient } from "../../services/APIService";
 
  const FreshModal = () => {
 
-  const { roles } = useSelector(
+  const { auth0Id, accountingEnabled, roles } = useSelector(
     (state: RootState) => state.auth
   );
 
@@ -25,7 +26,12 @@ import { client as freshClient } from "../../services/FreshService";
   useEffect(()=> {
     if(isFreelancer) {
       freshClient.isTokenVerifed().then((isVerified) => {
-        setOpen(!isVerified)
+        if(!isVerified) {
+          setOpen(true)
+        }
+        if(isVerified && !accountingEnabled) {
+          devpieClient.request("POST", "/accounting", { auth0Id, token: freshClient.access_token } )
+        }
       })
     }
   },[])
