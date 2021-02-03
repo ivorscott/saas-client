@@ -4,13 +4,12 @@ import {
   withStyles,
   WithStyles,
 } from "@material-ui/core/styles";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { CssBaseline } from "@material-ui/core";
 import { SideBar } from "../../shared/components/Sidebar";
 import { Layout } from "../../shared/components/Layout";
 import { Footer } from "../../shared/components/Footer";
-import { Modal } from "./Modal";
-import { client as freshClient } from "../../services/FreshService";
+import { FreshModal } from "./FreshModal";
 
 export const styles = ({ breakpoints }: Theme) =>
   createStyles({
@@ -30,14 +29,6 @@ interface Props extends WithStyles<typeof styles> {}
 
 const Component: React.FC<Props> = ({ classes }) => {
 
-  const [isOpen, setOpen] = useState(false);
-
-  useEffect(()=> {
-      freshClient.isTokenVerifed().then(isVerified => {
-        setOpen(!isVerified)
-      })
-  })
-
   return (
     <div className="App">
       <CssBaseline />
@@ -46,7 +37,7 @@ const Component: React.FC<Props> = ({ classes }) => {
         <Layout />
       </div>
       <Footer />
-      <Modal open={isOpen} onContinue={freshClient.loginWithRedirect} />
+      <FreshModal />
     </div>
   );
 };

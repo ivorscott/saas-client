@@ -27,23 +27,24 @@ class FreshBooks {
     }
 
     // verify freshbooks token by attempting to access users me endpoint
-    async isTokenVerifed(): Promise<boolean> {
-        return new Promise( async (res)=> {
-            try {
-                const token = localStorage.getItem('fbtk')
-                const response = await fetch(`${API_URL}/users/me`, {
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
-                })
-
-                if (response.status === 200) {
-                    return res(true)
-                } 
-            } catch(e) {
-                return res(false)
+    async isTokenVerifed() {
+       return new Promise<boolean>(async (resolve, reject)=> {
+        const token = localStorage.getItem('fbtk')
+        const response = await fetch(`${API_URL}/users/me`, {
+            headers: {
+                'Authorization': `Bearer ${token}`
             }
         })
+
+        if (response.status === 200) {
+           resolve(true)
+        }
+        
+        reject()
+
+       }).catch(e => {
+        return false
+       })
     }
 
     async handleRedirect() {

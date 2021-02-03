@@ -1,14 +1,3 @@
-export interface AWSConnectOptions {
-  auth0_user: IdentityPayload;
-  auth0_domain: string;
-  auth0_id_token: string;
-  auth0_id_token_exp: number;
-  auth0_access_token: string;
-  aws_cognito_identity_pool_id: string;
-  aws_s3_bucket: string;
-  aws_region: string;
-}
-
 export interface User {
   auth0Id: string;
   email: string;

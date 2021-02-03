@@ -1,9 +1,8 @@
 import React, { useRef, useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import { auth0Client } from "../../../services/AuthService";
+import { client as authClient } from "../../../services/AuthService";
 import { Menu } from "./Menu";
 import { RootState } from "../../../store";
-import { Auth } from "aws-amplify";
 
 const UserMenu = () => {
   const [isOpen, setOpen] = useState(false);
@@ -16,8 +15,8 @@ const UserMenu = () => {
   };
 
   const handleLogOut = async () => {
-    auth0Client.logout();
-    Auth.signOut();
+    authClient.logout();
+    
   };
 
   const handleClose = (event: React.MouseEvent<EventTarget>) => {

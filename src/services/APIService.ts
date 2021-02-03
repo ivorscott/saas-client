@@ -1,4 +1,4 @@
-import { auth0Client } from "./AuthService";
+import { client as authClient } from "./AuthService";
 import { env } from "../env";
 
 class APIService {
@@ -39,7 +39,7 @@ class APIService {
 
   async request(method: string, path:string, data?:any) {
     const url = `${this.baseUrl}${path}`;
-    const accessToken = await auth0Client.getTokenSilently();
+    const accessToken = await authClient.getTokenSilently();
     const options = {
       method,
       body: JSON.stringify(data),
