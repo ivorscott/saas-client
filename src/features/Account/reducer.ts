@@ -35,7 +35,7 @@ export const fetchImage = createAsyncThunk(
     const result = (await Storage.get(key, {
       download: true,
     })) as S3GetPayload;
-    return await new Response(result.Body).text();
+      return await new Response(result.Body).text();
   }
 );
 

@@ -4,77 +4,20 @@ import { AWSConnect, getAuthDetails, transformUser } from "./helpers";
 import { Auth0Client } from "@auth0/auth0-spa-js";
 import { useDispatch } from "react-redux";
 import { history } from "../../history";
-import { client } from "../Client";
 import { env } from "../../env";
 import { Loading } from "../../shared/components/Loading";
 import { fetchImage } from "../../features/Account/reducer";
 import { UserPayload } from "./types";
-
-export function fbLoginWithRedirect() {
-  window.location.assign(`${env.freshbooks_authorization_url}?client_id=${env.freshbooks_client_id}&response_type=code&redirect_uri=${env.redirect_uri}`)
-}
-
-// verify freshbooks token by attempting to access users me endpoint
-export async function isFbTokenVerifed(): Promise<boolean> {
-  return new Promise( async (res)=> {
-    try {
-      const token = localStorage.getItem('fbtk')
-      const response = await fetch(`${env.freshbooks_api_url}/users/me`, {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      })
-
-      if (response.status === 200) {
-        return res(true)
-      } 
-    } catch(e) {
-      console.log(e)
-      return res(false)
-    }
-  })
-}
-
-async function fbHandleRedirect() {
-  const authorization_code = window.location.search.substr(6)
-  const data = {
-    grant_type: "authorization_code",
-    client_id: env.freshbooks_client_id,
-    code: authorization_code,
-    client_secret: env.freshbooks_client_secret,
-    redirect_uri: env.redirect_uri
-  }
-
-  const response = await fetch(`${env.freshbooks_token_url}`, {
-    method: 'POST',
-    headers: {
-      'Content-Type':'application/json'
-    }, 
-    body: JSON.stringify(data)
-  })
-
-  const json = await response.json()
-  localStorage.setItem('fbtk', json.access_token)
-}
-
-const {
-  domain,
-  audience,
-  client_id,
-  redirect_uri,
-  identity_pool_id,
-  s3_bucket,
-  s3_bucket_region,
-  cognito_region,
-} = env;
+import { client as devpieClient } from "../APIService";
+import { client as freshClient } from "../FreshService"
 
 const { authenticateUser } = actions;
 
 export const auth0Client = new Auth0Client({
-  domain: domain as string,
-  audience: audience as string,
-  client_id: client_id as string,
-  redirect_uri: redirect_uri as string,
+  domain: env.AUTH0_DOMAIN,
+  audience: env.AUTH0_AUDIENCE,
+  client_id: env.AUTH0_CLIENT_ID,
+  redirect_uri: env.REDIRECT_URI,
   useRefreshTokens: true,
 });
 
@@ -91,8 +34,7 @@ const Auth0Provider: React.FC<{ children: any }> = ({ children }) => {
 
         // handle freshbooks redirect
         if (search.includes("code=") && !search.includes("state=")) {
-          console.log("test")
-          await fbHandleRedirect()
+          await freshClient.handleRedirect()
         }
 
         // handle auth0 redirect
@@ -110,18 +52,18 @@ const Auth0Provider: React.FC<{ children: any }> = ({ children }) => {
           const { auth0_user, access_token, claims } = authResult;
 
           const roles = claims["https://client.devpie.io/claims/roles"];
-          const user = (await client.get("/users/me")) as UserPayload;
+          const user = (await devpieClient.get("/users/me")) as UserPayload;
 
           await AWSConnect({
             auth0_user,
             auth0_id_token: claims.__raw,
             auth0_id_token_exp: claims.exp as number,
-            auth0_domain: domain as string,
+            auth0_domain: env.AUTH0_AUDIENCE,
             auth0_access_token: access_token,
-            cognito_region: cognito_region as string,
-            cognito_identity_pool_id: identity_pool_id as string,
-            s3_bucket: s3_bucket as string,
-            s3_bucket_region: s3_bucket_region as string,
+            cognito_region: env.AWS_REGION,
+            cognito_identity_pool_id: env.AWS_COGNITO_IDENTITY, 
+            s3_bucket: env.AWS_S3_BUCKET,
+            s3_bucket_region: env.AWS_REGION,
           });
 
           if (!user.error) {
@@ -130,7 +72,7 @@ const Auth0Provider: React.FC<{ children: any }> = ({ children }) => {
           } else {
             const newUser = transformUser(auth0_user);
             dispatch(authenticateUser({ ...newUser, roles }));
-            await client.post("/users", newUser);
+            await devpieClient.post("/users", newUser);
           }
 
         } else {
@@ -148,7 +90,9 @@ const Auth0Provider: React.FC<{ children: any }> = ({ children }) => {
 
       setLoading(false);
     };
+
     authenticate();
+    
   }, [dispatch]);
 
   if (isLoading) {

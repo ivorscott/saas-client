@@ -35,7 +35,7 @@ export const Component = withStyles(styles)(
           </header>
         </Grid>
         <Grid className={classes.avatarWrapper} item={true} xs={12}>
-          <div onClick={onToggle} className={classes.placeholderImage}>
+          <div onClick={onToggle} className={classes.image}>
             {defaultAvatar ? (
               <div className={classes.overlay}>
                 <ImageViewer

@@ -34,7 +34,7 @@ const styles = ({ breakpoints }: Theme) =>
         background: "#000000",
       },
     },
-    placeholderImage: {
+   image: {
       position: "relative",
       display: "flex",
       alignItems: "center",
@@ -49,6 +49,7 @@ const styles = ({ breakpoints }: Theme) =>
       transition: "all .5s",
       width: "120px",
       height: "120px",
+      cursor: 'pointer'
     },
     uploadButton: {
       flex: 1,

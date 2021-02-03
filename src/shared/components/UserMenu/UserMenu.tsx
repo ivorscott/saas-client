@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import { auth0Client } from "../../../services/Auth";
+import { auth0Client } from "../../../services/AuthService";
 import { Menu } from "./Menu";
 import { RootState } from "../../../store";
 import { Auth } from "aws-amplify";

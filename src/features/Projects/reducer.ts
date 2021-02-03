@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { loading, idle, pending, failed, succeeded } from "../../shared/types";
-import { client } from "../../services/Client";
+import { client } from "../../services/APIService";
 import { createProject, Project } from "../Project";
 
 interface ProjectsState {

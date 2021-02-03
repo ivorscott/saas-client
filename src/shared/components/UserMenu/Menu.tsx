@@ -15,7 +15,7 @@ import {
 } from "@material-ui/core";
 import { withStyles, WithStyles } from "@material-ui/core/styles";
 import { MenuLink } from "../MenuLink";
-import { User } from "../../../services/Auth/types";
+import { User } from "../../../services/AuthService/types";
 import { styles } from "./styles";
 import { Link } from "react-router-dom";
 import ImageViewer from "../ImageViewer";

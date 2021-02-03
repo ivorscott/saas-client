@@ -14,6 +14,7 @@ const styles = () =>
       "& > div": {
         width: "100%",
       },
+      cursor: 'pointer'
     },
     avatarEditor: {
       "& .konvajs-content": {

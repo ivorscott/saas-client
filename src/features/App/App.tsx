@@ -10,8 +10,7 @@ import { SideBar } from "../../shared/components/Sidebar";
 import { Layout } from "../../shared/components/Layout";
 import { Footer } from "../../shared/components/Footer";
 import { Modal } from "./Modal";
-import { fbLoginWithRedirect, isFbTokenVerifed } from "../../services/Auth/AuthService";
-
+import { client as freshClient } from "../../services/FreshService";
 
 export const styles = ({ breakpoints }: Theme) =>
   createStyles({
@@ -29,20 +28,15 @@ export const styles = ({ breakpoints }: Theme) =>
 
 interface Props extends WithStyles<typeof styles> {}
 
-
 const Component: React.FC<Props> = ({ classes }) => {
 
   const [isOpen, setOpen] = useState(false);
 
   useEffect(()=> {
-      isFbTokenVerifed().then(isVerified => {
+      freshClient.isTokenVerifed().then(isVerified => {
         setOpen(!isVerified)
       })
   })
-
-  const toggleModal = () => {
-    setOpen(!isOpen);
-  };
 
   return (
     <div className="App">
@@ -52,7 +46,7 @@ const Component: React.FC<Props> = ({ classes }) => {
         <Layout />
       </div>
       <Footer />
-      <Modal open={isOpen} onContinue={fbLoginWithRedirect} />
+      <Modal open={isOpen} onContinue={freshClient.loginWithRedirect} />
     </div>
   );
 };

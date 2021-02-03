@@ -1,28 +1,30 @@
-import { auth0Client } from "./Auth/AuthService";
+import { auth0Client } from "./AuthService";
 import { env } from "../env";
 
-class ClientService {
+class APIService {
+  public baseUrl: string
+
   constructor() {
-    this.baseUrl = env.backend;
+    this.baseUrl = env.BACKEND;
   }
 
-  post(path, data) {
+  post(path: string, data: any) {
     return this.request("POST", path, data);
   }
 
-  put(path, data) {
+  put(path: string, data: any) {
     return this.request("PUT", path, data);
   }
 
-  patch(path, data) {
+  patch(path: string, data: any) {
     return this.request("PATCH", path, data);
   }
 
-  get(path) {
+  get(path: string) {
     return this.request("GET", path);
   }
 
-  delete(path) {
+  delete(path: string) {
     return this.request("DELETE", path);
   }
 
@@ -35,7 +37,7 @@ class ClientService {
     };
   }
 
-  async request(method, path, data) {
+  async request(method: string, path:string, data?:any) {
     const url = `${this.baseUrl}${path}`;
     const accessToken = await auth0Client.getTokenSilently();
     const options = {
@@ -50,7 +52,7 @@ class ClientService {
     return window
       .fetch(url, options)
       .then((res) => {
-        if (!res.headers.get("Content-Type").includes("application/json")) {
+        if (res.headers.get("Content-Type") === "application/json") {
           throw new Error(`(${res.status}) Got html response from resource`);
         }
         return res.json();
@@ -66,4 +68,5 @@ class ClientService {
       });
   }
 }
-export const client = new ClientService();
+
+export const client = new APIService();

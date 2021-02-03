@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import { Router } from "react-router-dom";
 import { Provider as ReduxProvider } from "react-redux";
 import * as serviceWorker from "./serviceWorker";
-import { Auth0Provider } from "./services/Auth";
+import { Auth0Provider } from "./services/AuthService";
 import { options, createMuiTheme, MuiThemeProvider } from "./shared/theme";
 import { store } from "./store";
 import { history } from "./history";

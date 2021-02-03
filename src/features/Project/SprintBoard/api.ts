@@ -1,4 +1,4 @@
-import { client } from "../../../services/Client";
+import { client } from "../../../services/APIService";
 import {
   Board,
   Task,
