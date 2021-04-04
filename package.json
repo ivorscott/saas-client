@@ -6,9 +6,7 @@
     "start": "HTTPS=true react-app-rewired start",
     "dev": "HTTPS=true react-app-rewired start",
     "stage": "HTTPS=true react-app-rewired start",
-    "build:dev": "react-scripts build",
-    "build:stage": "react-scripts build",
-    "build:prod": "react-scripts build",
+    "build": "react-scripts build",
     "postinstall": "patch-package",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
