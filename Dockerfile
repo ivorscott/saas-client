@@ -10,7 +10,7 @@ ENV PATH /client/node_modules/.bin:$PATH
 RUN npm install && npm cache clean --force
 RUN npm config list
 
-COPY . .s
+COPY . .
 
 CMD ["npm", "run", "start"]
 
