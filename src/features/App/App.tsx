@@ -9,7 +9,7 @@ import { CssBaseline } from "@material-ui/core";
 import { SideBar } from "../../shared/components/Sidebar";
 import { Layout } from "../../shared/components/Layout";
 import { Footer } from "../../shared/components/Footer";
-import { FreshModal } from "./FreshModal";
+// import { FreshModal } from "./FreshModal";
 
 export const styles = ({ breakpoints }: Theme) =>
   createStyles({
@@ -37,7 +37,7 @@ const Component: React.FC<Props> = ({ classes }) => {
         <Layout />
       </div>
       <Footer />
-      <FreshModal />
+      {/*<FreshModal />*/}
     </div>
   );
 };

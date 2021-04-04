@@ -7,7 +7,7 @@ import { fetchImage } from "../../features/Account/reducer";
 import { IdentityPayload, User, UserPayload } from "./types";
 import { client as authClient } from "./AuthService"
 import { client as devpieClient } from "../APIService";
-import { client as freshClient } from "../FreshService"
+// import { client as freshClient } from "../FreshService"
 
 function _transformUser(user: IdentityPayload): Partial<User> {
   return {
@@ -36,7 +36,7 @@ const Auth0Provider: React.FC<{ children: any }> = ({ children }) => {
         const { search, pathname } = window.location;
 
         if(search.includes("code=") && !search.includes("state=")) {
-         await freshClient.handleRedirect()
+         // await freshClient.handleRedirect()
         }
 
         // handle auth0 redirect

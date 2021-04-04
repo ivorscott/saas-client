@@ -2,7 +2,7 @@ import { client as authClient } from "./AuthService";
 import { env } from "../env";
 
 class APIService {
-  public baseUrl: string
+  public baseUrl: string;
 
   constructor() {
     this.baseUrl = env.BACKEND;
@@ -37,7 +37,7 @@ class APIService {
     };
   }
 
-  async request(method: string, path:string, data?:any) {
+  async request(method: string, path: string, data?: any) {
     const url = `${this.baseUrl}${path}`;
     const accessToken = await authClient.getTokenSilently();
     const options = {
@@ -49,12 +49,8 @@ class APIService {
       },
     };
 
-    return window
-      .fetch(url, options)
+    return fetch(url, options)
       .then((res) => {
-        if (res.headers.get("Content-Type") === "application/json") {
-          throw new Error(`(${res.status}) Got html response from resource`);
-        }
         return res.json();
       })
       .then((res) => {

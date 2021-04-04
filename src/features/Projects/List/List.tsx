@@ -61,7 +61,7 @@ const List = withStyles(styles)(
             <div style={{ textAlign: "center", marginTop: "50vh" }}>
               <CircularProgress />
             </div>
-          ) : Object.keys(projects).length ? (
+          ) : loading === succeeded && projects.length ? (
             <div className={classes.cardList}>
               {renderProjectCards(projects)}
             </div>
