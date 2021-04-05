@@ -1,4 +1,4 @@
-FROM node:10.15.0-alpine as dev
+FROM node:10.15.0-alpine as build-stage
 
 EXPOSE 3000
 
@@ -12,12 +12,7 @@ RUN npm config list
 
 COPY . .
 
-CMD ["npm", "run", "start"]
-
-FROM dev as test
 RUN npm audit
-
-FROM test as build-stage
 RUN npm run build
 
 FROM nginx:1.15-alpine as prod

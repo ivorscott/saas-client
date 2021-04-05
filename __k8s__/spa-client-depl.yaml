@@ -15,6 +15,8 @@ spec:
       containers:
         - image: devpies/client-spa-client
           name: spa-client
+          stdin: true
+          tty: true
           resources:
             requests:
               cpu: "100m"
@@ -24,7 +26,7 @@ spec:
               memory: "250Mi"
           env:
             - name: PORT
-              value: "3000"
+              value: "80"
             - name: REACT_APP__BACKEND
               value: "https://client-backend.devpie.local/v1"
             - name: REACT_APP__FRESHBOOKS_CLIENT_ID
@@ -73,5 +75,5 @@ spec:
   selector:
     app: spa-client
   ports:
-    - port: 3000
-      targetPort: 3000
+    - port: 80
+      targetPort: 80
