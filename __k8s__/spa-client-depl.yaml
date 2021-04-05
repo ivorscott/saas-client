@@ -23,8 +23,6 @@ spec:
               cpu: "250m"
               memory: "250Mi"
           env:
-            - name: HTTPS
-              value: "true"
             - name: PORT
               value: "3000"
             - name: REACT_APP__BACKEND
