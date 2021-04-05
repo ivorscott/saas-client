@@ -1,6 +1,6 @@
 import React from "react";
 import { withStyles, WithStyles } from "@material-ui/core/styles";
-import AvatarEditor from "exif-react-avatar-edit";
+import { AvatarEditor } from "./AvatarEditor";
 import { Modal } from "../../../shared/components/Modal";
 import styles from "./styles";
 import ImageViewer from "../../../shared/components/ImageViewer";
