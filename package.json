@@ -7,7 +7,6 @@
     "dev": "HTTPS=true react-app-rewired start",
     "stage": "HTTPS=true react-app-rewired start",
     "build": "react-scripts build",
-    "postinstall": "patch-package",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -47,15 +46,16 @@
     "@types/react-router-dom": "^5.1.5",
     "@types/redux-form": "^8.3.0",
     "@types/ua-parser-js": "^0.7.33",
-    "aws-amplify": "^3.3.1",
+    "aws-amplify": "^3.3.26",
     "aws-sdk": "^2.757.0",
     "axios": "^0.21.1",
     "classnames": "^2.2.6",
     "connected-react-router": "^6.3.1",
-    "exif-react-avatar-edit": "^0.8.3",
     "history": "^4.7.2",
     "jsonwebtoken": "^8.5.1",
     "jwt-decode": "^2.2.0",
+    "konva": "^2.5.1",
+    "piexifjs": "^1.0.6",
     "react": "^16.13.1",
     "react-beautiful-dnd": "^10.1.0",
     "react-dom": "^16.13.1",
@@ -74,7 +74,6 @@
     "babel-plugin-import": "^1.13.0",
     "cross-env": "^7.0.2",
     "customize-cra": "^1.0.0",
-    "patch-package": "^6.4.7",
     "react-app-rewired": "^2.1.6"
   }
 }
