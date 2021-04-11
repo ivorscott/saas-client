@@ -13,7 +13,7 @@ RUN npm config list
 COPY . .
 
 RUN npm audit
-RUN npm run build
+RUN REACT_APP__BACKEND=https://qa.devpie.io/api/v1 npm run build
 
 FROM nginx:1.15-alpine as prod
 EXPOSE 80
