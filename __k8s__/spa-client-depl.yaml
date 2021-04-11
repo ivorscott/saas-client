@@ -13,7 +13,7 @@ spec:
         app: spa-client
     spec:
       containers:
-        - image: devpies/client-spa-client
+        - image: devpies/spa-client:latest
           name: spa-client
           stdin: true
           tty: true
