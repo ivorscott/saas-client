@@ -51,16 +51,13 @@ class APIService {
 
     return fetch(url, options)
       .then((res) => {
-        return res.json();
-      })
-      .then((res) => {
-        if (res.status >= 400) {
-          throw new Error(`(${res.status}) ${JSON.stringify(res.error)}`);
-        }
-        return res;
+        const type = res.headers.get("content-type");
+        return type && type.includes("application/json") && res.json();
       })
       .catch((error) => {
-        console.error("Error:", error);
+        if (error.status >= 400) {
+          throw new Error(`(${error.status})}`);
+        }
       });
   }
 }
