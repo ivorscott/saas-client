@@ -64,11 +64,13 @@
     "redux": "^4.0.1",
     "redux-form": "^8.3.6",
     "redux-thunk": "^2.3.0",
+    "styled-components": "^5.2.3",
     "typescript": "~3.7.2",
     "ua-parser-js": "^0.7.22"
   },
   "devDependencies": {
     "@types/jsonwebtoken": "^8.5.0",
+    "@types/styled-components": "^5.1.9",
     "babel-plugin-import": "^1.13.0",
     "cross-env": "^7.0.2",
     "customize-cra": "^1.0.0",

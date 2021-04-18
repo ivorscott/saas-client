@@ -5,7 +5,7 @@ import { history } from "../../history";
 import { Loading } from "../../shared/components/Loading";
 import { fetchImage } from "../../features/Account/reducer";
 import { IdentityPayload, User, UserPayload } from "./types";
-import { client as authClient } from "./AuthService"
+import { client as authClient } from "./AuthService";
 import { client as devpieClient } from "../APIService";
 // import { client as freshClient } from "../FreshService"
 
@@ -27,7 +27,7 @@ const Auth0Provider: React.FC<{ children: any }> = ({ children }) => {
   const [isError, setIsError] = useState(false);
   const [isLoading, setLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  
+
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -35,8 +35,8 @@ const Auth0Provider: React.FC<{ children: any }> = ({ children }) => {
       try {
         const { search, pathname } = window.location;
 
-        if(search.includes("code=") && !search.includes("state=")) {
-         // await freshClient.handleRedirect()
+        if (search.includes("code=") && !search.includes("state=")) {
+          // await freshClient.handleRedirect()
         }
 
         // handle auth0 redirect
@@ -66,7 +66,6 @@ const Auth0Provider: React.FC<{ children: any }> = ({ children }) => {
             dispatch(authenticateUser({ ...newUser, roles }));
             await devpieClient.post("/users", newUser);
           }
-
         } else {
           await authClient.loginWithRedirect(pathname);
         }
@@ -82,7 +81,6 @@ const Auth0Provider: React.FC<{ children: any }> = ({ children }) => {
     };
 
     authenticate();
-    
   }, [dispatch]);
 
   if (isLoading) {
