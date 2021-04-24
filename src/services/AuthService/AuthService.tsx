@@ -4,7 +4,7 @@ import { Auth0Client } from "@auth0/auth0-spa-js";
 import { env } from "../../env";
 import { IdentityPayload } from "./types";
 
-interface  AuthOptions {
+interface AuthOptions {
   auth0_client_id: string;
   auth0_audience: string;
   auth0_domain: string;
@@ -51,12 +51,12 @@ class AuthService {
 
   loginWithRedirect(pathname?: string) {
     return this.auth0Client.loginWithRedirect({
-            appState: pathname,
+      appState: pathname,
     });
   }
 
   handleRedirectCallback() {
-    return this.auth0Client.handleRedirectCallback()
+    return this.auth0Client.handleRedirectCallback();
   }
 
   isAuthenticated() {
@@ -64,7 +64,7 @@ class AuthService {
   }
 
   getTokenSilently() {
-    return this.auth0Client.getTokenSilently()
+    return this.auth0Client.getTokenSilently();
   }
 
   logout() {
@@ -83,7 +83,7 @@ class AuthService {
         this.auth0_access_token = access_token;
         this.auth0_claims = claims;
         this.auth0_id_token = claims.__raw;
-        this.auth0_id_token_exp = claims.exp as number
+        this.auth0_id_token_exp = claims.exp as number;
 
         return {
           auth0_user,
@@ -97,12 +97,20 @@ class AuthService {
   }
 
   async AWSConnect() {
-
-    if(!(this.auth0_access_token && this.auth0_id_token && this.auth0_id_token_exp && this.auth0_user)) {
-      throw new Error("AWSConnect() failed because of missing requirements. Make sure to call getAuthDetails() first.")
+    if (
+      !(
+        this.auth0_access_token &&
+        this.auth0_id_token &&
+        this.auth0_id_token_exp &&
+        this.auth0_user
+      )
+    ) {
+      throw new Error(
+        "AWSConnect() failed because of missing requirements. Make sure to call getAuthDetails() first."
+      );
     }
 
-    // Notify Cognito about Auth0 Login 
+    // Notify Cognito about Auth0 Login
 
     AWS.config.region = this.aws_region;
     AWS.config.credentials = new AWS.CognitoIdentityCredentials({
@@ -143,7 +151,6 @@ class AuthService {
       );
     }
   }
-
 }
 
 export const client = new AuthService({
@@ -153,5 +160,5 @@ export const client = new AuthService({
   aws_region: env.AWS_REGION,
   aws_s3_bucket: env.AWS_S3_BUCKET,
   aws_cognito_identity_pool_id: env.AWS_COGNITO_IDENTITY,
-  redirect_uri: env.REDIRECT_URI
-})
+  redirect_uri: env.REDIRECT_URI,
+});

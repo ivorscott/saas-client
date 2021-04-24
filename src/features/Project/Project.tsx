@@ -1,60 +1,31 @@
-import React, { useState } from "react";
+import React from "react";
 import { Grid, Typography } from "@material-ui/core";
-import { Add } from "@material-ui/icons";
 
-import styled from "styled-components";
 import { useParams } from "react-router-dom";
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchProject, deleteProject, Project } from "./reducer";
+import {
+  fetchProject,
+  deleteProject,
+  Project,
+  Team,
+  fetchTeam,
+} from "./reducer";
 import { history } from "../../history";
 import { RootState } from "../../store";
 import { SprintControls } from "./SprintControls";
 import { SprintBoard } from "./SprintBoard";
 import { Loading } from "../../shared/components/Loading";
-import { InviteModal } from "./InviteModal";
-
-interface Params {
-  id: string;
-}
+import { ProjectTeam } from "./ProjectTeam";
+import { Params } from "./types";
 
 interface Props {
+  team: null | Team;
   project: null | Project;
   onDelete: () => void;
 }
-const StyledMemberManagement = styled.div`
-  width: 100%;
-  padding-top: 15px;
-`;
 
-const StyledAdd = styled(Add)`
-  width: 50px;
-  height: 50px;
-  color: #9ccc65;
-`;
-
-const StyledMembers = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  padding: 0 15px;
-`;
-
-const StyledAvatars = styled.div`
-  background: #ececec;
-  color: #bbbbbb;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 50%;
-  width: 50px;
-  height: 50px;
-  text-align: center;
-  font-weight: bold;
-  margin: 0 4px;
-`;
-
-const Component = ({ project, onDelete }: Props) => {
-  const [isOpen, setOpen] = useState(false);
+const Component = ({ project, team, onDelete }: Props) => {
   if (!project) {
     return <Loading />;
   } else {
@@ -72,18 +43,10 @@ const Component = ({ project, onDelete }: Props) => {
             </Typography>
 
             <SprintControls onDeleteProjectClick={onDelete} />
-            <StyledMemberManagement>
-              <StyledMembers>
-                <StyledAdd onClick={() => setOpen(true)} />
-                <StyledAvatars>AB</StyledAvatars>
-                <StyledAvatars>EB</StyledAvatars>
-                <StyledAvatars>AE</StyledAvatars>
-              </StyledMembers>
-            </StyledMemberManagement>
+            <ProjectTeam team={team} />
           </header>
         </Grid>
         <SprintBoard project={project} />
-        <InviteModal isOpen={isOpen} onClose={() => setOpen(false)} />
       </Grid>
     );
   }
@@ -97,6 +60,7 @@ const SelectedProject: React.FC = () => {
   useEffect(() => {
     const fetch = async (params: Params) => {
       await dispatch(fetchProject(params.id));
+      await dispatch(fetchTeam(params.id));
     };
     fetch(params);
   }, [params, dispatch]);
@@ -107,7 +71,11 @@ const SelectedProject: React.FC = () => {
   };
 
   return (
-    <Component project={project.selected} onDelete={handleDeleteProject} />
+    <Component
+      team={project.team}
+      project={project.selected}
+      onDelete={handleDeleteProject}
+    />
   );
 };
 

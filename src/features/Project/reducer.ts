@@ -11,14 +11,23 @@ export interface Project {
   columnOrder: string[];
   created: string;
 }
+export interface Team {
+  id: string;
+  name: string;
+  leaderId: string;
+  projects: string[];
+  created: string;
+}
 
 export interface ProjectState {
   selected: null | Project;
+  team: null | Team;
   loading: loading;
 }
 
 const initialState: ProjectState = {
   selected: null,
+  team: null,
   loading: idle,
 };
 
@@ -30,6 +39,13 @@ export const fetchProject = createAsyncThunk(
       history.push("/manage/projects");
     }
     return result;
+  }
+);
+
+export const fetchTeam = createAsyncThunk(
+  "project/fetchOneTeam",
+  async (id: string) => {
+    return await client.get(`/projects/${id}/team`);
   }
 );
 
@@ -67,6 +83,19 @@ const projectSlice = createSlice({
       state.selected = action.payload;
     });
     addCase(fetchProject.rejected, (state) => {
+      state.loading = failed;
+    });
+
+    addCase(fetchTeam.pending, (state, action) => {
+      state.loading = pending;
+    });
+
+    addCase(fetchTeam.fulfilled, (state, action) => {
+      state.loading = succeeded;
+      state.team = action.payload;
+    });
+
+    addCase(fetchTeam.rejected, (state, action) => {
       state.loading = failed;
     });
 

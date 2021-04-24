@@ -1,3 +1,7 @@
+export interface Params {
+  id: string;
+}
+
 export interface Board {
   columns: ColumnDict;
   tasks: TaskDict;
