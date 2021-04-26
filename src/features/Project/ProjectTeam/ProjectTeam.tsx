@@ -57,14 +57,15 @@ const ProjectTeam = ({ team }: Props) => {
   };
 
   const handleTeam = async (team: string) => {
-    await client.post(`/projects/${params.id}/team`, {
+    await client.post(`/users/teams`, {
       name: team,
+      projectId: params.id,
     });
     setCreateTeamModalOpen(false);
   };
 
   const handleInvite = async (emailList: string[]) => {
-    await client.post(`/projects/team/${team?.id}/invite`, {
+    await client.post(`/users/teams/${team?.id}/invite`, {
       emailList,
     });
     setInviteModalOpen(false);
