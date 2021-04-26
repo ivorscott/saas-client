@@ -8,18 +8,20 @@ import {
   DialogContentText,
   DialogTitle,
 } from "@material-ui/core";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../store";
 
 const InviteModal = ({
   isOpen,
   onClose,
   onInvite,
-  ...props
 }: {
   isOpen: boolean;
   onClose: () => void;
   onInvite: (emailList: string[]) => void;
 }) => {
   const [emailList, setEmail] = useState([""]);
+  const { team } = useSelector((state: RootState) => state.project);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const name = event.target.value;
@@ -35,7 +37,9 @@ const InviteModal = ({
     >
       <DialogTitle id="responsive-dialog-title">Invite teammates</DialogTitle>
       <DialogContent>
-        <DialogContentText>New members will join _____</DialogContentText>
+        <DialogContentText>
+          New members will join {team?.name}
+        </DialogContentText>
 
         <DialogContentText>
           <TextField

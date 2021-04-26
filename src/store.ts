@@ -12,8 +12,6 @@ const store = configureStore({
     project: projectReducer,
     projects: projectsReducer,
     account: accountReducer,
-    // columns: columnsReducer,
-    // tasks: tasksReducer,
   },
 });
 
