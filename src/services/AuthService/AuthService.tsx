@@ -49,9 +49,10 @@ class AuthService {
     });
   }
 
-  loginWithRedirect(pathname?: string) {
+  loginWithRedirect(pathname?: string, hint?: string) {
     return this.auth0Client.loginWithRedirect({
       appState: pathname,
+      login_hint: hint,
     });
   }
 

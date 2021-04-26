@@ -2,22 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { loading, idle, pending, failed, succeeded } from "../../shared/types";
 import { client } from "../../services/APIService";
 import { history } from "../../history";
-
-export interface Project {
-  id: string;
-  name: string;
-  open: string;
-  userId: string;
-  columnOrder: string[];
-  created: string;
-}
-export interface Team {
-  id: string;
-  name: string;
-  leaderId: string;
-  projects: string[];
-  created: string;
-}
+import { Project, Team } from "./types";
 
 export interface ProjectState {
   selected: null | Project;

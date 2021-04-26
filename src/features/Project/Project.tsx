@@ -4,20 +4,14 @@ import { Grid, Typography } from "@material-ui/core";
 import { useParams } from "react-router-dom";
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import {
-  fetchProject,
-  deleteProject,
-  Project,
-  Team,
-  fetchTeam,
-} from "./reducer";
+import { fetchProject, deleteProject, fetchTeam } from "./reducer";
 import { history } from "../../history";
 import { RootState } from "../../store";
 import { SprintControls } from "./SprintControls";
 import { SprintBoard } from "./SprintBoard";
 import { Loading } from "../../shared/components/Loading";
 import { ProjectTeam } from "./ProjectTeam";
-import { Params } from "./types";
+import { Params, Project, Team } from "./types";
 
 interface Props {
   team: null | Team;

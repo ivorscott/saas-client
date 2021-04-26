@@ -34,7 +34,6 @@ const Auth0Provider: React.FC<{ children: any }> = ({ children }) => {
     const authenticate = async () => {
       try {
         const { search, pathname } = window.location;
-
         if (search.includes("code=") && !search.includes("state=")) {
           // await freshClient.handleRedirect()
         }

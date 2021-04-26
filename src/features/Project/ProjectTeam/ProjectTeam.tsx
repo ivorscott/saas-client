@@ -4,8 +4,7 @@ import { Add } from "@material-ui/icons";
 import styled from "styled-components";
 import { CreateTeamModal } from "./CreateTeamModal";
 import { client } from "../../../services/APIService";
-import { Params } from "../types";
-import { Team } from "../reducer";
+import { Params, Team } from "../types";
 import { InviteModal } from "./InviteModal";
 
 const StyledMemberManagement = styled.div`

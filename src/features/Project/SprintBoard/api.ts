@@ -31,31 +31,27 @@ export const addTask = async ({ projectId, columnId, task }: AddTask) => {
   )) as Task;
 };
 
-export const updateTask = async ({ projectId, taskId, task }: UpdateTask) => {
-  return (await client.patch(`/projects/${projectId}/tasks/${taskId}`, {
+export const updateTask = async ({ taskId, task }: UpdateTask) => {
+  return (await client.patch(`/projects/tasks/${taskId}`, {
     title: task.title,
     content: task.content,
   })) as Task;
 };
 
 export const deleteTask = async ({
-  projectId,
   columnId,
   taskId,
 }: DeleteTask): Promise<void> => {
-  return await client.delete(
-    `/projects/${projectId}/columns/${columnId}/tasks/${taskId}`
-  );
+  return await client.delete(`/projects/columns/${columnId}/tasks/${taskId}`);
 };
 
 export const moveTask = async ({
-  projectId,
   to,
   from,
   taskId,
   taskIds,
 }: MoveTask): Promise<void> => {
-  await client.patch(`/projects/${projectId}/tasks/${taskId}/move`, {
+  await client.patch(`/projects/tasks/${taskId}/move`, {
     to,
     from,
     taskIds,

@@ -2,6 +2,24 @@ export interface Params {
   id: string;
 }
 
+export interface Project {
+  id: string;
+  name: string;
+  teamId: string;
+  userId: string;
+  active: string;
+  public: string;
+  columnOrder: string[];
+  created: string;
+}
+
+export interface Team {
+  id: string;
+  name: string;
+  userId: string;
+  created: string;
+}
+
 export interface Board {
   columns: ColumnDict;
   tasks: TaskDict;
@@ -39,7 +57,6 @@ export interface AddTask {
 }
 
 export interface UpdateTask {
-  projectId: string;
   taskId: string;
   task: {
     title: string;
@@ -48,13 +65,11 @@ export interface UpdateTask {
 }
 
 export interface DeleteTask {
-  projectId: string;
   columnId: string;
   taskId: string;
 }
 
 export interface MoveTask {
-  projectId: string;
   to: string;
   from: string;
   taskId: string;

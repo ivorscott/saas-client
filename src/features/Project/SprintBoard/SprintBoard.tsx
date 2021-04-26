@@ -6,8 +6,7 @@ import { Loading } from "../../../shared/components/Loading";
 import { SprintColumn } from "../SprintColumn";
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import { styles } from "./styles";
-import { Board, ColumnDict, Task, TaskDict } from "../types";
-import { Project } from "../reducer";
+import { Project, Board, ColumnDict, Task, TaskDict } from "../types";
 
 interface BoardActions {
   onDragEnd: (result: DropResult) => void;
@@ -88,12 +87,10 @@ const SprintBoard: React.FC<{ project: Project }> = ({ project }) => {
     delete tasks[taskId];
 
     setBoard({ columns: updatedColumnDict, tasks });
-    deleteTask({ projectId: column.projectId, columnId: column.id, taskId });
+    deleteTask({ columnId: column.id, taskId });
   };
 
   const handleUpdateTaskSubmit = async (columnKey: string, newTask: Task) => {
-    const column = columns[columnKey];
-
     const taskDict = {
       ...tasks,
       [newTask.id.toString()]: newTask,
@@ -102,7 +99,6 @@ const SprintBoard: React.FC<{ project: Project }> = ({ project }) => {
     setBoard({ columns, tasks: taskDict });
     const { id: taskId, title, content } = newTask;
     await updateTask({
-      projectId: column.projectId,
       taskId,
       task: { title, content },
     });
@@ -222,7 +218,6 @@ const SprintBoard: React.FC<{ project: Project }> = ({ project }) => {
     setBoard({ columns: { ...updatedColumnsDict }, tasks });
 
     await moveTask({
-      projectId: columns["column-1"].projectId,
       to: finish.id,
       from: start.id,
       taskId: draggableId,
