@@ -19,9 +19,9 @@ interface S3GetPayload {
 
 export const uploadImage = createAsyncThunk(
   "account/uploadImage",
-  async ({ blob, auth0Id }: { blob: Blob; auth0Id: string }) => {
+  async ({ blob, id }: { blob: Blob; id: string }) => {
     var file = new File([blob], "profile.png");
-    Storage.put(`${auth0Id}/${file.name}`, file, {
+    Storage.put(`${id}/${file.name}`, file, {
       contentType: blob.type,
     });
     return await new Response(blob).text();
@@ -30,12 +30,17 @@ export const uploadImage = createAsyncThunk(
 
 export const fetchImage = createAsyncThunk(
   "account/fetchImage",
-  async (auth0Id: string) => {
-    const key = `${auth0Id}/profile.png`;
-    const result = (await Storage.get(key, {
-      download: true,
-    })) as S3GetPayload;
+  async ({ defaultImage, id }:{ defaultImage: string, id: string }) => {
+    const key = `${id}/profile.png`;
+    try {
+      const result = (await Storage.get(key, {
+        download: true,
+      })) as S3GetPayload;
       return await new Response(result.Body).text();
+    } catch(e) {
+      return defaultImage || ""
+    }
+
   }
 );
 
@@ -53,7 +58,7 @@ const accountSlice = createSlice({
     });
     addCase(fetchImage.rejected, (state) => {
       state.loading = failed;
-      state.image = placeholder;
+      state.image = "";
     });
 
     addCase(uploadImage.pending, (state) => {

@@ -73,7 +73,7 @@ const Account: React.FC = () => {
   const toggle = () => setOpen(!isOpen);
 
   const upload = async (blob: Blob) => {
-    await dispatch(uploadImage({ blob, auth0Id: user.auth0Id }));
+    await dispatch(uploadImage({ blob, id: user.id }));
   };
 
   return (

@@ -53,6 +53,7 @@ const styles = ({ breakpoints }: Theme) =>
     },
     uploadButton: {
       flex: 1,
+      height: "100%"
     },
   });
 

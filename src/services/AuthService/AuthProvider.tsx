@@ -47,8 +47,6 @@ const Auth0Provider: React.FC<{ children: any }> = ({ children }) => {
         const ok = await authClient.isAuthenticated();
 
         if (ok) {
-          setIsAuthenticated(ok);
-
           const authResult = await authClient.getAuthDetails();
           const { auth0_user, claims } = authResult;
           const roles = claims["https://client.devpie.io/claims/roles"];
@@ -58,12 +56,14 @@ const Auth0Provider: React.FC<{ children: any }> = ({ children }) => {
           await authClient.AWSConnect();
 
           if (!user.error) {
+            setIsAuthenticated(ok);
             dispatch(authenticateUser({ ...user, roles }));
-            dispatch(fetchImage(auth0_user.sub));
+            dispatch(fetchImage({ defaultImage: user.picture, id: user.id }));
           } else {
             const newUser = _transformUser(auth0_user);
             dispatch(authenticateUser({ ...newUser, roles }));
             await devpieClient.post("/users", newUser);
+            window.location.reload()
           }
         } else {
           await authClient.loginWithRedirect(pathname);

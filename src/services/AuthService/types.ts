@@ -1,4 +1,5 @@
 export interface User {
+  id: string;
   auth0Id: string;
   email: string;
   emailVerified: boolean;

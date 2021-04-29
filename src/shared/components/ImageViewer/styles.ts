@@ -11,6 +11,8 @@ const styles = () =>
     },
     imageStyles: {
       display: "flex",
+      width: "300px",
+      borderRadius: "100%",
       alignItems: "center",
       justifyContent: "center",
       transform: "none",

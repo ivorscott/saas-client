@@ -1,9 +1,10 @@
 import classnames from "classnames";
 import React from "react";
+import { placeholder } from "./placeholder"
 import { isIOS, getOrientation, convertRotationToDegrees } from "./ImageUtils";
 import { withStyles, WithStyles } from "@material-ui/core/styles";
-import "./animate.css";
 import styles from "./styles";
+import "./animate.css";
 
 interface Props extends WithStyles<typeof styles> {
   alt: string;
@@ -43,6 +44,9 @@ class ImageViewer extends React.Component<Props, State> {
 
     const imagePromise = new Promise((resolve, reject) => {
       xhr.onload = (e) => {
+        if(xhr.response.type === "text/html") {
+          reject("")
+        }
         resolve({
           response: xhr.response,
           contentType: xhr.getResponseHeader("content-type"),
@@ -50,7 +54,7 @@ class ImageViewer extends React.Component<Props, State> {
       };
 
       xhr.onerror = (e) => {
-        reject(e);
+        reject("");
       };
     });
     xhr.send();
@@ -101,7 +105,7 @@ class ImageViewer extends React.Component<Props, State> {
         <img
           alt={alt}
           className={`viewer-image ${imageClasses}`}
-          src={this.state.imageUrl}
+          src={this.state.imageUrl|| placeholder}
         />
       </div>
     );
