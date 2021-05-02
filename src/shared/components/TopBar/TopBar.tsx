@@ -1,43 +1,68 @@
-import React from "react";
-import { Typography, Paper } from "@material-ui/core";
-import { withStyles, WithStyles } from "@material-ui/core/styles";
-import { Layers } from "@material-ui/icons";
+import React, { useState } from "react";
+import { Paper } from "@material-ui/core";
+import { Notifications, Layers } from "@material-ui/icons";
 import { Link } from "react-router-dom";
 import { UserMenu } from "../UserMenu";
-import { styles } from "./styles";
+import styled from "styled-components";
+import IconButton from "@material-ui/core/IconButton";
 
-interface Props extends WithStyles<typeof styles> {}
+const AlertButton = styled(IconButton)`
+  background: #d9e2ec;
+`;
 
-const topBar: React.FC<Props> = ({ classes }) => {
+const Container = styled(Paper)`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 15px;
+`;
+
+const SearchBar = styled.input`
+  border-radius: 15px;
+  border: 1px solid #d9e2ec;
+  height: 24px;
+  &:focus {
+    outline: none;
+    background: #e3f8ff;
+  }
+`;
+
+const TopMenu = styled.div`
+  display: flex;
+  justify-content: flex-start;
+`;
+
+const MobileNav = () => {
   return (
-    <>
-      <Paper className={classes.root}>
-        <div className={classes.brandWrapper}>
-          <Link className={classes.navLink} to="/manage/projects">
-            <Typography className={classes.brand} variant="h3">
-              DevPie
-            </Typography>
+    <Paper>
+      <ul>
+        <li>
+          <Layers />
+          <Link to="/manage/projects">
+            <h1>Projects</h1>
           </Link>
-        </div>
-        <div className={classes.search} />
-        <menu className={classes.menu}>
-          <UserMenu />
-        </menu>
-      </Paper>
-      <Paper className={classes.navMenu}>
-        <ul className={classes.nav}>
-          <li className={classes.navItem}>
-            <Layers className={classes.navIcon} />
-            <Link className={classes.navLink} to="/manage/projects">
-              <Typography className={classes.navText} variant="button">
-                Projects
-              </Typography>
-            </Link>
-          </li>
-        </ul>
-      </Paper>
-    </>
+        </li>
+      </ul>
+    </Paper>
   );
 };
 
-export const TopBar = withStyles(styles)(topBar);
+const TopBar = () => {
+  const [showAlerts, setShowAlerts] = useState(false);
+
+  const toggleAlerts = () => setShowAlerts(!showAlerts);
+
+  return (
+    <Container>
+      <SearchBar />
+      <TopMenu>
+        <AlertButton>
+          <Notifications />
+        </AlertButton>
+        <UserMenu />
+      </TopMenu>
+    </Container>
+  );
+};
+
+export { TopBar };

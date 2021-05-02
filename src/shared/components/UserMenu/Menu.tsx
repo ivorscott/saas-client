@@ -12,15 +12,14 @@ import {
   ClickAwayListener,
   ListItemText,
   ListItemAvatar,
+  Divider,
 } from "@material-ui/core";
-import { withStyles, WithStyles } from "@material-ui/core/styles";
 import { MenuLink } from "../MenuLink";
 import { User } from "../../../services/AuthService/types";
-import { styles } from "./styles";
 import { Link } from "react-router-dom";
 import ImageViewer from "../ImageViewer";
 
-interface Props extends WithStyles<typeof styles> {
+interface Props {
   user: User;
   image: string;
   anchorRef: RefObject<HTMLButtonElement>;
@@ -31,8 +30,7 @@ interface Props extends WithStyles<typeof styles> {
   onKeyDown: (event: React.KeyboardEvent) => void;
 }
 
-const menu: React.FC<Props> = ({
-  classes,
+export const Menu: React.FC<Props> = ({
   isOpen,
   anchorRef,
   user,
@@ -42,7 +40,7 @@ const menu: React.FC<Props> = ({
   onLogOut,
   onKeyDown,
 }) => (
-  <div className={classes.root}>
+  <div>
     <div>
       <Button
         ref={anchorRef}
@@ -50,23 +48,16 @@ const menu: React.FC<Props> = ({
         aria-haspopup="true"
         onClick={onToggle}
       >
-        <div className={classes.profilePic}>
-          {user?.picture && (
-            <ImageViewer
-              className={classes.profilePic}
-              alt="current user"
-              url={image}
-            />
-          )}
+        <div>
+          {user?.picture && <ImageViewer alt="current user" url={image} />}
         </div>
-        <span className={classes.name}>{user.firstName}</span>
+        <span>{user.firstName}</span>
       </Button>
       <Popper
         open={isOpen}
         anchorEl={anchorRef.current}
         role={undefined}
         transition
-        className={classes.dropdownMenu}
         disablePortal
       >
         {({ TransitionProps, placement }) => (
@@ -81,43 +72,26 @@ const menu: React.FC<Props> = ({
               <ClickAwayListener onClickAway={onClose}>
                 <div>
                   <List component="nav">
-                    <Link
-                      className={classes.plainText}
-                      to="/manage/account"
-                      onClick={onClose}
-                    >
+                    <Link to="/manage/account" onClick={onClose}>
                       <ListItem
                         button={true}
                         aria-label="Profile preview"
                         alignItems="flex-start"
                       >
                         <ListItemAvatar>
-                          <div className={classes.profilePicLarge}>
+                          <div>
                             {user?.picture && (
-                              <ImageViewer
-                                className={classes.profilePicLarge}
-                                alt="current user"
-                                url={image}
-                              />
+                              <ImageViewer alt="current user" url={image} />
                             )}
                           </div>
                         </ListItemAvatar>
                         <ListItemText
-                          className={classes.identity}
                           primary={
-                            <Typography
-                              component="div"
-                              className={classes.capitalize}
-                              color="textPrimary"
-                            >
-                              {`${user.firstName} ${user?.lastName || ""}`}
-                            </Typography>
+                            <p>{`${user.firstName} ${user?.lastName || ""}`}</p>
                           }
                           secondary={
                             <>
-                              <Typography component="span" color="textPrimary">
-                                {user.email}
-                              </Typography>
+                              <p>{user.email}</p>
                               <br />
                               {user.roles.includes("admin") && "admin"}
                             </>
@@ -127,16 +101,10 @@ const menu: React.FC<Props> = ({
                     </Link>
                   </List>
                   <MenuList autoFocusItem={isOpen} onKeyDown={onKeyDown}>
-                    <MenuLink
-                      to="/manage/account"
-                      onClick={onClose}
-                      className={classes.item}
-                    >
+                    <MenuLink to="/manage/account" onClick={onClose}>
                       My Account
                     </MenuLink>
-                    <MenuItem className={classes.item} onClick={onLogOut}>
-                      Logout
-                    </MenuItem>
+                    <MenuItem onClick={onLogOut}>Logout</MenuItem>
                   </MenuList>
                 </div>
               </ClickAwayListener>
@@ -147,5 +115,3 @@ const menu: React.FC<Props> = ({
     </div>
   </div>
 );
-
-export const Menu = withStyles(styles)(menu);

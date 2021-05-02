@@ -1,12 +1,13 @@
-import classnames from "classnames";
 import React from "react";
-import { placeholder } from "./placeholder"
-import { isIOS, getOrientation, convertRotationToDegrees } from "./ImageUtils";
-import { withStyles, WithStyles } from "@material-ui/core/styles";
-import styles from "./styles";
+import { placeholder } from "./placeholder";
+import {
+  // isIOS,
+  getOrientation,
+  convertRotationToDegrees,
+} from "./ImageUtils";
 import "./animate.css";
 
-interface Props extends WithStyles<typeof styles> {
+interface Props {
   alt: string;
   url: string;
   className?: any;
@@ -44,8 +45,8 @@ class ImageViewer extends React.Component<Props, State> {
 
     const imagePromise = new Promise((resolve, reject) => {
       xhr.onload = (e) => {
-        if(xhr.response.type === "text/html") {
-          reject("")
+        if (xhr.response.type === "text/html") {
+          reject("");
         }
         resolve({
           response: xhr.response,
@@ -86,30 +87,15 @@ class ImageViewer extends React.Component<Props, State> {
   }
 
   render() {
-    const { alt, className, classes } = this.props;
+    const { alt } = this.props;
 
-    let imageClasses = classnames(`${classes.imageStyles} `, {
-      [`${className}`]: className,
-    });
-
-    if (isIOS) {
-      imageClasses = classnames(`${imageClasses}`, {
-        [`${classes.autoRotate270}`]: this.state.rotate === 270,
-        [`${classes.autoRotate180}`]: this.state.rotate === 180,
-        [`${classes.autoRotate90}`]: this.state.rotate === 90,
-      });
-    }
-
+    // look at git to reproduce differently
     return (
-      <div className={classes.wrapperStyles}>
-        <img
-          alt={alt}
-          className={`viewer-image ${imageClasses}`}
-          src={this.state.imageUrl|| placeholder}
-        />
+      <div>
+        <img alt={alt} src={this.state.imageUrl || placeholder} />
       </div>
     );
   }
 }
 
-export default withStyles(styles)(ImageViewer);
+export default ImageViewer;

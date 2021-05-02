@@ -29,8 +29,8 @@ export const fetchProject = createAsyncThunk(
 
 export const fetchTeam = createAsyncThunk(
   "project/fetchOneTeam",
-  async (id: string) => {
-    return await client.get(`/projects/${id}/team`);
+  async (teamId: string) => {
+    return await client.get(`/users/teams/${teamId}`);
   }
 );
 
@@ -42,7 +42,7 @@ export const createProject = createAsyncThunk(
 );
 
 export const deleteProject = createAsyncThunk(
-  "project/update",
+  "project/delete",
   async (id: string) => {
     return await client.delete(`/projects/${id}`);
   }

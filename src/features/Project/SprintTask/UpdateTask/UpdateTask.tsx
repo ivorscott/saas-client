@@ -2,12 +2,9 @@ import React, { useState } from "react";
 import { CustomTextInput } from "../../../../shared/fields";
 import { Task } from "../../types";
 import { Modal } from "../../../../shared/components/Modal";
-import { Typography } from "@material-ui/core";
-import { withStyles, WithStyles } from "@material-ui/core/styles";
 import { Field, InjectedFormProps } from "redux-form";
 import { Dispatch } from "redux";
 import { reduxForm, SubmissionError } from "redux-form";
-import { styles } from "./styles";
 
 interface Actions {
   onTaskDelete: () => void;
@@ -15,7 +12,7 @@ interface Actions {
   onTaskUpdate: (values: any) => void;
 }
 
-interface Props extends Actions, InjectedFormProps, WithStyles<typeof styles> {
+interface Props extends Actions, InjectedFormProps {
   open: boolean;
   task: Task;
 }
@@ -26,7 +23,6 @@ const TaskModal = ({
   handleSubmit,
   onTaskDelete,
   onTaskToggle,
-  classes,
 }: Props) => {
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
   const toggleConfirmDialog = () => setShowConfirmDialog(!showConfirmDialog);
@@ -46,37 +42,19 @@ const TaskModal = ({
           placeholder="Enter a title for this task"
           component={CustomTextInput}
         />
-        <div className={classes.confirmDialog}>
+        <div>
           {!showConfirmDialog ? (
-            <Typography
-              className={classes.confirmAction}
-              onClick={toggleConfirmDialog}
-              variant="body1"
-            >
-              Delete Task
-            </Typography>
+            <p onClick={toggleConfirmDialog}>Delete Task</p>
           ) : (
             <>
-              <Typography
-                className={classes.confirmAction}
-                onClick={toggleConfirmDialog}
-                variant="body1"
-              >
-                Cancel
-              </Typography>
-              <Typography
-                className={classes.confirmAction}
-                onClick={onTaskDelete}
-                variant="body1"
-              >
-                Yes, delete it
-              </Typography>
+              <p onClick={toggleConfirmDialog}>Cancel</p>
+              <p onClick={onTaskDelete}>Yes, delete it</p>
             </>
           )}
         </div>
 
         <br />
-        <Typography variant="body1">{task.content}</Typography>
+        <p>{task.content}</p>
       </>
     </Modal>
   );
@@ -95,4 +73,4 @@ const submit = (values: any, _: Dispatch, { onTaskUpdate }: any) => {
 export const UpdateTask = reduxForm({
   form: "update_task_form",
   onSubmit: submit,
-})(withStyles(styles)(TaskModal));
+})(TaskModal);

@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Grid } from "@material-ui/core";
-import { withStyles, WithStyles } from "@material-ui/core/styles";
 import { addTask, updateTask, deleteTask, moveTask, fetchBoard } from "./api";
 import { Loading } from "../../../shared/components/Loading";
 import { SprintColumn } from "../SprintColumn";
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
-import { styles } from "./styles";
 import { Project, Board, ColumnDict, Task, TaskDict } from "../types";
 
 interface BoardActions {
@@ -15,49 +13,46 @@ interface BoardActions {
   onDeleteTask: (columnKey: string, taskId: string) => void;
 }
 
-interface Props extends BoardActions, WithStyles<typeof styles> {
+interface Props extends BoardActions {
   taskDict: TaskDict;
   columnDict: ColumnDict;
   columnOrder: string[];
 }
 
-const Component = withStyles(styles)(
-  ({
-    classes,
-    taskDict,
-    columnDict,
-    columnOrder,
-    onDragEnd,
-    onAddTask,
-    onDeleteTask,
-    onUpdateTask,
-  }: Props) => {
-    return Object.keys(columnDict).length === 0 ? (
-      <Loading />
-    ) : (
-      <Grid className={classes.board} item={true} xs={12}>
-        <div className={classes.root}>
-          <DragDropContext onDragEnd={onDragEnd}>
-            {columnOrder.map((columnKey: string) => {
-              const column = columnDict[columnKey];
-              return (
-                <SprintColumn
-                  key={column.id}
-                  columnKey={columnKey}
-                  column={column}
-                  taskDict={taskDict}
-                  onAddTask={onAddTask}
-                  onDeleteTask={onDeleteTask}
-                  onUpdateTask={onUpdateTask}
-                />
-              );
-            })}
-          </DragDropContext>
-        </div>
-      </Grid>
-    );
-  }
-);
+const Component = ({
+  taskDict,
+  columnDict,
+  columnOrder,
+  onDragEnd,
+  onAddTask,
+  onDeleteTask,
+  onUpdateTask,
+}: Props) => {
+  return Object.keys(columnDict).length === 0 ? (
+    <Loading />
+  ) : (
+    <Grid item={true} xs={12}>
+      <div>
+        <DragDropContext onDragEnd={onDragEnd}>
+          {columnOrder.map((columnKey: string) => {
+            const column = columnDict[columnKey];
+            return (
+              <SprintColumn
+                key={column.id}
+                columnKey={columnKey}
+                column={column}
+                taskDict={taskDict}
+                onAddTask={onAddTask}
+                onDeleteTask={onDeleteTask}
+                onUpdateTask={onUpdateTask}
+              />
+            );
+          })}
+        </DragDropContext>
+      </div>
+    </Grid>
+  );
+};
 
 const SprintBoard: React.FC<{ project: Project }> = ({ project }) => {
   const [board, setBoard] = useState<Board>({ columns: {}, tasks: {} });

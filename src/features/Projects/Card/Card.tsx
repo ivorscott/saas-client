@@ -1,9 +1,7 @@
 import React from "react";
-import { withStyles, WithStyles } from "@material-ui/core/styles";
-import { Paper, Typography } from "@material-ui/core";
+import { Paper } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import { Project } from "../../Project";
-import { styles } from "./styles";
 import { useDispatch } from "react-redux";
 import { actions } from "../../Project";
 
@@ -13,28 +11,26 @@ interface ParentProps {
   project: Project;
 }
 
-interface Props extends WithStyles<typeof styles> {
+interface Props {
   project: Project;
   onClick: () => void;
 }
 
-const Component = withStyles(styles)(({ classes, project, onClick }: Props) => {
+const Component = ({ project, onClick }: Props) => {
   return (
     <Link
-      data-test="component-projects-card"
       onClick={onClick}
-      className={classes.projectLink}
       key={project.id}
       to={`/manage/projects/${project.id}`}
     >
-      <Paper className={classes.project}>
-        <Typography className={classes.title} variant="h4">
+      <Paper>
+        <p>
           <strong>{project.name}</strong>
-        </Typography>
+        </p>
       </Paper>
     </Link>
   );
-});
+};
 
 const Card = ({ project }: ParentProps) => {
   const dispatch = useDispatch();

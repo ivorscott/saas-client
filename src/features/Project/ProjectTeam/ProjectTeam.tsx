@@ -65,7 +65,7 @@ const ProjectTeam = ({ team }: Props) => {
   };
 
   const handleInvite = async (emailList: string[]) => {
-    await client.post(`/users/teams/${team?.id}/invite`, {
+    await client.post(`/users/teams/${team?.id}/invites`, {
       emailList,
     });
     setInviteModalOpen(false);

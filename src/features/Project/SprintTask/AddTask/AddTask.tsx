@@ -1,19 +1,15 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
-import { TextField, Button, Typography } from "@material-ui/core";
-import { withStyles, WithStyles } from "@material-ui/core/styles";
+import { TextField, Button } from "@material-ui/core";
 import { Add } from "@material-ui/icons";
 import { RootState } from "../../../../store";
-import classnames from "classnames";
-import { styles } from "./styles";
 
 interface Actions {
   onAddTask: (task: string) => void;
 }
 
-interface Props extends WithStyles<typeof styles> {
+interface Props {
   task: string;
-  classes: any;
   onClick: () => void;
   onChange: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
   onSubmit: () => void;
@@ -21,57 +17,43 @@ interface Props extends WithStyles<typeof styles> {
   isEditing: boolean;
 }
 
-const Task = withStyles(styles)(
-  ({
-    task,
-    isEditing,
-    classes,
-    onClick,
-    onChange,
-    onKeyDown,
-    onSubmit,
-  }: Props) => {
-    if (isEditing) {
-      return (
-        <div className={classes.root}>
-          <TextField
-            value={task}
-            className="mb-1"
-            onChange={onChange}
-            fullWidth={true}
-            onKeyDown={onKeyDown}
-            placeholder="Enter a title for this task"
-          />
-          <div className={classes.buttons}>
-            <Button
-              color="secondary"
-              variant="contained"
-              onClick={onSubmit}
-              className={classes.save}
-            >
-              Save
-            </Button>
-            <div onClick={onClick} className="material-icons">
-              close
-            </div>
-          </div>
+const Task = ({
+  task,
+  isEditing,
+  onClick,
+  onChange,
+  onKeyDown,
+  onSubmit,
+}: Props) => {
+  if (isEditing) {
+    return (
+      <div>
+        <TextField
+          value={task}
+          onChange={onChange}
+          fullWidth={true}
+          onKeyDown={onKeyDown}
+          placeholder="Enter a title for this task"
+        />
+        <div>
+          <Button color="secondary" variant="contained" onClick={onSubmit}>
+            Save
+          </Button>
+          <div onClick={onClick}>close</div>
         </div>
-      );
-    } else {
-      return (
-        <div
-          onClick={onClick}
-          className={classnames(classes.root, classes.addTask)}
-        >
-          <Add color="secondary" />
-          <Typography color="secondary" variant="body1">
-            <strong>Add Task</strong>
-          </Typography>
-        </div>
-      );
-    }
+      </div>
+    );
+  } else {
+    return (
+      <div onClick={onClick}>
+        <Add color="secondary" />
+        <p color="secondary">
+          <strong>Add Task</strong>
+        </p>
+      </div>
+    );
   }
-);
+};
 
 const AddTask: React.FC<Actions> = ({ onAddTask }) => {
   const [isEditing, setEditing] = useState(false);

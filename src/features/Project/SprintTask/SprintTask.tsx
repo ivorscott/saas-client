@@ -1,12 +1,9 @@
 import React, { useState } from "react";
 import { initialize } from "redux-form";
 import { UpdateTask } from "./UpdateTask";
-import { Typography } from "@material-ui/core";
-import { withStyles, WithStyles } from "@material-ui/core/styles";
 import { Draggable } from "react-beautiful-dnd";
 import { Task } from "../types";
 import { useDispatch } from "react-redux";
-import { styles } from "./styles";
 
 interface Actions {
   onDeleteTask: (columnKey: string, taskId: string) => void;
@@ -19,7 +16,7 @@ interface ParentProps extends Actions {
   columnKey: string;
 }
 
-interface Props extends WithStyles<typeof styles> {
+interface Props {
   task: Task;
   open: boolean;
   index: number;
@@ -28,43 +25,39 @@ interface Props extends WithStyles<typeof styles> {
   onTaskUpdate: (values: any) => void;
 }
 
-const Component = withStyles(styles)(
-  ({
-    open,
-    task,
-    index,
-    classes,
-    onTaskToggle,
-    onTaskUpdate,
-    onTaskDelete,
-  }: Props) => {
-    return (
-      <div data-test="component-task">
-        <Draggable draggableId={task.id} index={index}>
-          {({ innerRef, draggableProps, dragHandleProps }, { isDragging }) => (
-            <div
-              className={classes.task}
-              ref={innerRef as any}
-              onClick={onTaskToggle}
-              {...isDragging}
-              {...draggableProps}
-              {...dragHandleProps}
-            >
-              <Typography variant="body1">{task.title}</Typography>
-            </div>
-          )}
-        </Draggable>
-        <UpdateTask
-          open={open}
-          task={task}
-          onTaskUpdate={onTaskUpdate}
-          onTaskDelete={onTaskDelete}
-          onTaskToggle={onTaskToggle}
-        />
-      </div>
-    );
-  }
-);
+const Component = ({
+  open,
+  task,
+  index,
+  onTaskToggle,
+  onTaskUpdate,
+  onTaskDelete,
+}: Props) => {
+  return (
+    <div data-test="component-task">
+      <Draggable draggableId={task.id} index={index}>
+        {({ innerRef, draggableProps, dragHandleProps }, { isDragging }) => (
+          <div
+            ref={innerRef as any}
+            onClick={onTaskToggle}
+            {...isDragging}
+            {...draggableProps}
+            {...dragHandleProps}
+          >
+            <p>{task.title}</p>
+          </div>
+        )}
+      </Draggable>
+      <UpdateTask
+        open={open}
+        task={task}
+        onTaskUpdate={onTaskUpdate}
+        onTaskDelete={onTaskDelete}
+        onTaskToggle={onTaskToggle}
+      />
+    </div>
+  );
+};
 
 const SprintTask: React.FC<ParentProps> = ({
   columnKey,

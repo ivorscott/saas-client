@@ -1,8 +1,6 @@
 import React from "react";
-import { withStyles, WithStyles } from "@material-ui/core/styles";
 import { AvatarEditor } from "./AvatarEditor";
 import { Modal } from "../../../shared/components/Modal";
-import styles from "./styles";
 import ImageViewer from "../../../shared/components/ImageViewer";
 
 interface Actions {
@@ -10,7 +8,7 @@ interface Actions {
   onSubmit: (image: string) => void;
 }
 
-interface Props extends Actions, WithStyles<typeof styles> {
+interface Props extends Actions {
   defaultAvatar?: any;
   isOpen: boolean;
 }
@@ -20,7 +18,7 @@ interface State {
   src: string;
 }
 
-class Avatar extends React.Component<Props, State> {
+export class Avatar extends React.Component<Props, State> {
   state = {
     preview: "",
     src: "",
@@ -56,20 +54,19 @@ class Avatar extends React.Component<Props, State> {
   };
 
   render() {
-    const { isOpen, onToggle, classes } = this.props;
+    const { isOpen, onToggle } = this.props;
     return (
       <div>
         <Modal
           data-test="component-update-task-modal"
           open={isOpen}
           title="Edit Photo"
-          className={classes.avatarModal}
           onClose={onToggle}
           onSubmit={this.handlePreview}
           callToActionText={"Save"}
           callToActionColor={"secondary"}
         >
-          <div className={classes.contentWrapper}>
+          <div>
             <AvatarEditor
               width="100%"
               height={300}
@@ -80,11 +77,7 @@ class Avatar extends React.Component<Props, State> {
               src={this.state.src}
             />
             {this.state.preview && (
-              <ImageViewer
-                className={classes.preview}
-                url={this.state.preview}
-                alt="Preview"
-              />
+              <ImageViewer url={this.state.preview} alt="Preview" />
             )}
           </div>
         </Modal>
@@ -92,5 +85,3 @@ class Avatar extends React.Component<Props, State> {
     );
   }
 }
-
-export default withStyles(styles)(Avatar);
