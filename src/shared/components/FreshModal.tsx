@@ -1,6 +1,6 @@
-import React, { useState, useEffect,  } from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import { RootState } from "../../store";
+import { RootState } from "../store";
 
 import {
   Button,
@@ -14,31 +14,33 @@ import {
 import { client as freshClient } from "../../services/FreshService";
 import { client as devpieClient } from "../../services/APIService";
 
- const FreshModal = () => {
-
+const FreshModal = () => {
   const { auth0Id, accountingEnabled, roles } = useSelector(
     (state: RootState) => state.auth
   );
 
   const [isOpen, setOpen] = useState(false);
-  const isFreelancer = roles.includes("freelancer")
+  const isFreelancer = roles.includes("freelancer");
 
-  useEffect(()=> {
-    if(isFreelancer) {
+  useEffect(() => {
+    if (isFreelancer) {
       freshClient.isTokenVerifed().then((isVerified) => {
-        if(!isVerified) {
-          setOpen(true)
+        if (!isVerified) {
+          setOpen(true);
         }
-        if(isVerified && !accountingEnabled) {
-          devpieClient.request("POST", "/accounting", { auth0Id, token: freshClient.access_token } )
+        if (isVerified && !accountingEnabled) {
+          devpieClient.request("POST", "/accounting", {
+            auth0Id,
+            token: freshClient.access_token,
+          });
         }
-      })
+      });
     }
-  },[])
+  }, []);
 
-  const goToFreshbooksAccountLogin = ()=> freshClient.loginWithRedirect()
+  const goToFreshbooksAccountLogin = () => freshClient.loginWithRedirect();
 
-  if(!isFreelancer) {
+  if (!isFreelancer) {
     return null;
   }
 
@@ -71,6 +73,6 @@ import { client as devpieClient } from "../../services/APIService";
       </DialogActions>
     </Dialog>
   );
-}
+};
 
 export { FreshModal };

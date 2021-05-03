@@ -5,8 +5,8 @@ import { useParams } from "react-router-dom";
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchProject, deleteProject, fetchTeam } from "./reducer";
-import { history } from "../../history";
-import { RootState } from "../../store";
+import { history } from "../../shared/history";
+import { RootState } from "../../shared/store";
 import { SprintBoard } from "./SprintBoard";
 import { Loading } from "../../shared/components/Loading";
 import { ProjectTeam } from "./ProjectTeam";
@@ -29,8 +29,8 @@ const ProjectName = styled.span`
 `;
 
 const StyledGrid = styled(Grid)`
-  padding-top: 0 !important;
-  padding-bottom: 0 !important;
+  padding: 0 !important;
+  margin: var(--p8);
 `;
 
 const Component = ({ project, team }: Props) => {

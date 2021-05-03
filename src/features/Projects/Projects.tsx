@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { unwrapResult } from "@reduxjs/toolkit";
-import { AppDispatch, RootState } from "../../store";
+import { AppDispatch, RootState } from "../../shared/store";
 import { useSelector, useDispatch } from "react-redux";
 import { createProject } from "../Project/reducer";
 import { fetchProjects } from "./reducer";
-import { history } from "../../history";
+import { history } from "../../shared/history";
 import { List } from "./List";
 
 const Projects: React.FC = () => {

@@ -1,7 +1,7 @@
 // import AWS from "aws-sdk";
 // import Amplify, { Auth } from "aws-amplify";
 import { Auth0Client } from "@auth0/auth0-spa-js";
-import { env } from "../../env";
+import { env } from "../../shared/env";
 import { IdentityPayload } from "./types";
 
 interface AuthOptions {

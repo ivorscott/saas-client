@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { actions } from "./reducers";
 import { useDispatch } from "react-redux";
-import { history } from "../../history";
+import { history } from "../../shared/history";
 import { Loading } from "../../shared/components/Loading";
 import { fetchImage } from "../../features/Account/reducer";
 import { IdentityPayload, User, UserPayload } from "./types";

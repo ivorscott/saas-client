@@ -1,5 +1,5 @@
 import { client as authClient } from "./AuthService";
-import { env } from "../env";
+import { env } from "../shared/env";
 
 class APIService {
   public baseUrl: string;

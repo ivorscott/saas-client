@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { TextField, Button } from "@material-ui/core";
 import { Add } from "@material-ui/icons";
-import { RootState } from "../../../../store";
+import { RootState } from "../../../../shared/store";
 
 interface Actions {
   onAddTask: (task: string) => void;

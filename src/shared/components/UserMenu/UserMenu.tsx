@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { client as authClient } from "../../../services/AuthService";
 import { Menu } from "./Menu";
-import { RootState } from "../../../store";
+import { RootState } from "../../store";
 
 const UserMenu = () => {
   const [isOpen, setOpen] = useState(false);
@@ -16,7 +16,6 @@ const UserMenu = () => {
 
   const handleLogOut = async () => {
     authClient.logout();
-    
   };
 
   const handleClose = (event: React.MouseEvent<EventTarget>) => {

@@ -1,4 +1,4 @@
-import packageJson from "../package.json";
+import packageJson from "../../package.json";
 
 export enum Env {
   BACKEND = "BACKEND",

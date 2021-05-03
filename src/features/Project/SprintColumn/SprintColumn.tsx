@@ -1,12 +1,11 @@
 import React from "react";
 import { SprintTask } from "../SprintTask";
 import { AddTask } from "../SprintTask";
-import { Paper, Typography } from "@material-ui/core";
+import { Paper } from "@material-ui/core";
 import { Droppable } from "react-beautiful-dnd";
-import { styles } from "./styles";
 import "./css.css";
 import { Column, Task, TaskDict } from "../types";
-import { withStyles, WithStyles } from "@material-ui/core/styles";
+import styled from "styled-components";
 
 interface Actions {
   onAddTask: (task: string) => void;
@@ -14,72 +13,90 @@ interface Actions {
   onDeleteTask: (columnKey: string, taskId: string) => void;
 }
 
-interface Props extends WithStyles<typeof styles>, Actions {
+interface Props extends Actions {
   columnKey: string;
   column: Column;
   taskDict: TaskDict;
 }
 
-const SprintColumn = withStyles(styles)(
-  ({
-    columnKey,
-    classes,
-    column,
-    taskDict,
-    onAddTask,
-    onDeleteTask,
-    onUpdateTask,
-  }: Props) => {
-    const renderTasks = (dict: TaskDict, columnKey: string) => {
-      if (Object.keys(column.taskIds).length > 0) {
-        return column.taskIds.map((key: string, index) => {
-          return (
-            <SprintTask
-              key={dict[key].id}
-              columnKey={columnKey}
-              task={dict[key]}
-              index={index}
-              onDeleteTask={onDeleteTask}
-              onUpdateTask={onUpdateTask}
-            />
-          );
-        });
-      }
-      return <div></div>;
-    };
+const ColumnTitle = styled.div`
+  padding: var(--p8);
+`;
+const Content = styled.div`
+  display: flex;
+  flex: 1;
+  overflow: auto;
+`;
 
-    return (
-      <Paper className={classes.root}>
-        <Typography variant="h6" className={classes.title}>
-          {column.title}
-        </Typography>
+const DroppableRegion = styled.div`
+  height: 100%;
+`;
 
-        {columnKey === "column-1" && <AddTask onAddTask={onAddTask} />}
+const StyledColumn = styled.div`
+  flex: 1;
+`;
 
-        <section className={classes.content}>
-          <div className={classes.column}>
-            <Droppable droppableId={columnKey}>
-              {(
-                { innerRef, droppableProps, placeholder },
-                { isDraggingOver }
-              ) => (
-                <div
-                  className={classes.droppable}
-                  ref={innerRef}
-                  {...droppableProps}
-                  {...isDraggingOver}
-                >
-                  {Object.keys(taskDict).length > 0 &&
-                    renderTasks(taskDict, columnKey)}
-                  {placeholder}
-                </div>
-              )}
-            </Droppable>
-          </div>
-        </section>
-      </Paper>
-    );
-  }
-);
+const Container = styled(Paper)`
+  display: flex;
+  flex: 0 0 24.5%;
+  margin: var(--p8) var(--p2);
+  flex-direction: column;
+`;
+
+const SprintColumn = ({
+  columnKey,
+  column,
+  taskDict,
+  onAddTask,
+  onDeleteTask,
+  onUpdateTask,
+}: Props) => {
+  const renderTasks = (dict: TaskDict, columnKey: string) => {
+    if (Object.keys(column.taskIds).length > 0) {
+      return column.taskIds.map((key: string, index) => {
+        return (
+          <SprintTask
+            key={dict[key].id}
+            columnKey={columnKey}
+            task={dict[key]}
+            index={index}
+            onDeleteTask={onDeleteTask}
+            onUpdateTask={onUpdateTask}
+          />
+        );
+      });
+    }
+    return <div></div>;
+  };
+
+  return (
+    <Container>
+      <ColumnTitle>{column.title}</ColumnTitle>
+
+      {columnKey === "column-1" && <AddTask onAddTask={onAddTask} />}
+
+      <Content>
+        <StyledColumn>
+          <Droppable droppableId={columnKey}>
+            {(
+              { innerRef, droppableProps, placeholder },
+              { isDraggingOver }
+            ) => (
+              <DroppableRegion
+                ref={innerRef}
+                {...droppableProps}
+                {...isDraggingOver}
+              >
+                {Object.keys(taskDict).length > 0 &&
+                  renderTasks(taskDict, columnKey)}
+                {placeholder}
+              </DroppableRegion>
+            )}
+          </Droppable>
+        </StyledColumn>
+      </Content>
+    </Container>
+  );
+};
 
 export { SprintColumn };

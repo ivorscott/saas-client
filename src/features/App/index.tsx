@@ -16,8 +16,8 @@ const Page = styled.div`
   width: 100%;
 `;
 const PageContent = styled.div`
-  padding: 30px 100px 0;
-  height: 105vh;
+  padding: 30px var(--p80) 0;
+  height: 100vh;
   overflow-x: scroll;
 `;
 const Sidebar = styled.div`
@@ -45,6 +45,7 @@ const Logo = styled.img`
 `;
 
 const StyledLink = styled(Link)`
+  font-size: var(--p18);
   text-decoration: none;
   cursor: pointer;
   color: var(--gray3);

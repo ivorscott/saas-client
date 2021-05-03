@@ -7,7 +7,7 @@ import {
 import {
   // AppDispatch,
   RootState,
-} from "../../store";
+} from "../../shared/store";
 import { Avatar as AvatarModal } from "./Avatar";
 import { Grid, IconButton } from "@material-ui/core";
 import PhotoCameraIcon from "@material-ui/icons/PhotoCamera";

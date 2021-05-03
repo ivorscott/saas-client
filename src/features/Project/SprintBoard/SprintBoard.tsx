@@ -21,8 +21,7 @@ interface Props extends BoardActions {
 }
 
 const StyledGrid = styled(Grid)`
-  padding-top: 0 !important;
-  padding-bottom: 0 !important;
+  padding: 0 !important;
 `;
 const StyledBoard = styled.div`
   display: flex;

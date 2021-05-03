@@ -8,7 +8,7 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 
 import { useSelector } from "react-redux";
-import { RootState } from "../../../store";
+import { RootState } from "../../../shared/store";
 
 const InviteModal = ({
   isOpen,
