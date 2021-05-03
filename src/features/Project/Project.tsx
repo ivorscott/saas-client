@@ -1,5 +1,6 @@
 import React from "react";
-import { Button, Grid } from "@material-ui/core";
+import { IconButton, Grid } from "@material-ui/core";
+import { MoreHoriz } from "@material-ui/icons";
 import { useParams } from "react-router-dom";
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
@@ -10,11 +11,27 @@ import { SprintBoard } from "./SprintBoard";
 import { Loading } from "../../shared/components/Loading";
 import { ProjectTeam } from "./ProjectTeam";
 import { Params, Project, Team } from "./types";
+import styled from "styled-components";
 
 interface Props {
   team: null | Team;
   project: null | Project;
 }
+
+const Header = styled.header`
+  display: flex;
+  padding-top: var(--p44);
+  justify-content: space-between;
+`;
+const ProjectName = styled.span`
+  text-transform: capitalize;
+  font-family: ProximaNova-Light;
+`;
+
+const StyledGrid = styled(Grid)`
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+`;
 
 const Component = ({ project, team }: Props) => {
   if (!project) {
@@ -22,16 +39,22 @@ const Component = ({ project, team }: Props) => {
   } else {
     return (
       <Grid container={true} spacing={10}>
-        <Grid item={true} xs={12}>
-          <header>
+        <StyledGrid item={true} xs={12}>
+          <Header>
             <h1>
-              <span>Project</span>
-              <span>{project.name}</span>
+              Project/
+              <ProjectName>{project.name}</ProjectName>
             </h1>
-            <Button>Settings</Button>;
+            <div>
+              <IconButton>
+                <MoreHoriz />
+              </IconButton>
+            </div>
+          </Header>
+          <div>
             <ProjectTeam team={team} />
-          </header>
-        </Grid>
+          </div>
+        </StyledGrid>
         <SprintBoard project={project} />
       </Grid>
     );

@@ -8,14 +8,14 @@ import { StylesProvider } from "@material-ui/styles";
 
 import { store } from "./store";
 import { history } from "./history";
-import { App } from "./features/App";
+import { DevPie } from "./features/App";
 
 ReactDOM.render(
   <ReduxProvider store={store}>
     <Auth0Provider>
       <Router history={history}>
         <StylesProvider injectFirst>
-          <App />
+          <DevPie />
         </StylesProvider>
       </Router>
     </Auth0Provider>

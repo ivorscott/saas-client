@@ -36,6 +36,7 @@ const NotificationsModal = ({
         </Button>
         <Button
           color="primary"
+          
           autoFocus={true}
         >
           Invite

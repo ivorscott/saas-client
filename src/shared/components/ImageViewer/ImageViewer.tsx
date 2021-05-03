@@ -6,6 +6,7 @@ import {
   convertRotationToDegrees,
 } from "./ImageUtils";
 import "./animate.css";
+import styled from "styled-components";
 
 interface Props {
   alt: string;
@@ -17,6 +18,10 @@ interface State {
   imageUrl: any;
   rotate: any;
 }
+
+const StyledImage = styled.img`
+  height: 34px;
+`;
 
 class ImageViewer extends React.Component<Props, State> {
   constructor(props: Props) {
@@ -92,7 +97,7 @@ class ImageViewer extends React.Component<Props, State> {
     // look at git to reproduce differently
     return (
       <div>
-        <img alt={alt} src={this.state.imageUrl || placeholder} />
+        <StyledImage alt={alt} src={this.state.imageUrl || placeholder} />
       </div>
     );
   }

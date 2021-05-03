@@ -13,8 +13,8 @@ const StyledMemberManagement = styled.div`
 `;
 
 const StyledAdd = styled(Add)`
-  width: 50px;
-  height: 50px;
+  width: 35px;
+  height: 35px;
   color: #9ccc65;
   cursor: pointer;
 `;
@@ -22,6 +22,7 @@ const StyledAdd = styled(Add)`
 const StyledMembers = styled.div`
   display: flex;
   justify-content: flex-end;
+  align-items: center;
   padding: 0 15px;
 `;
 
@@ -32,8 +33,8 @@ const StyledAvatars = styled.div`
   justify-content: center;
   align-items: center;
   border-radius: 50%;
-  width: 50px;
-  height: 50px;
+  width: 35px;
+  height: 35px;
   text-align: center;
   font-weight: bold;
   margin: 0 4px;

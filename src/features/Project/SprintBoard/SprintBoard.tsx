@@ -5,6 +5,7 @@ import { Loading } from "../../../shared/components/Loading";
 import { SprintColumn } from "../SprintColumn";
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import { Project, Board, ColumnDict, Task, TaskDict } from "../types";
+import styled from "styled-components";
 
 interface BoardActions {
   onDragEnd: (result: DropResult) => void;
@@ -19,6 +20,15 @@ interface Props extends BoardActions {
   columnOrder: string[];
 }
 
+const StyledGrid = styled(Grid)`
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+`;
+const StyledBoard = styled.div`
+  display: flex;
+  height: 70vh;
+`;
+
 const Component = ({
   taskDict,
   columnDict,
@@ -31,8 +41,8 @@ const Component = ({
   return Object.keys(columnDict).length === 0 ? (
     <Loading />
   ) : (
-    <Grid item={true} xs={12}>
-      <div>
+    <StyledGrid item={true} xs={12}>
+      <StyledBoard>
         <DragDropContext onDragEnd={onDragEnd}>
           {columnOrder.map((columnKey: string) => {
             const column = columnDict[columnKey];
@@ -49,8 +59,8 @@ const Component = ({
             );
           })}
         </DragDropContext>
-      </div>
-    </Grid>
+      </StyledBoard>
+    </StyledGrid>
   );
 };
 

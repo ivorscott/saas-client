@@ -1,5 +1,5 @@
 import React from "react";
-import { CircularProgress, Divider, Fab, Grid } from "@material-ui/core";
+import { CircularProgress, Fab, Grid } from "@material-ui/core";
 import { Add } from "@material-ui/icons";
 import { Modal } from "../Modal";
 import { Project } from "../../Project";
@@ -33,10 +33,6 @@ const List = ({ loading, projects, isOpen, onToggle, onSubmit }: Props) => {
           </Fab>
         </header>
       </Grid>
-
-      <Divider variant="fullWidth" />
-
-      <Grid item={true} xs={12} />
 
       <Grid item={true} xs={12}>
         {loading !== succeeded ? (
