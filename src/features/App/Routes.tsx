@@ -1,10 +1,10 @@
 import React, { lazy, Suspense } from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
 import { Loading } from "../../shared/components/Loading";
-const Account = lazy(() => import("../../features/Account"));
-const NoMatch = lazy(() => import("../../features/NoMatch"));
-const Projects = lazy(() => import("../../features/Projects"));
-const SelectedProject = lazy(() => import("../../features/Project"));
+const Account = lazy(() => import("../Account"));
+const NoMatch = lazy(() => import("../NoMatch"));
+const Projects = lazy(() => import("../Projects"));
+const SelectedProject = lazy(() => import("../Project"));
 
 const Routes: React.FC = () => {
   return (

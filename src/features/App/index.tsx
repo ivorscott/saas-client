@@ -3,7 +3,9 @@ import { TopBar } from "./TopBar";
 import { Copyright } from "@material-ui/icons";
 import styled from "styled-components";
 import Routes from "./Routes";
+import "./Fonts/Fonts.css";
 import "./App.css";
+
 import { Link } from "react-router-dom";
 
 const App = styled.div`
