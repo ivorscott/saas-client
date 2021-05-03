@@ -1,7 +1,13 @@
 import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { uploadImage } from "./reducer";
-import { AppDispatch, RootState } from "../../store";
+import {
+  // useDispatch,
+  useSelector,
+} from "react-redux";
+// import { uploadImage } from "./reducer";
+import {
+  // AppDispatch,
+  RootState,
+} from "../../store";
 import { Avatar as AvatarModal } from "./Avatar";
 import { Grid, IconButton } from "@material-ui/core";
 import PhotoCameraIcon from "@material-ui/icons/PhotoCamera";
@@ -57,7 +63,7 @@ export const Component = ({
 };
 
 const Account = () => {
-  const dispatch: AppDispatch = useDispatch();
+  // const dispatch: AppDispatch = useDispatch();
   const [isOpen, setOpen] = useState(false);
   const user = useSelector((state: RootState) => state.auth);
   const { image } = useSelector((state: RootState) => state.account);
@@ -65,7 +71,7 @@ const Account = () => {
   const toggle = () => setOpen(!isOpen);
 
   const upload = async (blob: Blob) => {
-    await dispatch(uploadImage({ blob, id: user.id }));
+    // await dispatch(uploadImage({ blob, id: user.id }));
   };
 
   return (

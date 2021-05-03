@@ -53,7 +53,7 @@ const Auth0Provider: React.FC<{ children: any }> = ({ children }) => {
 
           const user = (await devpieClient.get("/users/me")) as UserPayload;
 
-          await authClient.AWSConnect();
+          // await authClient.AWSConnect();
 
           if (!user.error) {
             setIsAuthenticated(ok);
@@ -63,7 +63,7 @@ const Auth0Provider: React.FC<{ children: any }> = ({ children }) => {
             const newUser = _transformUser(auth0_user);
             dispatch(authenticateUser({ ...newUser, roles }));
             await devpieClient.post("/users", newUser);
-            window.location.reload()
+            window.location.reload();
           }
         } else {
           await authClient.loginWithRedirect(pathname);
