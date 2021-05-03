@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import { initialize } from "redux-form";
-import { UpdateTask } from "./UpdateTask";
+// import { initialize } from "redux-form";
+// import { UpdateTask } from "./UpdateTask";
 import { Draggable } from "react-beautiful-dnd";
 import { Task } from "../types";
-import { useDispatch } from "react-redux";
+// import { useDispatch } from "react-redux";
 
 interface Actions {
   onDeleteTask: (columnKey: string, taskId: string) => void;
@@ -48,13 +48,13 @@ const Component = ({
           </div>
         )}
       </Draggable>
-      <UpdateTask
+      {/* <UpdateTask
         open={open}
         task={task}
         onTaskUpdate={onTaskUpdate}
         onTaskDelete={onTaskDelete}
         onTaskToggle={onTaskToggle}
-      />
+      /> */}
     </div>
   );
 };
@@ -67,10 +67,10 @@ const SprintTask: React.FC<ParentProps> = ({
   onUpdateTask,
 }) => {
   const [isOpen, setOpen] = useState(false);
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
   const handleTaskToggle = () => {
-    dispatch(initialize("update_task_form", task));
+    // dispatch(initialize("update_task_form", task));
     setOpen(!isOpen);
   };
 
