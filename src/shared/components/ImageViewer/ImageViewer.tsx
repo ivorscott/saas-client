@@ -21,6 +21,7 @@ interface State {
 
 const StyledImage = styled.img`
   height: 34px;
+  border-radius: 50px;
 `;
 
 class ImageViewer extends React.Component<Props, State> {
@@ -94,12 +95,7 @@ class ImageViewer extends React.Component<Props, State> {
   render() {
     const { alt } = this.props;
 
-    // look at git to reproduce differently
-    return (
-      <div>
-        <StyledImage alt={alt} src={this.state.imageUrl || placeholder} />
-      </div>
-    );
+    return <StyledImage alt={alt} src={this.state.imageUrl || placeholder} />;
   }
 }
 

@@ -5,6 +5,7 @@ import { Modal } from "../Modal";
 import { Project } from "../../Project";
 import { Card } from "../Card";
 import { loading, succeeded } from "../../../shared/types";
+import styled from "styled-components";
 
 interface Props {
   isOpen: boolean;
@@ -20,18 +21,23 @@ const renderProjectCards = (projects: Project[]) => {
   ));
 };
 
+const Header = styled.header`
+  display: flex;
+  justify-content: space-between;
+`;
+
 const List = ({ loading, projects, isOpen, onToggle, onSubmit }: Props) => {
   return (
     <Grid container={true} spacing={10}>
       <Grid item={true} xs={12}>
-        <header>
+        <Header>
           <div>
             <h1>Projects</h1>
           </div>
           <Fab onClick={onToggle} color="secondary" aria-label="Add">
             <Add />
           </Fab>
-        </header>
+        </Header>
       </Grid>
 
       <Grid item={true} xs={12}>

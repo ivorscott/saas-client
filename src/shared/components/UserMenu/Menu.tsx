@@ -28,10 +28,18 @@ interface Props {
   onLogOut: () => void;
   onKeyDown: (event: React.KeyboardEvent) => void;
 }
-
-const AccountDropdown = styled(Button)`
+const StyledButton = styled(Button)`
+  height: var(--p34);
+  padding: 0;
+  margin-left: var(--p8);
+  aside {
+    height: var(--p34);
+  }
   span {
+    margin-left: var(--p16);
     text-transform: capitalize;
+    font-size: var(--p16);
+    font-family: ProximaNova-Semibold;
   }
 `;
 
@@ -46,17 +54,17 @@ export const Menu: React.FC<Props> = ({
   onKeyDown,
 }) => (
   <>
-    <AccountDropdown
+    <StyledButton
       ref={anchorRef}
       aria-controls={isOpen ? "menu-list-grow" : undefined}
       aria-haspopup="true"
       onClick={onToggle}
     >
-      <div>
+      <aside>
         {user?.picture && <ImageViewer alt="current user" url={image} />}
-      </div>
-      <span className="ml16">{user.firstName}</span>
-    </AccountDropdown>
+      </aside>
+      <span>{user.firstName}</span>
+    </StyledButton>
     <Popper
       open={isOpen}
       anchorEl={anchorRef.current}

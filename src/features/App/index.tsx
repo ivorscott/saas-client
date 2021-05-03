@@ -6,7 +6,7 @@ import Routes from "./Routes";
 import "./Fonts/Fonts.css";
 import "./App.css";
 
-import { Link } from "react-router-dom";
+import { SideBar } from "./SideBar";
 
 const App = styled.div`
   display: flex;
@@ -16,20 +16,11 @@ const Page = styled.div`
   width: 100%;
 `;
 const PageContent = styled.div`
-  padding: 30px var(--p80) 0;
+  padding: var(--p86);
   height: 100vh;
   overflow-x: scroll;
 `;
-const Sidebar = styled.div`
-  background: var(--white1);
-  width: var(--p257);
-  position: relative;
-  padding: var(--p14) var(--p16);
-  ul {
-    list-style: none;
-    padding: 0;
-  }
-`;
+
 const Footer = styled.div`
   padding: var(--p16);
   background: var(--blue6);
@@ -39,38 +30,10 @@ const Footer = styled.div`
   color: var(--white1);
 `;
 
-const Logo = styled.img`
-  height: var(--p34);
-  margin-bottom: var(--p80);
-`;
-
-const StyledLink = styled(Link)`
-  font-size: var(--p18);
-  text-decoration: none;
-  cursor: pointer;
-  color: var(--gray3);
-  &:hover {
-    color: var(--gray5);
-  }
-`;
-
 export const DevPie = () => {
   return (
     <App data-theme="light">
-      <Sidebar className="shade1">
-        <div>
-          <Link to="/manage/projects">
-            <Logo alt="logo" src="/logo.png" />
-          </Link>
-        </div>
-        <ul>
-          <li>
-            <StyledLink to="/manage/projects">
-              <span>Projects</span>
-            </StyledLink>
-          </li>
-        </ul>
-      </Sidebar>
+      <SideBar />
       <Page>
         <TopBar />
 

@@ -1,7 +1,7 @@
-import React from "react";
+import React, { ReactElement } from "react";
 import { SprintTask } from "../SprintTask";
 import { AddTask } from "../SprintTask";
-import { Paper } from "@material-ui/core";
+import { Badge, Paper } from "@material-ui/core";
 import { Droppable } from "react-beautiful-dnd";
 import "./css.css";
 import { Column, Task, TaskDict } from "../types";
@@ -21,6 +21,8 @@ interface Props extends Actions {
 
 const ColumnTitle = styled.div`
   padding: var(--p8);
+  font-size: var(--p18);
+  font-family: ProximaNova-Bold;
 `;
 const Content = styled.div`
   display: flex;
@@ -38,9 +40,18 @@ const StyledColumn = styled.div`
 
 const Container = styled(Paper)`
   display: flex;
-  flex: 0 0 24.5%;
-  margin: var(--p8) var(--p2);
+  flex: 1;
+  max-width: var(--p414);
+  margin-right: var(--p16);
   flex-direction: column;
+  &:last-child {
+    margin-right: 0;
+  }
+`;
+
+const ColumnBadge = styled(Badge)`
+  padding: var(--p8);
+  border-radius: var(--p8);
 `;
 
 const SprintColumn = ({
@@ -69,9 +80,15 @@ const SprintColumn = ({
     return <div></div>;
   };
 
+  const badgeColor = column.columnName.split("-")[1];
+
   return (
     <Container>
-      <ColumnTitle>{column.title}</ColumnTitle>
+      <ColumnTitle>
+        <ColumnBadge className={`badge${badgeColor}`}>
+          {column.title}
+        </ColumnBadge>
+      </ColumnTitle>
 
       {columnKey === "column-1" && <AddTask onAddTask={onAddTask} />}
 

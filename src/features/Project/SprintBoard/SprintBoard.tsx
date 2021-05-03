@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { Grid } from "@material-ui/core";
 import { addTask, updateTask, deleteTask, moveTask, fetchBoard } from "./api";
 import { Loading } from "../../../shared/components/Loading";
 import { SprintColumn } from "../SprintColumn";
@@ -20,12 +19,10 @@ interface Props extends BoardActions {
   columnOrder: string[];
 }
 
-const StyledGrid = styled(Grid)`
-  padding: 0 !important;
-`;
 const StyledBoard = styled.div`
   display: flex;
   height: 70vh;
+  margin-top: var(--p8);
 `;
 
 const Component = ({
@@ -40,26 +37,24 @@ const Component = ({
   return Object.keys(columnDict).length === 0 ? (
     <Loading />
   ) : (
-    <StyledGrid item={true} xs={12}>
-      <StyledBoard>
-        <DragDropContext onDragEnd={onDragEnd}>
-          {columnOrder.map((columnKey: string) => {
-            const column = columnDict[columnKey];
-            return (
-              <SprintColumn
-                key={column.id}
-                columnKey={columnKey}
-                column={column}
-                taskDict={taskDict}
-                onAddTask={onAddTask}
-                onDeleteTask={onDeleteTask}
-                onUpdateTask={onUpdateTask}
-              />
-            );
-          })}
-        </DragDropContext>
-      </StyledBoard>
-    </StyledGrid>
+    <StyledBoard>
+      <DragDropContext onDragEnd={onDragEnd}>
+        {columnOrder.map((columnKey: string) => {
+          const column = columnDict[columnKey];
+          return (
+            <SprintColumn
+              key={column.id}
+              columnKey={columnKey}
+              column={column}
+              taskDict={taskDict}
+              onAddTask={onAddTask}
+              onDeleteTask={onDeleteTask}
+              onUpdateTask={onUpdateTask}
+            />
+          );
+        })}
+      </DragDropContext>
+    </StyledBoard>
   );
 };
 

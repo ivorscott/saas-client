@@ -20,7 +20,6 @@ interface Props {
 
 const Header = styled.header`
   display: flex;
-  padding-top: var(--p44);
   justify-content: space-between;
 `;
 const ProjectName = styled.span`
@@ -28,9 +27,11 @@ const ProjectName = styled.span`
   font-family: ProximaNova-Light;
 `;
 
-const StyledGrid = styled(Grid)`
-  padding: 0 !important;
-  margin: var(--p8);
+const ProjectManagement = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: flex-end;
 `;
 
 const Component = ({ project, team }: Props) => {
@@ -38,25 +39,21 @@ const Component = ({ project, team }: Props) => {
     return <Loading />;
   } else {
     return (
-      <Grid container={true} spacing={10}>
-        <StyledGrid item={true} xs={12}>
-          <Header>
-            <h1>
-              Project/
-              <ProjectName>{project.name}</ProjectName>
-            </h1>
-            <div>
-              <IconButton>
-                <MoreHoriz />
-              </IconButton>
-            </div>
-          </Header>
-          <div>
+      <>
+        <Header>
+          <h1>
+            Project/
+            <ProjectName>{project.name}</ProjectName>
+          </h1>
+          <ProjectManagement>
+            <IconButton>
+              <MoreHoriz />
+            </IconButton>
             <ProjectTeam team={team} />
-          </div>
-        </StyledGrid>
+          </ProjectManagement>
+        </Header>
         <SprintBoard project={project} />
-      </Grid>
+      </>
     );
   }
 };
