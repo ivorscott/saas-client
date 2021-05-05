@@ -2,6 +2,7 @@ import React, { useState } from "react";
 // import { initialize } from "redux-form";
 // import { UpdateTask } from "./UpdateTask";
 import { Draggable } from "react-beautiful-dnd";
+import styled from "styled-components";
 import { Task } from "../types";
 // import { useDispatch } from "react-redux";
 
@@ -25,6 +26,12 @@ interface Props {
   onTaskUpdate: (values: any) => void;
 }
 
+const StyledTask = styled.div`
+  padding: var(--p8);
+  margin: var(--p8);
+  border-radius: var(--p4);
+`;
+
 const Component = ({
   open,
   task,
@@ -34,7 +41,7 @@ const Component = ({
   onTaskDelete,
 }: Props) => {
   return (
-    <div data-test="component-task">
+    <StyledTask className="shade2">
       <Draggable draggableId={task.id} index={index}>
         {({ innerRef, draggableProps, dragHandleProps }, { isDragging }) => (
           <div
@@ -44,6 +51,7 @@ const Component = ({
             {...draggableProps}
             {...dragHandleProps}
           >
+            <span>{task.key}</span>
             <p>{task.title}</p>
           </div>
         )}
@@ -55,7 +63,7 @@ const Component = ({
         onTaskDelete={onTaskDelete}
         onTaskToggle={onTaskToggle}
       /> */}
-    </div>
+    </StyledTask>
   );
 };
 

@@ -11,6 +11,9 @@ const StyledSideBar = styled.div`
     list-style: none;
     padding: 0;
   }
+  @media (max-width: 1400px) {
+    display: none;
+  }
 `;
 
 const Logo = styled.img`

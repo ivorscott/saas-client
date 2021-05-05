@@ -1,11 +1,12 @@
-import React, { ReactElement } from "react";
-import { SprintTask } from "../SprintTask";
-import { AddTask } from "../SprintTask";
-import { Badge, Paper } from "@material-ui/core";
-import { Droppable } from "react-beautiful-dnd";
-import "./css.css";
-import { Column, Task, TaskDict } from "../types";
+import React, { useState } from "react";
 import styled from "styled-components";
+import { Add } from "@material-ui/icons";
+import { AddTask } from "../SprintTask";
+import { Droppable } from "react-beautiful-dnd";
+import { SprintTask } from "../SprintTask";
+import { Badge, Paper } from "@material-ui/core";
+import { Column, Task, TaskDict } from "../types";
+import "./css.css";
 
 interface Actions {
   onAddTask: (task: string) => void;
@@ -14,47 +15,12 @@ interface Actions {
 }
 
 interface Props extends Actions {
-  columnKey: string;
   column: Column;
+  columnKey: string;
   taskDict: TaskDict;
 }
 
-const ColumnTitle = styled.div`
-  padding: var(--p8);
-  font-size: var(--p18);
-  font-family: ProximaNova-Bold;
-`;
-const Content = styled.div`
-  display: flex;
-  flex: 1;
-  overflow: auto;
-`;
-
-const DroppableRegion = styled.div`
-  height: 100%;
-`;
-
-const StyledColumn = styled.div`
-  flex: 1;
-`;
-
-const Container = styled(Paper)`
-  display: flex;
-  flex: 1;
-  max-width: var(--p414);
-  margin-right: var(--p16);
-  flex-direction: column;
-  &:last-child {
-    margin-right: 0;
-  }
-`;
-
-const ColumnBadge = styled(Badge)`
-  padding: var(--p8);
-  border-radius: var(--p8);
-`;
-
-const SprintColumn = ({
+export const SprintColumn = ({
   columnKey,
   column,
   taskDict,
@@ -62,6 +28,10 @@ const SprintColumn = ({
   onDeleteTask,
   onUpdateTask,
 }: Props) => {
+  const badgeColor = column.columnName.split("-")[1];
+  const [isEditing, setIsEditing] = useState(false);
+  const toggleEditing = () => setIsEditing(!isEditing);
+
   const renderTasks = (dict: TaskDict, columnKey: string) => {
     if (Object.keys(column.taskIds).length > 0) {
       return column.taskIds.map((key: string, index) => {
@@ -80,17 +50,28 @@ const SprintColumn = ({
     return <div></div>;
   };
 
-  const badgeColor = column.columnName.split("-")[1];
-
   return (
     <Container>
       <ColumnTitle>
         <ColumnBadge className={`badge${badgeColor}`}>
           {column.title}
         </ColumnBadge>
+
+        {columnKey === "column-1" && (
+          <CreateTaskButton onClick={toggleEditing}>
+            <CreateIcon />
+            <CreateTaskLabel>New Task</CreateTaskLabel>
+          </CreateTaskButton>
+        )}
       </ColumnTitle>
 
-      {columnKey === "column-1" && <AddTask onAddTask={onAddTask} />}
+      {columnKey === "column-1" && (
+        <AddTask
+          isEditing={isEditing}
+          toggleEditing={toggleEditing}
+          onAddTask={onAddTask}
+        />
+      )}
 
       <Content>
         <StyledColumn>
@@ -116,4 +97,64 @@ const SprintColumn = ({
   );
 };
 
-export { SprintColumn };
+const ColumnTitle = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: var(--p16) var(--p8) 0;
+  font-size: var(--p18);
+  font-family: ProximaNova-Bold;
+`;
+const Content = styled.div`
+  display: flex;
+  flex: 1;
+  overflow: auto;
+`;
+const DroppableRegion = styled.div`
+  height: 100%;
+`;
+const StyledColumn = styled.div`
+  flex: 1;
+`;
+const Container = styled(Paper)`
+  display: flex;
+  max-width: var(--p414);
+  margin-right: var(--p16);
+  flex-direction: column;
+
+  &:last-child {
+    margin-right: 0;
+  }
+
+  /* mobile first */
+  @media only screen and (max-width: 600px) {
+    flex: 0 0 70%;
+  }
+  @media only screen and (min-width: 600px) {
+    flex: 0 0 40%;
+  }
+  @media only screen and (min-width: 1400px) {
+    flex: 0 0 23%;
+  }
+`;
+const ColumnBadge = styled(Badge)`
+  padding: var(--p8);
+  border-radius: var(--p8);
+  color: var(--gray7);
+`;
+const CreateTaskButton = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  color: var(--gray6);
+  cursor: pointer;
+`;
+
+const CreateIcon = styled(Add)`
+  color: var(--gray6);
+`;
+const CreateTaskLabel = styled.span`
+  padding: var(--p8);
+  font-size: var(--p16);
+  font-family: ProximaNova-Regular;
+`;

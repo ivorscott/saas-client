@@ -1,16 +1,17 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { TextField, Button } from "@material-ui/core";
-import { Add } from "@material-ui/icons";
 import { RootState } from "../../../../shared/store";
 
-interface Actions {
+interface AddTaskProps {
+  isEditing: boolean;
+  toggleEditing: () => void;
   onAddTask: (task: string) => void;
 }
 
 interface Props {
   task: string;
-  onClick: () => void;
+  onClose: () => void;
   onChange: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
   onSubmit: () => void;
   onKeyDown: (event: React.KeyboardEvent<HTMLDivElement>) => void;
@@ -20,7 +21,7 @@ interface Props {
 const Task = ({
   task,
   isEditing,
-  onClick,
+  onClose,
   onChange,
   onKeyDown,
   onSubmit,
@@ -39,33 +40,25 @@ const Task = ({
           <Button color="secondary" variant="contained" onClick={onSubmit}>
             Save
           </Button>
-          <div onClick={onClick}>close</div>
+          <div onClick={onClose}>close</div>
         </div>
       </div>
     );
   } else {
-    return (
-      <div onClick={onClick}>
-        <Add color="secondary" />
-        <p color="secondary">
-          <strong>Add Task</strong>
-        </p>
-      </div>
-    );
+    return false;
   }
 };
 
-const AddTask: React.FC<Actions> = ({ onAddTask }) => {
-  const [isEditing, setEditing] = useState(false);
+const AddTask: React.FC<AddTaskProps> = ({
+  isEditing,
+  toggleEditing,
+  onAddTask,
+}) => {
   const { selected } = useSelector((state: RootState) => state.project);
   const [task, setTask] = useState("");
 
-  const handleClick = () => {
-    setEditing(!isEditing);
-  };
-
   const handleSubmit = () => {
-    setEditing(!isEditing);
+    toggleEditing();
     if (selected) {
       onAddTask(task);
       setTask("");
@@ -88,7 +81,7 @@ const AddTask: React.FC<Actions> = ({ onAddTask }) => {
     <Task
       task={task}
       onKeyDown={handleKeyDown}
-      onClick={handleClick}
+      onClose={toggleEditing}
       onChange={handleChange}
       onSubmit={handleSubmit}
       isEditing={isEditing}

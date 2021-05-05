@@ -1,5 +1,5 @@
 import React from "react";
-import { IconButton, Grid } from "@material-ui/core";
+import { IconButton } from "@material-ui/core";
 import { MoreHoriz } from "@material-ui/icons";
 import { useParams } from "react-router-dom";
 import { useEffect } from "react";
@@ -18,23 +18,25 @@ interface Props {
   project: null | Project;
 }
 
-const Header = styled.header`
-  display: flex;
-  justify-content: space-between;
-`;
-const ProjectName = styled.span`
-  text-transform: capitalize;
-  font-family: ProximaNova-Light;
-`;
-
-const ProjectManagement = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  justify-content: flex-end;
-`;
-
 const Component = ({ project, team }: Props) => {
+  const [scrolled, setScrolled] = React.useState(false);
+  const handleScroll = () => {
+    const offset = window.scrollY;
+    if (offset > 50) {
+      setScrolled(true);
+    } else {
+      setScrolled(false);
+    }
+  };
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+  });
+  let navbarClasses = ["proj-management"];
+
+  if (scrolled) {
+    navbarClasses.push("scrolled");
+  }
+
   if (!project) {
     return <Loading />;
   } else {
@@ -45,7 +47,7 @@ const Component = ({ project, team }: Props) => {
             Project/
             <ProjectName>{project.name}</ProjectName>
           </h1>
-          <ProjectManagement>
+          <ProjectManagement className={navbarClasses.join(" ")}>
             <IconButton>
               <MoreHoriz />
             </IconButton>
@@ -58,7 +60,7 @@ const Component = ({ project, team }: Props) => {
   }
 };
 
-const SelectedProject: React.FC = () => {
+export const SelectedProject: React.FC = () => {
   const params: Params = useParams();
   const dispatch = useDispatch();
 
@@ -74,12 +76,34 @@ const SelectedProject: React.FC = () => {
     selected?.teamId && fetch(selected.teamId);
   }, [dispatch, selected]);
 
-  const handleDeleteProject = async () => {
-    await dispatch(deleteProject(params.id));
-    history.replace(`/manage/projects`);
-  };
+  // const handleDeleteProject = async () => {
+  //   await dispatch(deleteProject(params.id));
+  //   history.replace(`/manage/projects`);
+  // };
 
   return <Component team={team} project={selected} />;
 };
 
-export { SelectedProject };
+const Header = styled.header`
+  display: flex;
+  justify-content: space-between;
+  height: var(--p100);
+`;
+const ProjectName = styled.span`
+  text-transform: capitalize;
+  font-family: ProximaNova-Light;
+`;
+
+const ProjectManagement = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: flex-end;
+  position: relative;
+  z-index: 1;
+
+  @media only screen and (max-width: 1400px) {
+    position: fixed;
+    right: var(--p16);
+  }
+`;

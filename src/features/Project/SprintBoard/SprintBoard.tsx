@@ -21,8 +21,16 @@ interface Props extends BoardActions {
 
 const StyledBoard = styled.div`
   display: flex;
+  flex: 1;
+  flex-direction: row;
+  justify-content: space-between;
   height: 70vh;
+  max-width: 100%;
   margin-top: var(--p8);
+
+  @media (min-width: 1400px) {
+    overflowx: scroll;
+  }
 `;
 
 const Component = ({

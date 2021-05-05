@@ -7,7 +7,7 @@ import { StylesProvider } from "@material-ui/styles";
 import { theme } from "./shared/theme";
 import { store } from "./shared/store";
 import { history } from "./shared/history";
-import { DevPie } from "./features/App";
+import { DevPie } from "./features/App/App";
 import { ThemeProvider } from "@material-ui/styles";
 
 ReactDOM.render(

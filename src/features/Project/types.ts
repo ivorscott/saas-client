@@ -44,10 +44,17 @@ export interface Column {
 
 export interface Task {
   id: string;
+  key: string;
+  seq: number;
   title: string;
+  points: number;
+  assignedTo: string;
+  comments: string[];
+  attachments: string[];
   content: string;
   projectId: string;
-  created: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface AddTask {
