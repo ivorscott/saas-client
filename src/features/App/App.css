@@ -98,6 +98,7 @@
   --p60: 3.75rem;
   --p40: 2.5rem;
   --p34: 2.125rem;
+  --p32: 2rem;
   --p24: 1.5rem;
   --p18: 1.25rem;
   --p16: 1rem;
@@ -109,16 +110,16 @@
 }
 
 .badge10 {
-  background: var(--green6);
+  background: var(--green4);
 }
 .badge9 {
-  background: var(--yellow6);
+  background: var(--yellow4);
 }
 .badge8 {
-  background: var(--red6);
+  background: var(--red4);
 }
 .badge7 {
-  background: var(--pink6);
+  background: var(--pink4);
 }
 .badge6 {
   background: var(--blue3);

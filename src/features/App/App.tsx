@@ -6,6 +6,7 @@ import Routes from "./Routes";
 import styled from "styled-components";
 import "./Fonts/Fonts.css";
 import "./App.css";
+import { ReactQueryDevtools } from "react-query/devtools";
 
 export const DevPie = () => {
   return (
@@ -22,6 +23,7 @@ export const DevPie = () => {
       <Footer>
         <Copyright /> <CopyrightText>Powered by DevPie</CopyrightText>
       </Footer>
+      <ReactQueryDevtools position="bottom-right" />
     </>
   );
 };

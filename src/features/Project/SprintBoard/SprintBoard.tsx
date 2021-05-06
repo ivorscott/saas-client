@@ -24,12 +24,12 @@ const StyledBoard = styled.div`
   flex: 1;
   flex-direction: row;
   justify-content: space-between;
-  height: 70vh;
+  height: 80vh;
   max-width: 100%;
   margin-top: var(--p8);
 
   @media (min-width: 1400px) {
-    overflowx: scroll;
+    overflow-x: scroll;
   }
 `;
 

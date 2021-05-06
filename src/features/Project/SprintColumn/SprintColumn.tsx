@@ -6,7 +6,6 @@ import { Droppable } from "react-beautiful-dnd";
 import { SprintTask } from "../SprintTask";
 import { Badge, Paper } from "@material-ui/core";
 import { Column, Task, TaskDict } from "../types";
-import "./css.css";
 
 interface Actions {
   onAddTask: (task: string) => void;
@@ -138,7 +137,7 @@ const Container = styled(Paper)`
   }
 `;
 const ColumnBadge = styled(Badge)`
-  padding: var(--p8);
+  padding: var(--p8) var(--p8) var(--p4);
   border-radius: var(--p8);
   color: var(--gray7);
 `;

@@ -7,27 +7,18 @@ export interface User {
   lastName: string;
   picture: string;
   locale: string;
-  roles: string[];
+  roles?: string[];
+  updatedAt: string;
+  createdAt: string;
 }
 
-export interface CommonFields {
-  name: string;
-  nickname: string;
-  picture: string;
-  updated_at: string;
+export interface Auth0User {
+  sub: string;
   email: string;
   email_verified: boolean;
-  sub: string;
-}
-
-export interface GoogleOauth2 extends CommonFields {
-  given_name: string;
-  family_name: string;
+  nickname: string;
+  firstName: string;
+  lastName: string;
+  picture: string;
   locale: string;
 }
-
-export interface UsernamePasswordAuthentication extends CommonFields {}
-export type IdentityPayload = UsernamePasswordAuthentication & GoogleOauth2;
-export type UserPayload = User & {
-  error?: string;
-};

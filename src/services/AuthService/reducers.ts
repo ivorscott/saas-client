@@ -3,15 +3,15 @@ import { createSlice } from "@reduxjs/toolkit";
 interface AuthState {
   id: string;
   auth0Id: string;
-  email: string
-  emailVerified: boolean,
-  accountingEnabled: boolean,
+  email: string;
+  emailVerified: boolean;
   firstName: string;
   lastName: string;
   picture: string;
   locale: string;
-  created: string;
-  roles: string[],
+  updatedAt: string;
+  createdAt: string;
+  roles: string[];
 }
 
 const initialState: AuthState = {
@@ -19,12 +19,12 @@ const initialState: AuthState = {
   auth0Id: "",
   email: "",
   emailVerified: false,
-  accountingEnabled: false,
   firstName: "",
   lastName: "",
   picture: "",
   locale: "",
-  created: "",
+  updatedAt: "",
+  createdAt: "",
   roles: [],
 };
 

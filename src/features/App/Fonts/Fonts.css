@@ -50,3 +50,17 @@
   src: url("./FreightSansBold/font.woff2") format("woff2"),
     url("./FreightSansBold/font.woff") format("woff");
 }
+
+/* Alternative fonts */
+
+@font-face {
+  font-family: "ProximaNovaA-Bold";
+  src: url("./ProximaNovaABold/font.woff2") format("woff2"),
+    url("./ProximaNovaABold/font.woff") format("woff");
+}
+
+@font-face {
+  font-family: "ProximaNovaA-Medium";
+  src: url("./ProximaNovaAMedium/font.woff2") format("woff2"),
+    url("./ProximaNovaAMedium/font.woff") format("woff");
+}

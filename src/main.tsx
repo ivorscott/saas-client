@@ -9,18 +9,23 @@ import { store } from "./shared/store";
 import { history } from "./shared/history";
 import { DevPie } from "./features/App/App";
 import { ThemeProvider } from "@material-ui/styles";
+import { QueryClient, QueryClientProvider } from "react-query";
+
+const queryClient = new QueryClient();
 
 ReactDOM.render(
   <ReduxProvider store={store}>
-    <Auth0Provider>
-      <Router history={history}>
-        <ThemeProvider theme={theme}>
-          <StylesProvider injectFirst>
-            <DevPie />
-          </StylesProvider>
-        </ThemeProvider>
-      </Router>
-    </Auth0Provider>
+    <QueryClientProvider client={queryClient}>
+      <Auth0Provider>
+        <Router history={history}>
+          <ThemeProvider theme={theme}>
+            <StylesProvider injectFirst>
+              <DevPie />
+            </StylesProvider>
+          </ThemeProvider>
+        </Router>
+      </Auth0Provider>
+    </QueryClientProvider>
   </ReduxProvider>,
   document.getElementById("root")
 );

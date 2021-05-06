@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
-import { TextField, Button } from "@material-ui/core";
+import { Button, TextareaAutosize } from "@material-ui/core";
 import { RootState } from "../../../../shared/store";
+import styled from "styled-components";
 
 interface AddTaskProps {
   isEditing: boolean;
@@ -18,38 +19,33 @@ interface Props {
   isEditing: boolean;
 }
 
-const Task = ({
-  task,
-  isEditing,
-  onClose,
-  onChange,
-  onKeyDown,
-  onSubmit,
-}: Props) => {
+const Component = ({ task, isEditing, onClose, onChange, onSubmit }: Props) => {
   if (isEditing) {
     return (
       <div>
-        <TextField
+        <StyleTextArea
           value={task}
+          rowsMax={3}
+          maxLength={60}
           onChange={onChange}
-          fullWidth={true}
-          onKeyDown={onKeyDown}
-          placeholder="Enter a title for this task"
+          placeholder="Describe the task"
         />
-        <div>
-          <Button color="secondary" variant="contained" onClick={onSubmit}>
+        <Controls>
+          <CloseButton color="secondary" variant="contained" onClick={onClose}>
+            Close
+          </CloseButton>
+          <SaveButton color="primary" variant="contained" onClick={onSubmit}>
             Save
-          </Button>
-          <div onClick={onClose}>close</div>
-        </div>
+          </SaveButton>
+        </Controls>
       </div>
     );
   } else {
-    return false;
+    return null;
   }
 };
 
-const AddTask: React.FC<AddTaskProps> = ({
+export const AddTask: React.FC<AddTaskProps> = ({
   isEditing,
   toggleEditing,
   onAddTask,
@@ -78,7 +74,7 @@ const AddTask: React.FC<AddTaskProps> = ({
   };
 
   return (
-    <Task
+    <Component
       task={task}
       onKeyDown={handleKeyDown}
       onClose={toggleEditing}
@@ -89,4 +85,37 @@ const AddTask: React.FC<AddTaskProps> = ({
   );
 };
 
-export { AddTask };
+const StyleTextArea = styled(TextareaAutosize)`
+  font-family: ProximaNovaA-Medium;
+  font-size: var(--p16);
+  margin: var(--p8);
+  width: calc(100% - var(--p34));
+  max-width: calc(100% - var(--p34));
+  min-width: calc(100% - var(--p34));
+  background: var(--secondary);
+  padding: var(--p8);
+  border-radius: var(--p4);
+  border: 1px solid var(--gray2);
+  &:focus {
+    outline: none !important;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.24), 0 1px 3px rgba(0, 0, 0, 0.12) !important;
+  }
+`;
+
+const Controls = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 var(--p8) var(--p8);
+`;
+
+const SaveButton = styled(Button)`
+  font-family: ProximaNova-Bold;
+`;
+const CloseButton = styled(Button)`
+  font-family: ProximaNova-Bold;
+  color: var(--gray4);
+  &:hover {
+    background: var(--gray2);
+  }
+`;

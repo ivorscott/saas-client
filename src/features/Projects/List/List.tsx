@@ -42,7 +42,7 @@ const List = ({ loading, projects, isOpen, onToggle, onSubmit }: Props) => {
 
       <Grid item={true} xs={12}>
         {loading !== succeeded ? (
-          <div style={{ textAlign: "center", marginTop: "50vh" }}>
+          <div style={{ textAlign: "center", marginTop: "25vh" }}>
             <CircularProgress />
           </div>
         ) : loading === succeeded && projects.length ? (
