@@ -22,3 +22,7 @@ export interface Auth0User {
   picture: string;
   locale: string;
 }
+
+export type UserPayload = User & {
+  error?: string;
+};

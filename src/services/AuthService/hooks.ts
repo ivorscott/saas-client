@@ -1,72 +1,39 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { actions } from "./reducers";
 import { useDispatch } from "react-redux";
 import { history } from "../../shared/history";
 import { fetchImage } from "../../features/Account/reducer";
 import { client as authClient } from "./AuthService";
 import { client as devpieClient } from "../APIService";
-// import { useMutation, useQuery } from "react-query";
-import { Auth0User, User } from "./types";
-
-export type UserPayload = User & {
-  error?: string;
-};
-
-const { authenticateUser } = actions;
-
-// export function useUser<AppUser>(authUser: AuthDetails) {
-//   const roles = authUser.claims["https://client.devpie.io/claims/roles"];
-//   const [user, setUser] = useState<AppUser>();
-//   const dispatch = useDispatch();
-
-//   useEffect(() => {
-//     const fetch = () => {
-//       const { data, isError, isSuccess } = useQuery<AppUser>(
-//         "auth",
-//         async () => await devpieClient.get("/users/me")
-//       );
-
-//       console.log(data);
-
-//       if (isError) {
-//         const mutation = useMutation<AppUser, AxiosError, Partial<User>>(
-//           (authUser) => devpieClient.post("/users", authUser)
-//         );
-//         const newUser = transformAuth0User(authUser.identity);
-//         mutation.mutate(newUser);
-//         dispatch(authenticateUser({ ...newUser, roles }));
-//         window.location.reload();
-//       }
-//       setUser(data);
-
-//       if (data && isSuccess) {
-//         dispatch(authenticateUser({ ...user, roles }));
-//         dispatch(fetchImage({ defaultImage: data.picture, id: data.id }));
-//       }
-//     };
-//     fetch();
-//   }, [authUser]);
-
-//   return user;
-// }
+import { Auth0User, User, UserPayload } from "./types";
+import { IdToken } from "@auth0/auth0-spa-js";
+import { useQuery } from "react-query";
 
 export function useAuth() {
   const [isError, setIsError] = useState(false);
-  const [isLoading, setLoading] = useState(true);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [stillAuthenticating, setAuthenticating] = useState(true);
+  const [auth0User, setAuth0User] = useState<{
+    identity: Auth0User;
+    access_token: string;
+    claims: IdToken;
+  }>();
+
   const dispatch = useDispatch();
+
+  const create = async (newUser: Partial<User>) => {
+    await devpieClient.post("/users", newUser);
+    window.location.reload();
+  };
 
   useEffect(() => {
     const authenticate = async () => {
       try {
         const { search, pathname } = window.location;
 
-        // handle freshbooks redirect
         if (search.includes("code=") && !search.includes("state=")) {
           // await freshClient.handleRedirect()
         }
 
-        // handle auth0 redirect
         if (search.includes("code=") && search.includes("state=")) {
           const { appState } = await authClient.handleRedirectCallback();
           history.push(appState ? appState : pathname);
@@ -76,21 +43,7 @@ export function useAuth() {
 
         if (ok) {
           const authResult = await authClient.getAuthDetails();
-          const { identity, claims } = authResult;
-          const roles = claims["https://client.devpie.io/claims/roles"];
-
-          const user = (await devpieClient.get("/users/me")) as UserPayload;
-
-          if (!user.error) {
-            setIsAuthenticated(ok);
-            dispatch(authenticateUser({ ...user, roles }));
-            dispatch(fetchImage({ defaultImage: user.picture, id: user.id }));
-          } else {
-            const newUser = transformAuth0User(identity);
-            dispatch(authenticateUser({ ...newUser, roles }));
-            await devpieClient.post("/users", newUser);
-            window.location.reload();
-          }
+          setAuth0User(authResult);
         } else {
           await authClient.loginWithRedirect(pathname);
         }
@@ -101,13 +54,43 @@ export function useAuth() {
           setIsError(true);
         }
       }
-      setLoading(false);
+
+      setAuthenticating(false);
     };
 
     authenticate();
   }, []);
 
-  return { isAuthenticated, isLoading, isError };
+  // user react query
+  const { data, isSuccess } = useQuery<UserPayload, UserPayload["error"]>(
+    "auth",
+    async () => await devpieClient.get("/users/me")
+  );
+
+  if (stillAuthenticating) {
+    return false;
+  }
+
+  if (isError) {
+    return false;
+  }
+
+  // if auth0User exists but the internal user doesn't create user
+  if (auth0User && data?.error) {
+    const { identity } = auth0User;
+    const newUser = transformAuth0User(identity);
+    create(newUser);
+    return false;
+  }
+
+  if (data && isSuccess) {
+    const roles = auth0User?.claims["https://client.devpie.io/claims/roles"];
+    dispatch(actions.authenticateUser({ ...data, roles }));
+    dispatch(fetchImage({ defaultImage: data.picture, id: data.id }));
+    return true;
+  }
+
+  return false;
 }
 
 function transformAuth0User(user: Auth0User): Partial<User> {

@@ -3,21 +3,13 @@ import { Loading } from "../../shared/components/Loading";
 import { useAuth } from "./hooks";
 
 const Auth0Provider: React.FC<{ children: any }> = ({ children }) => {
-  const { isLoading, isError, isAuthenticated } = useAuth();
+  const isAuthenticated = useAuth();
 
-  if (isLoading) {
+  if (!isAuthenticated) {
     return <Loading />;
   }
 
-  if (isError) {
-    return <h1>Something went Wrong!</h1>;
-  }
-
-  if (isAuthenticated) {
-    return children;
-  }
-
-  return <div />;
+  return children;
 };
 
 export { Auth0Provider };
