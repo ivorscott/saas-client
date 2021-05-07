@@ -1,14 +1,11 @@
 import React from "react";
 import {
-  // Button,
   Dialog,
   DialogActions,
   DialogContent,
   DialogContentText,
   DialogTitle,
 } from "@material-ui/core";
-// import { useSelector } from "react-redux";
-// import { RootState } from "../../../store";
 
 const NotificationsModal = ({
   isOpen,

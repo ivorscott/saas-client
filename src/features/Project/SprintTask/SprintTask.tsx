@@ -1,9 +1,7 @@
 import { CSSProperties } from "@material-ui/styles";
 import React, { useState } from "react";
-// import { initialize } from "redux-form";
-// import { UpdateTask } from "./UpdateTask";
+import { UpdateTask } from "./UpdateTask";
 import { MoreHoriz } from "@material-ui/icons";
-
 import {
   Draggable,
   DraggingStyle,
@@ -11,14 +9,13 @@ import {
 } from "react-beautiful-dnd";
 import styled from "styled-components";
 import { Task } from "../types";
-// import { useDispatch } from "react-redux";
 
 interface Actions {
   onDeleteTask: (columnKey: string, taskId: string) => void;
   onUpdateTask: (columnKey: string, task: Task) => void;
 }
 
-interface ParentProps extends Actions {
+interface SprintTaskProps extends Actions {
   task: Task;
   index: number;
   columnKey: string;
@@ -42,22 +39,7 @@ const Component = ({
   onTaskDelete,
 }: Props) => {
   const badgeColor = (task.seq % 9) + 1;
-  const grid = 8;
-  const getItemStyle = (
-    isDragging: boolean,
-    draggableStyle: DraggingStyle | NotDraggingStyle | undefined
-  ): CSSProperties => ({
-    userSelect: "none",
-    minHeight: "var(--p90)",
-    padding: "var(--p8)",
-    margin: "var(--p8)",
-    borderRadius: "var(--p4)",
-    boxShadow: isDragging
-      ? "0 3px 6px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.15)"
-      : "0 2px 4px rgba(0, 0, 0, 0.12), 0 3px 6px rgba(0, 0, 0, 0.15)",
-    background: isDragging ? "var(--yellow1)" : "var(--white1)",
-    ...draggableStyle,
-  });
+
   return (
     <div>
       <Draggable key={task.id} draggableId={task.id} index={index}>
@@ -85,18 +67,18 @@ const Component = ({
           </div>
         )}
       </Draggable>
-      {/* <UpdateTask
+      <UpdateTask
         open={open}
         task={task}
         onTaskUpdate={onTaskUpdate}
         onTaskDelete={onTaskDelete}
         onTaskToggle={onTaskToggle}
-      /> */}
+      />
     </div>
   );
 };
 
-const SprintTask: React.FC<ParentProps> = ({
+const SprintTask: React.FC<SprintTaskProps> = ({
   columnKey,
   task,
   index,
@@ -104,10 +86,8 @@ const SprintTask: React.FC<ParentProps> = ({
   onUpdateTask,
 }) => {
   const [isOpen, setOpen] = useState(false);
-  // const dispatch = useDispatch();
 
   const handleTaskToggle = () => {
-    // dispatch(initialize("update_task_form", task));
     setOpen(!isOpen);
   };
 
@@ -187,3 +167,19 @@ const StyleSettings = styled.div`
   color: var(--gray6);
   cursor: pointer;
 `;
+
+const getItemStyle = (
+  isDragging: boolean,
+  draggableStyle: DraggingStyle | NotDraggingStyle | undefined
+): CSSProperties => ({
+  userSelect: "none",
+  minHeight: "var(--p90)",
+  padding: "var(--p8)",
+  margin: "var(--p8)",
+  borderRadius: "var(--p4)",
+  boxShadow: isDragging
+    ? "0 3px 6px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.15)"
+    : "0 2px 4px rgba(0, 0, 0, 0.12), 0 3px 6px rgba(0, 0, 0, 0.15)",
+  background: isDragging ? "var(--yellow1)" : "var(--white1)",
+  ...draggableStyle,
+});

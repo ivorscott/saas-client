@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import IconButton from "@material-ui/core/IconButton";
-import { Notifications } from "@material-ui/icons";
+// import { Notifications } from "@material-ui/icons";
 import { UserMenu } from "../../shared/components/UserMenu";
 import styled from "styled-components";
 import { SearchBar } from "./SearchBar";
@@ -36,9 +36,7 @@ const TopBar = () => {
     <TopContainer>
       <SearchBar />
       <TopMenu>
-        <AlertButton>
-          <Notifications />
-        </AlertButton>
+        <AlertButton>{/* <Notifications /> */}</AlertButton>
         <UserMenu />
       </TopMenu>
     </TopContainer>

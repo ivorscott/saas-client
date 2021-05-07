@@ -62,13 +62,13 @@ class Modal extends React.Component<Props, State> {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={onClose} color="primary">
+          <Button variant="contained" onClick={onClose} color="secondary">
             Cancel
           </Button>
           <Button
+            variant="contained"
             onClick={this.handleSubmit}
-            color="secondary"
-            autoFocus={true}
+            color="primary"
           >
             Create
           </Button>

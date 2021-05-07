@@ -1,17 +1,12 @@
 import React, { useState } from "react";
-import {
-  // useDispatch,
-  useSelector,
-} from "react-redux";
 // import { uploadImage } from "./reducer";
-import {
-  // AppDispatch,
-  RootState,
-} from "../../shared/store";
 import { Avatar as AvatarModal } from "./Avatar";
 import { Grid, IconButton } from "@material-ui/core";
 import PhotoCameraIcon from "@material-ui/icons/PhotoCamera";
 import ImageViewer from "../../shared/components/ImageViewer";
+import { useQuery } from "react-query";
+import { UserPayload } from "../../services/AuthService/types";
+import { client } from "../../services/APIService";
 
 interface Actions {
   onToggle: () => void;
@@ -63,10 +58,12 @@ export const Component = ({
 };
 
 const Account = () => {
-  // const dispatch: AppDispatch = useDispatch();
   const [isOpen, setOpen] = useState(false);
-  const user = useSelector((state: RootState) => state.auth);
-  const { image } = useSelector((state: RootState) => state.account);
+
+  const { data: user } = useQuery<UserPayload>(
+    "auth",
+    async () => await client.get("/users/me")
+  );
 
   const toggle = () => setOpen(!isOpen);
 
@@ -78,7 +75,7 @@ const Account = () => {
     <Component
       user={user}
       isOpen={isOpen}
-      defaultAvatar={image}
+      defaultAvatar={user?.picture}
       onToggle={toggle}
       onSubmit={upload}
     />

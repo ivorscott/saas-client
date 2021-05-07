@@ -1,11 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { Project } from "../../Project";
-import { useDispatch } from "react-redux";
-import { actions } from "../../Project";
 import styled from "styled-components";
-
-const { setProject } = actions;
 
 interface ParentProps {
   project: Project;
@@ -51,9 +47,7 @@ const Component = ({ project, onClick }: Props) => {
 };
 
 const Card = ({ project }: ParentProps) => {
-  const dispatch = useDispatch();
-  const handleSetProject = () => dispatch(setProject(project));
-  return <Component onClick={handleSetProject} project={project} />;
+  return <Component onClick={() => {}} project={project} />;
 };
 
 export { Card };

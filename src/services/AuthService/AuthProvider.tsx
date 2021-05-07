@@ -6,7 +6,7 @@ const Auth0Provider: React.FC<{ children: any }> = ({ children }) => {
   const isAuthenticated = useAuth();
 
   if (!isAuthenticated) {
-    return <Loading />;
+    return null;
   }
 
   return children;

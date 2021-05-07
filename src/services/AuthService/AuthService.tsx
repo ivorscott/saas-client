@@ -1,5 +1,6 @@
 import { Auth0Client } from "@auth0/auth0-spa-js";
 import { env } from "../../shared/env";
+import { Auth0User } from "./types";
 
 interface AuthOptions {
   auth0_client_id: string;
@@ -60,7 +61,7 @@ class AuthService {
 
   async getAuthDetails() {
     return Promise.all([
-      this.auth0Client.getUser() as Promise<IdentityPayload>,
+      this.auth0Client.getUser() as Promise<Auth0User>,
       this.auth0Client.getTokenSilently() as Promise<string>,
       this.auth0Client.getIdTokenClaims(),
     ])

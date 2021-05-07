@@ -1,4 +1,1 @@
-// import { UpdateTask } from "./UpdateTask";
-
-// export { UpdateTask };
-export { test } from "./UpdateTask";
+export { UpdateTask } from "./UpdateTask";

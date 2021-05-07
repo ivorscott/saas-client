@@ -1,8 +1,5 @@
 import { useState, useEffect } from "react";
-import { actions } from "./reducers";
-import { useDispatch } from "react-redux";
 import { history } from "../../shared/history";
-import { fetchImage } from "../../features/Account/reducer";
 import { client as authClient } from "./AuthService";
 import { client as devpieClient } from "../APIService";
 import { Auth0User, User, UserPayload } from "./types";
@@ -17,8 +14,6 @@ export function useAuth() {
     access_token: string;
     claims: IdToken;
   }>();
-
-  const dispatch = useDispatch();
 
   const create = async (newUser: Partial<User>) => {
     await devpieClient.post("/users", newUser);
@@ -62,7 +57,7 @@ export function useAuth() {
   }, []);
 
   // user react query
-  const { data, isSuccess } = useQuery<UserPayload, UserPayload["error"]>(
+  const { data } = useQuery<UserPayload, UserPayload["error"]>(
     "auth",
     async () => await devpieClient.get("/users/me")
   );
@@ -83,14 +78,7 @@ export function useAuth() {
     return false;
   }
 
-  if (data && isSuccess) {
-    const roles = auth0User?.claims["https://client.devpie.io/claims/roles"];
-    dispatch(actions.authenticateUser({ ...data, roles }));
-    dispatch(fetchImage({ defaultImage: data.picture, id: data.id }));
-    return true;
-  }
-
-  return false;
+  return true;
 }
 
 function transformAuth0User(user: Auth0User): Partial<User> {

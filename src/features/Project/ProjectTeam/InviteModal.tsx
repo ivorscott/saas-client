@@ -6,11 +6,14 @@ import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
+import { history } from "../../../shared/history";
+import { client } from "../../../services/APIService";
+import { Params, Project, Team } from "../types";
+import { useParams } from "react-router-dom";
+import { AxiosError } from "axios";
+import { useQuery } from "react-query";
 
-import { useSelector } from "react-redux";
-import { RootState } from "../../../shared/store";
-
-const InviteModal = ({
+export const InviteModal = ({
   isOpen,
   onClose,
   onInvite,
@@ -20,7 +23,21 @@ const InviteModal = ({
   onInvite: (emailList: string[]) => void;
 }) => {
   const [emailList, setEmail] = useState([""]);
-  const { team } = useSelector((state: RootState) => state.project);
+  const params: Params = useParams();
+
+  const { data: selected, error } = useQuery<Project, AxiosError>(
+    "project",
+    async () => await client.get(`/projects/${params.id}`)
+  );
+
+  if (error) {
+    history.push("/manage/projects");
+  }
+
+  const { data: team } = useQuery<Team, AxiosError>(
+    "team",
+    async () => await client.get(`/users/teams/${selected?.teamId}`)
+  );
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const name = event.target.value;
@@ -63,5 +80,3 @@ const InviteModal = ({
     </Dialog>
   );
 };
-
-export { InviteModal };

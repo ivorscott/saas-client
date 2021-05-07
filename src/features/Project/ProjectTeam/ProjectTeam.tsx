@@ -41,7 +41,7 @@ const StyledAvatars = styled(IconButton)`
 `;
 
 interface Props {
-  team: null | Team;
+  team: Team | undefined;
 }
 
 const ProjectTeam = ({ team }: Props) => {

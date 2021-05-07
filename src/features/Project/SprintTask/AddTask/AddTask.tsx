@@ -1,8 +1,11 @@
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
 import { Button, TextareaAutosize } from "@material-ui/core";
-import { RootState } from "../../../../shared/store";
 import styled from "styled-components";
+import { Params, Project } from "../../types";
+import { AxiosError } from "axios";
+import { useQuery } from "react-query";
+import { client } from "../../../../services/APIService";
+import { useParams } from "react-router";
 
 interface AddTaskProps {
   isEditing: boolean;
@@ -50,7 +53,12 @@ export const AddTask: React.FC<AddTaskProps> = ({
   toggleEditing,
   onAddTask,
 }) => {
-  const { selected } = useSelector((state: RootState) => state.project);
+  const params: Params = useParams();
+  const { data: selected } = useQuery<Project, AxiosError>(
+    "project",
+    async () => await client.get(`/projects/${params.id}`)
+  );
+
   const [task, setTask] = useState("");
 
   const handleSubmit = () => {
@@ -90,6 +98,7 @@ const StyleTextArea = styled(TextareaAutosize)`
   font-size: var(--p16);
   margin: var(--p8);
   width: calc(100% - var(--p34));
+  min-height: var(--p40);
   max-width: calc(100% - var(--p34));
   min-width: calc(100% - var(--p34));
   background: var(--secondary);

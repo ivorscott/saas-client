@@ -2,11 +2,11 @@ import React from "react";
 import { TopBar } from "./TopBar";
 import { SideBar } from "./SideBar";
 import { Copyright } from "@material-ui/icons";
+import { ReactQueryDevtools } from "react-query/devtools";
 import Routes from "./Routes";
 import styled from "styled-components";
 import "./Fonts/Fonts.css";
 import "./App.css";
-import { ReactQueryDevtools } from "react-query/devtools";
 
 export const DevPie = () => {
   return (

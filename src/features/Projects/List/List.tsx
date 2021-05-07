@@ -1,18 +1,11 @@
 import React from "react";
-import { CircularProgress, Fab, Grid } from "@material-ui/core";
-import { Add } from "@material-ui/icons";
-import { Modal } from "../Modal";
+import { CircularProgress, Grid } from "@material-ui/core";
 import { Project } from "../../Project";
 import { Card } from "../Card";
-import { loading, succeeded } from "../../../shared/types";
-import styled from "styled-components";
 
 interface Props {
-  isOpen: boolean;
-  loading: loading;
-  onToggle: () => void;
-  onSubmit: (name: string) => void;
-  projects: Project[];
+  isLoading: boolean;
+  projects: Project[] | undefined;
 }
 
 const renderProjectCards = (projects: Project[]) => {
@@ -21,40 +14,24 @@ const renderProjectCards = (projects: Project[]) => {
   ));
 };
 
-const Header = styled.header`
-  display: flex;
-  justify-content: space-between;
-`;
-
-const List = ({ loading, projects, isOpen, onToggle, onSubmit }: Props) => {
-  return (
-    <Grid container={true} spacing={10}>
+export const List = ({ isLoading, projects }: Props) => {
+  if (isLoading) {
+    return (
       <Grid item={true} xs={12}>
-        <Header>
-          <div>
-            <h1>Projects</h1>
-          </div>
-          <Fab onClick={onToggle} color="secondary" aria-label="Add">
-            <Add />
-          </Fab>
-        </Header>
+        <div style={{ textAlign: "center", marginTop: "25vh" }}>
+          <CircularProgress />
+        </div>
       </Grid>
+    );
+  }
 
+  if (!projects || projects.length === 0) {
+    return null;
+  } else {
+    return (
       <Grid item={true} xs={12}>
-        {loading !== succeeded ? (
-          <div style={{ textAlign: "center", marginTop: "25vh" }}>
-            <CircularProgress />
-          </div>
-        ) : loading === succeeded && projects.length ? (
-          <div>{renderProjectCards(projects)}</div>
-        ) : null}
+        <div>{renderProjectCards(projects)}</div>
       </Grid>
-
-      <Grid item={true} xs={12}>
-        <Modal open={isOpen} onClose={onToggle} onSubmit={onSubmit} />
-      </Grid>
-    </Grid>
-  );
+    );
+  }
 };
-
-export { List };

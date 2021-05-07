@@ -3,19 +3,19 @@ import { IconButton } from "@material-ui/core";
 import { MoreHoriz } from "@material-ui/icons";
 import { useParams } from "react-router-dom";
 import { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { fetchProject, deleteProject, fetchTeam } from "./reducer";
 import { history } from "../../shared/history";
-import { RootState } from "../../shared/store";
 import { SprintBoard } from "./SprintBoard";
 import { Loading } from "../../shared/components/Loading";
 import { ProjectTeam } from "./ProjectTeam";
 import { Params, Project, Team } from "./types";
 import styled from "styled-components";
+import { client } from "../../services/APIService";
+import { useQuery } from "react-query";
+import { AxiosError } from "axios";
 
 interface Props {
-  team: null | Team;
-  project: null | Project;
+  team: Team | undefined;
+  project: Project | undefined;
 }
 
 const Component = ({ project, team }: Props) => {
@@ -62,24 +62,30 @@ const Component = ({ project, team }: Props) => {
 
 export const SelectedProject: React.FC = () => {
   const params: Params = useParams();
-  const dispatch = useDispatch();
 
-  const { team, selected } = useSelector((state: RootState) => state.project);
+  const { data: selected, error } = useQuery<Project, AxiosError>(
+    "project",
+    async () => await client.get(`/projects/${params.id}`)
+  );
 
-  useEffect(() => {
-    const fetch = async ({ id }: Params) => await dispatch(fetchProject(id));
-    fetch(params);
-  }, [params, dispatch]);
+  if (error) {
+    history.push("/manage/projects");
+  }
 
-  useEffect(() => {
-    const fetch = async (teamId: string) => await dispatch(fetchTeam(teamId));
-    selected?.teamId && fetch(selected.teamId);
-  }, [dispatch, selected]);
+  const { data: team } = useQuery<Team, AxiosError>(
+    "team",
+    async () => await client.get(`/users/teams/${selected?.teamId}`)
+  );
 
   // const handleDeleteProject = async () => {
   //   await dispatch(deleteProject(params.id));
   //   history.replace(`/manage/projects`);
   // };
+
+  // Do mutation
+  // export const deleteProject = async (id: string) => {
+  //     return await client.delete(`/projects/${id}`);
+  //   }
 
   return <Component team={team} project={selected} />;
 };
