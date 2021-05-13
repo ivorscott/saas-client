@@ -83,11 +83,11 @@ export const UserMenu = () => {
 };
 
 const StyledButton = styled(Button)`
-  height: var(--p34);
+  height: var(--p32);
   padding: 0;
   margin-left: var(--p8);
   aside {
-    height: var(--p34);
+    height: var(--p32);
   }
   span {
     margin-left: var(--p16);

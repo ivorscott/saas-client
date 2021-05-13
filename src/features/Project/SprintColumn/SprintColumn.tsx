@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import styled from "styled-components";
-import { Add } from "@material-ui/icons";
+import Add from "@material-ui/icons/Add";
+import Badge from "@material-ui/core/Badge";
+import Paper from "@material-ui/core/Paper";
 import { AddTask } from "../SprintTask";
 import { Droppable } from "react-beautiful-dnd";
 import { SprintTask } from "../SprintTask";
-import { Badge, Paper } from "@material-ui/core";
 import { Column, Task, TaskDict } from "../types";
+import styled from "styled-components";
 
 interface Actions {
   onAddTask: (task: string) => void;
@@ -73,7 +74,7 @@ export const SprintColumn = ({
       )}
 
       <Content>
-        <StyledColumn>
+        <StyledColumn className="hide-scrollbar">
           <Droppable droppableId={columnKey}>
             {(
               { innerRef, droppableProps, placeholder },
@@ -101,7 +102,7 @@ const ColumnTitle = styled.div`
   justify-content: space-between;
   align-items: flex-start;
   padding: var(--p16) var(--p8) 0;
-  font-size: var(--p18);
+  font-size: var(--p16);
   font-family: ProximaNova-Bold;
 `;
 const Content = styled.div`
@@ -117,14 +118,14 @@ const StyledColumn = styled.div`
 `;
 const Container = styled(Paper)`
   display: flex;
-  max-width: var(--p414);
-  margin-right: var(--p16);
+  max-width: var(--p384);
+  margin: var(--p4) var(--p16) var(--p4) var(--p4);
   flex-direction: column;
+  scrollbar-width: none;
 
   &:last-child {
-    margin-right: 0;
+    margin-right: var(--p4);
   }
-
   /* mobile first */
   @media only screen and (max-width: 600px) {
     flex: 0 0 70%;

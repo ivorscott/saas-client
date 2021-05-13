@@ -1,7 +1,8 @@
 import React from "react";
 import { CircularProgress, Grid } from "@material-ui/core";
-import { Project } from "../../Project";
 import { Card } from "../Card";
+import styled from "styled-components";
+import { Project } from "../../Project/types";
 
 interface Props {
   isLoading: boolean;
@@ -9,8 +10,9 @@ interface Props {
 }
 
 const renderProjectCards = (projects: Project[]) => {
+  const seq = projects.map((_, idx) => idx);
   return projects.map((project: Project, index: number) => (
-    <Card key={"C-0" + index} project={project} />
+    <Card key={"C-0" + index} project={project} seq={seq[index]} />
   ));
 };
 
@@ -30,8 +32,15 @@ export const List = ({ isLoading, projects }: Props) => {
   } else {
     return (
       <Grid item={true} xs={12}>
-        <div>{renderProjectCards(projects)}</div>
+        <ListContainer>{renderProjectCards(projects)}</ListContainer>
       </Grid>
     );
   }
 };
+
+const ListContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  padding-top: var(--p32);
+`;

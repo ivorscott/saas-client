@@ -1,81 +1,34 @@
-import React from "react";
-import { IconButton } from "@material-ui/core";
-import { MoreHoriz } from "@material-ui/icons";
+import React, { useState, useEffect } from "react";
+import IconButton from "@material-ui/core/IconButton";
+import Add from "@material-ui/icons/Add";
+import MoreHoriz from "@material-ui/icons/MoreHoriz";
 import { useParams } from "react-router-dom";
-import { useEffect } from "react";
 import { history } from "../../shared/history";
 import { SprintBoard } from "./SprintBoard";
 import { Loading } from "../../shared/components/Loading";
 import { ProjectTeam } from "./ProjectTeam";
-import { Params, Project, Team } from "./types";
+import { Memberships, Params, Project, Team } from "./types";
+import {
+  useProject,
+  useTeam,
+  useCreateTeam,
+  useCreateInvite,
+  useTeamMemberships,
+} from "./hooks";
+import { CreateTeamModal } from "./CreateTeamModal";
+import { InviteModal } from "./InviteModal";
 import styled from "styled-components";
-import { client } from "../../services/APIService";
-import { useQuery } from "react-query";
-import { AxiosError } from "axios";
+import { ProjectSettings } from "./ProjectSettings";
 
-interface Props {
-  team: Team | undefined;
-  project: Project | undefined;
-}
-
-const Component = ({ project, team }: Props) => {
-  const [scrolled, setScrolled] = React.useState(false);
-  const handleScroll = () => {
-    const offset = window.scrollY;
-    if (offset > 50) {
-      setScrolled(true);
-    } else {
-      setScrolled(false);
-    }
-  };
-  useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
-  });
-  let navbarClasses = ["proj-management"];
-
-  if (scrolled) {
-    navbarClasses.push("scrolled");
-  }
-
-  if (!project) {
-    return <Loading />;
-  } else {
-    return (
-      <>
-        <Header>
-          <h1>
-            Project/
-            <ProjectName>{project.name}</ProjectName>
-          </h1>
-          <ProjectManagement className={navbarClasses.join(" ")}>
-            <IconButton>
-              <MoreHoriz />
-            </IconButton>
-            <ProjectTeam team={team} />
-          </ProjectManagement>
-        </Header>
-        <SprintBoard project={project} />
-      </>
-    );
-  }
-};
-
-export const SelectedProject: React.FC = () => {
+export const SelectedProject = () => {
   const params: Params = useParams();
 
-  const { data: selected, error } = useQuery<Project, AxiosError>(
-    "project",
-    async () => await client.get(`/projects/${params.id}`)
-  );
+  const selected = useProject(params.id);
 
-  if (error) {
+  if (selected.isError) {
     history.push("/manage/projects");
+    return;
   }
-
-  const { data: team } = useQuery<Team, AxiosError>(
-    "team",
-    async () => await client.get(`/users/teams/${selected?.teamId}`)
-  );
 
   // const handleDeleteProject = async () => {
   //   await dispatch(deleteProject(params.id));
@@ -87,13 +40,137 @@ export const SelectedProject: React.FC = () => {
   //     return await client.delete(`/projects/${id}`);
   //   }
 
-  return <Component team={team} project={selected} />;
+  if (!selected.data) {
+    return null;
+  } else {
+    return <Component project={selected.data} />;
+  }
+};
+
+const Component = ({ project }: { project: Project }) => {
+  let team: Team | undefined;
+  let memberships: Memberships[] | undefined;
+  const params: { id: string } = useParams();
+
+  const [mutateTeam] = useCreateTeam();
+  const [mutateInvite] = useCreateInvite();
+  const [isCreateTeamModalOpen, setCreateTeamModalOpen] = useState(false);
+  const [isInviteModalOpen, setInviteModalOpen] = useState(false);
+  const [isSettingsOpen, setSettingsOpen] = useState(false);
+  const [scrolled, setScrolled] = React.useState(false);
+
+  const selectedTeam = useTeam(project.teamId);
+  if (selectedTeam.isSuccess) {
+    team = selectedTeam.data;
+  }
+
+  const members = useTeamMemberships(team?.id);
+  if (members.isSuccess) {
+    memberships = members.data;
+  }
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+  }, [window]);
+
+  let navbarClasses = ["proj-management"];
+  if (scrolled) {
+    navbarClasses.push("scrolled");
+  }
+
+  const handleModal = async () => {
+    if (!team) {
+      setCreateTeamModalOpen(true);
+    } else {
+      setInviteModalOpen(true);
+    }
+  };
+
+  const handleTeam = async (teamName: string) => {
+    mutateTeam({
+      teamName,
+      projectId: params.id,
+    });
+    setCreateTeamModalOpen(false);
+  };
+
+  const handleInvite = async (emailList: string[]) => {
+    if (team) {
+      mutateInvite({
+        team,
+        emailList,
+      });
+    }
+    setInviteModalOpen(false);
+  };
+
+  const handleScroll = () => {
+    const offset = window.scrollY;
+    if (offset > 50) {
+      setScrolled(true);
+    } else {
+      setScrolled(false);
+    }
+  };
+
+  const toggleSettings = () => setSettingsOpen(!isSettingsOpen);
+
+  if (!project) {
+    return <Loading />;
+  } else {
+    return (
+      <>
+        <Header>
+          <div>
+            <h1>
+              Project/
+              <ProjectName>{project.name}</ProjectName>
+            </h1>
+            <span>{project.description}</span>
+          </div>
+
+          <ProjectManagement className={navbarClasses.join(" ")}>
+            <IconButton onClick={toggleSettings}>
+              <MoreHoriz />
+            </IconButton>
+
+            <MemberManagement>
+              <StyledAdd onClick={handleModal} />
+              {team && (
+                <>
+                  <ProjectTeam team={team} />
+                  <InviteModal
+                    open={isInviteModalOpen}
+                    onClose={() => setInviteModalOpen(false)}
+                    onSubmit={handleInvite}
+                  />
+                </>
+              )}
+            </MemberManagement>
+
+            <CreateTeamModal
+              open={isCreateTeamModalOpen}
+              onClose={() => setCreateTeamModalOpen(false)}
+              onSubmit={handleTeam}
+            />
+          </ProjectManagement>
+        </Header>
+        <SprintBoard project={project} />
+        <ProjectSettings
+          open={isSettingsOpen}
+          project={project}
+          memberships={memberships}
+          onClose={toggleSettings}
+        />
+      </>
+    );
+  }
 };
 
 const Header = styled.header`
   display: flex;
   justify-content: space-between;
-  height: var(--p100);
+  height: var(--p96);
 `;
 const ProjectName = styled.span`
   text-transform: capitalize;
@@ -112,4 +189,17 @@ const ProjectManagement = styled.div`
     position: fixed;
     right: var(--p16);
   }
+`;
+
+const MemberManagement = styled.div`
+  display: flex;
+  align-items: center;
+  padding-top: var(--p16);
+`;
+
+const StyledAdd = styled(Add)`
+  width: var(--p32);
+  height: var(--p32);
+  color: var(--gray7);
+  cursor: pointer;
 `;

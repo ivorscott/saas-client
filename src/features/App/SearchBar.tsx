@@ -1,9 +1,11 @@
 import React from "react";
 import styled from "styled-components";
 
+export const SearchBar = () => <StyledSearchBar placeholder="Search" />;
+
 const StyledSearchBar = styled.input`
-  height: var(--p34);
-  width: var(--p414);
+  height: var(--p32);
+  width: calc(var(--p384) - var(--p16) - var(--p16));
   padding: 0 var(--p16);
   border-radius: 50px;
   background: var(--white2);
@@ -13,5 +15,3 @@ const StyledSearchBar = styled.input`
     background: var(--white1);
   }
 `;
-
-export const SearchBar = () => <StyledSearchBar placeholder="Search" />;

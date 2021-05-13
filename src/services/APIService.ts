@@ -49,16 +49,14 @@ class APIService {
       },
     };
 
-    return fetch(url, options)
-      .then((res) => {
-        const type = res.headers.get("content-type");
-        return type && type.includes("application/json") && res.json();
-      })
-      .catch((error) => {
-        if (error.status >= 400) {
-          throw new Error(`(${error.status})}`);
-        }
-      });
+    return fetch(url, options).then(async (res) => {
+      const type = res.headers.get("content-type");
+      if (!res.ok) {
+        console.log(res);
+        throw new Error(`(${res.status}) ${res.statusText}`);
+      }
+      return type && type.includes("application/json") && res.json();
+    });
   }
 }
 

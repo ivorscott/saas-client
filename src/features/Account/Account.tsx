@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-// import { uploadImage } from "./reducer";
 import { Avatar as AvatarModal } from "./Avatar";
-import { Grid, IconButton } from "@material-ui/core";
+import Grid from "@material-ui/core/Grid";
+import IconButton from "@material-ui/core/IconButton";
 import PhotoCameraIcon from "@material-ui/icons/PhotoCamera";
 import ImageViewer from "../../shared/components/ImageViewer";
 import { useQuery } from "react-query";

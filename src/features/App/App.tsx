@@ -1,11 +1,10 @@
 import React from "react";
-import { TopBar } from "./TopBar";
+import Copyright from "@material-ui/icons/Copyright";
+import { TopBar } from "./TopBar/TopBar";
 import { SideBar } from "./SideBar";
-import { Copyright } from "@material-ui/icons";
 import { ReactQueryDevtools } from "react-query/devtools";
 import Routes from "./Routes";
 import styled from "styled-components";
-import "./Fonts/Fonts.css";
 import "./App.css";
 
 export const DevPie = () => {
@@ -23,7 +22,7 @@ export const DevPie = () => {
       <Footer>
         <Copyright /> <CopyrightText>Powered by DevPie</CopyrightText>
       </Footer>
-      <ReactQueryDevtools position="bottom-right" />
+      <ReactQueryDevtools position="bottom-left" />
     </>
   );
 };
@@ -38,7 +37,7 @@ const Page = styled.div`
 const PageContent = styled.div`
   height: 100vh;
   overflow-x: scroll;
-  padding: var(--p34) 5%;
+  padding: var(--p32) 5%;
 
   @media (max-width: 1400px) {
     padding: var(--p16);
@@ -46,7 +45,9 @@ const PageContent = styled.div`
 `;
 const Footer = styled.div`
   position: relative;
+  z-index: 3;
   padding: var(--p16);
+  height: var(--p48);
   background: var(--blue6);
   display: flex;
   justify-content: flex-start;

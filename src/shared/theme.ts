@@ -22,7 +22,7 @@ export const theme = createMuiTheme({
       main: "#334e68",
     },
     secondary: {
-      main: "#f0f4f8",
+      main: "#65D6AD",
     },
   },
   spacing: (factor) => `${0.25 * factor}rem`,

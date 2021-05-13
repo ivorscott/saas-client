@@ -1,15 +1,28 @@
+import { Grid, CircularProgress } from "@material-ui/core";
 import React from "react";
-import { Loading } from "../../shared/components/Loading";
+import styled from "styled-components";
 import { useAuth } from "./hooks";
 
-const Auth0Provider: React.FC<{ children: any }> = ({ children }) => {
+export const Auth0Provider: React.FC<{ children: any }> = ({ children }) => {
   const isAuthenticated = useAuth();
 
   if (!isAuthenticated) {
-    return null;
+    return (
+      <Grid item={true} xs={12}>
+        <LoaderContainer>
+          <Loader />
+        </LoaderContainer>
+      </Grid>
+    );
   }
 
   return children;
 };
 
-export { Auth0Provider };
+const LoaderContainer = styled.div`
+  text-align: center;
+  margin-top: 50vh;
+`;
+const Loader = styled(CircularProgress)`
+  color: var(--blue7);
+`;

@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import { Button, TextareaAutosize } from "@material-ui/core";
-import styled from "styled-components";
+import Button from "@material-ui/core/Button";
+import TextareaAutosize from "@material-ui/core/TextareaAutosize";
 import { Params, Project } from "../../types";
 import { AxiosError } from "axios";
 import { useQuery } from "react-query";
 import { client } from "../../../../services/APIService";
 import { useParams } from "react-router";
+import styled from "styled-components";
 
 interface AddTaskProps {
   isEditing: boolean;
@@ -28,13 +29,17 @@ const Component = ({ task, isEditing, onClose, onChange, onSubmit }: Props) => {
       <div>
         <StyleTextArea
           value={task}
-          rowsMax={3}
+          maxRows={3}
           maxLength={60}
           onChange={onChange}
           placeholder="Describe the task"
         />
         <Controls>
-          <CloseButton color="secondary" variant="contained" onClick={onClose}>
+          <CloseButton
+            className="opt-out"
+            variant="contained"
+            onClick={onClose}
+          >
             Close
           </CloseButton>
           <SaveButton color="primary" variant="contained" onClick={onSubmit}>
@@ -94,20 +99,20 @@ export const AddTask: React.FC<AddTaskProps> = ({
 };
 
 const StyleTextArea = styled(TextareaAutosize)`
-  font-family: ProximaNovaA-Medium;
+  font-family: ProximaNova-Regular;
   font-size: var(--p16);
   margin: var(--p8);
-  width: calc(100% - var(--p34));
-  min-height: var(--p40);
-  max-width: calc(100% - var(--p34));
-  min-width: calc(100% - var(--p34));
-  background: var(--secondary);
-  padding: var(--p8);
+  width: calc(100% - var(--p32));
+  min-height: var(--p16);
+  max-width: calc(100% - var(--p32));
+  min-width: calc(100% - var(--p32));
+  background: var(--gray1);
+  padding: var(--p16) var(--p8);
   border-radius: var(--p4);
   border: 1px solid var(--gray2);
   &:focus {
     outline: none !important;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.24), 0 1px 3px rgba(0, 0, 0, 0.12) !important;
+    background: var(--white1);
   }
 `;
 
@@ -124,6 +129,9 @@ const SaveButton = styled(Button)`
 const CloseButton = styled(Button)`
   font-family: ProximaNova-Bold;
   color: var(--gray4);
+  &.opt-out {
+    background: var(--gray1);
+  }
   &:hover {
     background: var(--gray2);
   }

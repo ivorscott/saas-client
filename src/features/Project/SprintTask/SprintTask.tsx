@@ -1,14 +1,14 @@
-import { CSSProperties } from "@material-ui/styles";
 import React, { useState } from "react";
+import MoreHoriz from "@material-ui/icons/MoreHoriz";
+import { Task } from "../types";
+import { CSSProperties } from "@material-ui/styles";
 import { UpdateTask } from "./UpdateTask";
-import { MoreHoriz } from "@material-ui/icons";
 import {
   Draggable,
   DraggingStyle,
   NotDraggingStyle,
 } from "react-beautiful-dnd";
 import styled from "styled-components";
-import { Task } from "../types";
 
 interface Actions {
   onDeleteTask: (columnKey: string, taskId: string) => void;
@@ -116,7 +116,7 @@ export { SprintTask };
 
 const TaskKey = styled.div`
   font-family: ProximaNovaA-Bold;
-  font-size: var(--p14);
+  font-size: var(--p16);
   color: var(--blue8);
   text-transform: uppercase;
 `;
@@ -173,7 +173,7 @@ const getItemStyle = (
   draggableStyle: DraggingStyle | NotDraggingStyle | undefined
 ): CSSProperties => ({
   userSelect: "none",
-  minHeight: "var(--p90)",
+  minHeight: "var(--p96)",
   padding: "var(--p8)",
   margin: "var(--p8)",
   borderRadius: "var(--p4)",

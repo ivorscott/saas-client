@@ -5,19 +5,43 @@ export interface Params {
 export interface Project {
   id: string;
   name: string;
-  teamId: string;
+  prefix: string;
+  description: string;
+  teamId?: string;
   userId: string;
   active: string;
   public: string;
   columnOrder: string[];
-  created: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface Team {
   id: string;
   name: string;
   userId: string;
-  created: string;
+  updatedAt: string;
+  createdAt: string;
+}
+
+enum Role {
+  Administrator = "administrator",
+  Editor = "editor",
+  Commenter = "commenter",
+  Viewer = "viewer",
+}
+
+export interface Memberships {
+  id: string;
+  role: Role;
+  userId: string;
+  email: string;
+  picture: string;
+  firstName: string;
+  lastName: string;
+  teamId: string;
+  updatedAt: string;
+  createdAt: string;
 }
 
 export interface Board {

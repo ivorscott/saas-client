@@ -19,20 +19,6 @@ interface Props extends BoardActions {
   columnOrder: string[];
 }
 
-const StyledBoard = styled.div`
-  display: flex;
-  flex: 1;
-  flex-direction: row;
-  justify-content: space-between;
-  height: 80vh;
-  max-width: 100%;
-  margin-top: var(--p8);
-
-  @media (min-width: 1400px) {
-    overflow-x: scroll;
-  }
-`;
-
 const Component = ({
   taskDict,
   columnDict,
@@ -66,7 +52,7 @@ const Component = ({
   );
 };
 
-const SprintBoard: React.FC<{ project: Project }> = ({ project }) => {
+export const SprintBoard: React.FC<{ project: Project }> = ({ project }) => {
   const [board, setBoard] = useState<Board>({ columns: {}, tasks: {} });
   const { columns, tasks } = board;
   useEffect(() => {
@@ -248,4 +234,16 @@ const SprintBoard: React.FC<{ project: Project }> = ({ project }) => {
   );
 };
 
-export { SprintBoard };
+const StyledBoard = styled.div`
+  display: flex;
+  flex: 1;
+  flex-direction: row;
+  justify-content: space-between;
+  height: 80vh;
+  max-width: 100%;
+  margin-top: var(--p8);
+
+  @media (min-width: 1400px) {
+    overflow-x: scroll;
+  }
+`;

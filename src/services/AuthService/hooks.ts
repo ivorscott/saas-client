@@ -6,19 +6,17 @@ import { Auth0User, User, UserPayload } from "./types";
 import { IdToken } from "@auth0/auth0-spa-js";
 import { useQuery } from "react-query";
 
+const MISSING_USER_ID = "users error: missing user id";
+
 export function useAuth() {
   const [isError, setIsError] = useState(false);
-  const [stillAuthenticating, setAuthenticating] = useState(true);
-  const [auth0User, setAuth0User] = useState<{
-    identity: Auth0User;
-    access_token: string;
-    claims: IdToken;
-  }>();
-
-  const create = async (newUser: Partial<User>) => {
-    await devpieClient.post("/users", newUser);
-    window.location.reload();
-  };
+  const [isAuthenticated, setAuthenticated] = useState(false);
+  const [auth0User, setAuth0User] =
+    useState<{
+      identity: Auth0User;
+      access_token: string;
+      claims: IdToken;
+    }>();
 
   useEffect(() => {
     const authenticate = async () => {
@@ -50,19 +48,18 @@ export function useAuth() {
         }
       }
 
-      setAuthenticating(false);
+      setAuthenticated(true);
     };
 
     authenticate();
   }, []);
 
-  // user react query
   const { data } = useQuery<UserPayload, UserPayload["error"]>(
     "auth",
     async () => await devpieClient.get("/users/me")
   );
 
-  if (stillAuthenticating) {
+  if (!isAuthenticated) {
     return false;
   }
 
@@ -70,15 +67,26 @@ export function useAuth() {
     return false;
   }
 
-  // if auth0User exists but the internal user doesn't create user
+  // auth0User exists but internal user id is missing from token
   if (auth0User && data?.error) {
-    const { identity } = auth0User;
-    const newUser = transformAuth0User(identity);
-    create(newUser);
+    if (data?.error === MISSING_USER_ID) {
+      const { identity } = auth0User;
+      const newUser = transformAuth0User(identity);
+      create(newUser);
+    }
     return false;
   }
 
-  return true;
+  if (auth0User?.identity.sub === data?.auth0Id) {
+    return true;
+  }
+
+  return false;
+}
+
+async function create(newUser: Partial<User>) {
+  await devpieClient.post("/users", newUser);
+  window.location.reload();
 }
 
 function transformAuth0User(user: Auth0User): Partial<User> {

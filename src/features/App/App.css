@@ -82,27 +82,19 @@
   --pink2: #ffb8d2;
   --pink1: #ffe3ec;
 
-  --p500: 31.25rem;
-  --p450: 28.125rem;
-  --p425: 26.563rem;
-  --p414: 25.875rem;
-  --p325: 20.313rem;
-  --p300: 18.75rem;
-  --p257: 16.063rem;
-  --p224: 14rem;
-  --p200: 12.5rem;
-  --p100: 6.25rem;
-  --p90: 5.625rem;
-  --p86: 5.375rem;
+  --p768: 48rem;
+  --p640: 40rem;
+  --p512: 32rem;
+  --p384: 24rem;
+  --p256: 16rem;
+  --p192: 12rem;
+  --p128: 8rem;
+  --p96: 6rem;
   --p64: 4rem;
-  --p60: 3.75rem;
-  --p40: 2.5rem;
-  --p34: 2.125rem;
+  --p48: 3rem;
   --p32: 2rem;
   --p24: 1.5rem;
-  --p18: 1.25rem;
   --p16: 1rem;
-  --p14: 0.875rem;
   --p12: 0.75rem;
   --p8: 0.5rem;
   --p4: 0.25rem;
@@ -158,6 +150,22 @@
 
 .scrolled {
   display: none !important;
+}
+
+/* hide scrollbar for chrome */
+html {
+  overflow: scroll;
+  overflow-x: hidden;
+}
+::-webkit-scrollbar {
+  width: 0; /* Remove scrollbar space */
+  background: transparent; /* Optional: just make scrollbar invisible */
+}
+
+.hide-scrollbar {
+  overflow: auto;
+  -ms-overflow-style: none; /* IE 11 */
+  scrollbar-width: none; /* Firefox 64 */
 }
 
 body {

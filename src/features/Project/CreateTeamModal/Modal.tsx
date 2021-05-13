@@ -3,25 +3,32 @@ import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
-import { TextField } from "@material-ui/core";
+import TextField from "@material-ui/core/TextField";
 import styled from "styled-components";
+import { FormControl, InputLabel, Select, MenuItem } from "@material-ui/core";
+import { useProjects } from "../hooks";
 
 interface Props {
   open: boolean;
+  withProjects: boolean;
   onClose: () => void;
-  onSubmit: (name: string) => void;
+  onSubmit: (team: string) => void;
 }
 
-export const Modal = ({ open, onClose, onSubmit }: Props) => {
-  const [name, setName] = useState("");
+export const Modal = ({ open, withProjects, onClose, onSubmit }: Props) => {
+  const [team, setTeam] = useState("");
+  const [project, setProject] = useState("");
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const name = event.target.value;
-    setName(name);
+  const handleTeamChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    event.preventDefault();
+    const team = event.target.value;
+    setTeam(team);
   };
 
-  const handleSubmit = () => {
-    onSubmit && onSubmit(name);
+  const handleProjectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    event.preventDefault();
+    const selectedProjected = event.target.value;
+    setProject(selectedProjected);
   };
 
   return (
@@ -34,21 +41,18 @@ export const Modal = ({ open, onClose, onSubmit }: Props) => {
     >
       <DialogContainer>
         <StyledDialogTitle id="responsive-dialog-title">
-          New Project
+          Create Team
         </StyledDialogTitle>
-        <DialogContentText>
-          A project represents a product deliverable.
-        </DialogContentText>
 
+        <DialogContentText>Team name</DialogContentText>
         <DialogContent>
           <Field
             fullWidth={true}
-            onChange={handleChange}
-            value={name}
+            onChange={handleTeamChange}
             placeholder="Enter a name"
           />
+          {withProjects && <ProjectSelector onChange={handleProjectChange} />}
         </DialogContent>
-
         <StyledDialogActions>
           <Button
             className="opt-out"
@@ -58,12 +62,45 @@ export const Modal = ({ open, onClose, onSubmit }: Props) => {
           >
             Cancel
           </Button>
-          <Button variant="contained" onClick={handleSubmit} color="primary">
+          <Button
+            variant="contained"
+            onClick={() => onSubmit(team)}
+            color="primary"
+          >
             Create
           </Button>
         </StyledDialogActions>
       </DialogContainer>
     </StyledDialog>
+  );
+};
+
+const ProjectSelector = ({
+  onChange,
+}: {
+  onChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
+}) => {
+  const projects = useProjects();
+  if (!projects.data || projects.data.length === 0) {
+    return null;
+  }
+  return (
+    <StyledFormControl fullWidth={true}>
+      <DialogContentText>
+        <span>
+          Project <small>(Optional)</small>
+        </span>
+      </DialogContentText>
+
+      <Select className="field" displayEmpty onChange={onChange}>
+        <MenuItem value="">
+          <em>None</em>
+        </MenuItem>
+        {projects.data.map((project, idx) => (
+          <MenuItem value={`${idx}0`}>{project.name}</MenuItem>
+        ))}
+      </Select>
+    </StyledFormControl>
   );
 };
 
@@ -131,5 +168,12 @@ const StyledDialogActions = styled.div`
       color: var(--gray9);
       background: var(--gray2);
     }
+  }
+`;
+
+const StyledFormControl = styled(FormControl)`
+  margin-top: var(--p16);
+  .field > div {
+    padding: var(--p8);
   }
 `;

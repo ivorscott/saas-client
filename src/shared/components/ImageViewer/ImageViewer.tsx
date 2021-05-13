@@ -20,7 +20,7 @@ interface State {
 }
 
 const StyledImage = styled.img`
-  height: 34px;
+  height: var(--p32);
   border-radius: 50px;
 `;
 
