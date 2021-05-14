@@ -10,7 +10,7 @@ import { useProjects } from "../hooks";
 
 interface Props {
   open: boolean;
-  withProjects: boolean;
+  withProjects?: boolean;
   onClose: () => void;
   onSubmit: (team: string) => void;
 }
@@ -25,7 +25,7 @@ export const Modal = ({ open, withProjects, onClose, onSubmit }: Props) => {
     setTeam(team);
   };
 
-  const handleProjectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleProjectChange = (event: React.ChangeEvent<{ value: string }>) => {
     event.preventDefault();
     const selectedProjected = event.target.value;
     setProject(selectedProjected);

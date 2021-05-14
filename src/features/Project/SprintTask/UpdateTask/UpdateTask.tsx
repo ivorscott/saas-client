@@ -1,16 +1,18 @@
 import React, { useState } from "react";
+import { useProject, useTeamMemberships } from "../../hooks";
+import { useParams } from "react-router-dom";
 import MoreHoriz from "@material-ui/icons/MoreHoriz";
 import Close from "@material-ui/icons/Close";
 import IconButton from "@material-ui/core/IconButton";
 import TextareaAutosize from "@material-ui/core/TextareaAutosize";
 import TextField from "@material-ui/core/TextField";
 import { Task } from "../../types";
-import styled from "styled-components";
 import { Button } from "@material-ui/core";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
-import { useTeamMemberships } from "../../hooks";
 import FormControl from "@material-ui/core/FormControl";
+import styled from "styled-components";
+import dayjs from "dayjs";
 
 interface Actions {
   onTaskDelete: () => void;
@@ -26,41 +28,24 @@ interface Props extends Actions {
 export const UpdateTask = ({
   task,
   open,
-  onTaskUpdate,
-  onTaskDelete,
   onTaskToggle,
+  onTaskDelete,
+  onTaskUpdate,
 }: Props) => {
-  const handleSubmit = (task: Task) => {
-    console.log("submitted", task);
-    // grab state
-    //   onTaskUpdate(updatedTask)
+  const initialState = task;
+  const [updatedTask, updateTask] = useState(initialState);
+  const [isEditing, setEditing] = useState(false);
+
+  const toggleEditing = () => {
+    updateTask(initialState);
+    setEditing(!isEditing);
   };
 
-  return (
-    <Panel
-      open={open}
-      task={task}
-      onClose={onTaskToggle}
-      onSubmit={handleSubmit}
-    />
-  );
-};
-
-interface PanelProps {
-  open: boolean;
-  task: Task;
-  onClose: () => void;
-  onSubmit: (task: Task) => void;
-}
-
-const Panel = ({ task, open, onClose, onSubmit }: PanelProps) => {
-  const [updatedTask, updateTask] = useState(task);
-  const [isEditing, setEditing] = useState(false);
-  const toggleEditing = () => setEditing(!isEditing);
-  // const memberships = ()=> useTeamMemberships()
-  //TODO: add to select dropdown
-
-  const handleAssigneeChange = () => {};
+  const handleAssigneeChange = (
+    event: React.ChangeEvent<{ value: string }>
+  ) => {
+    updateTask({ ...updatedTask, assignedTo: event.target.value });
+  };
 
   const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     updateTask({ ...updatedTask, title: event.target.value });
@@ -79,7 +64,14 @@ const Panel = ({ task, open, onClose, onSubmit }: PanelProps) => {
   };
 
   const handleSubmit = () => {
-    onSubmit(updatedTask);
+    const { id, key, updatedAt, seq, createdAt, ...updates } = updatedTask;
+    onTaskUpdate(updatedTask);
+    toggleEditing();
+  };
+
+  const handleClose = () => {
+    toggleEditing();
+    onTaskToggle();
   };
 
   if (open) {
@@ -98,7 +90,7 @@ const Panel = ({ task, open, onClose, onSubmit }: PanelProps) => {
                 <StyledIconButton size="small">
                   <MoreHoriz />
                 </StyledIconButton>
-                <StyledIconButton size="small" onClick={onClose}>
+                <StyledIconButton size="small" onClick={handleClose}>
                   <Close fontSize="small" />
                 </StyledIconButton>
               </StyleSettings>
@@ -107,40 +99,34 @@ const Panel = ({ task, open, onClose, onSubmit }: PanelProps) => {
           </div>
 
           {isEditing ? (
-            <Field
+            <TitleField
               fullWidth={true}
               onChange={handleTitleChange}
               value={updatedTask.title}
               placeholder="Enter a name"
             />
           ) : (
-            <PanelTitle>{updatedTask.title}</PanelTitle>
+            <PanelTitle onDoubleClick={toggleEditing}>
+              {updatedTask.title}
+            </PanelTitle>
           )}
           <PanelSection>
-            <div className="inline">
+            <StyledAssignedTo className="inline">
               <h3>Assigned to:</h3>
               {isEditing ? (
-                <StyledFormControl fullWidth={true}>
-                  <Select
-                    className="field"
-                    displayEmpty
+                <StyledFormControl>
+                  <SelectAssignees
+                    value={updatedTask.assignedTo ? updatedTask.assignedTo : ""}
                     onChange={handleAssigneeChange}
-                  >
-                    <MenuItem value="">
-                      <em>None</em>
-                    </MenuItem>
-                    {/* {memberships.data.map((member, idx) => (
-                      <MenuItem value={`${idx}0`}>{member.firstName+ " " + (member.lastName || "")}</MenuItem>
-                    ))} */}
-                  </Select>
+                  />
                 </StyledFormControl>
               ) : (
-                <span>{task.assignedTo}</span>
+                <span>{updatedTask.assignedTo}</span>
               )}
-            </div>
+            </StyledAssignedTo>
             <div className="inline">
               <h3>Created:</h3>
-              <span>{task.createdAt}</span>
+              <span>{dayjs(task.createdAt).format("dddd, MMMM D YYYY")}</span>
             </div>
           </PanelSection>
           <PanelSection>
@@ -179,7 +165,7 @@ const Panel = ({ task, open, onClose, onSubmit }: PanelProps) => {
               <CloseButton
                 className="opt-out"
                 variant="contained"
-                onClick={onClose}
+                onClick={toggleEditing}
               >
                 Close
               </CloseButton>
@@ -199,6 +185,34 @@ const Panel = ({ task, open, onClose, onSubmit }: PanelProps) => {
   return null;
 };
 
+const SelectAssignees = ({
+  value,
+  onChange,
+}: {
+  value: string;
+  onChange: (event: React.ChangeEvent<{ value: string }>) => void;
+}) => {
+  const params: { id: string } = useParams();
+  const { data: project } = useProject(params.id);
+  const { data, isError } = useTeamMemberships(project?.teamId);
+
+  if (!data || isError) {
+    return null;
+  }
+  return (
+    <Select className="field" displayEmpty value={value} onChange={onChange}>
+      <MenuItem value="">
+        <em>None</em>
+      </MenuItem>
+      {data.map((member) => (
+        <MenuItem key={member.id} value={member.id}>
+          {member.firstName + " " + (member.lastName || "")}
+        </MenuItem>
+      ))}
+    </Select>
+  );
+};
+
 const PanelPosition = styled.div`
   position: absolute;
   top: var(--p64);
@@ -216,8 +230,8 @@ const PanelContainer = styled.div`
 
 const PanelTitle = styled.div`
   font-family: ProximaNova-Bold;
-  font-size: var(--p24);
-  margin: var(--p16) 0 var(--p16);
+  font-size: var(--p16);
+  margin: var(--p16) 0 var(--p24);
 `;
 
 const PanelDescription = styled.div``;
@@ -243,7 +257,7 @@ const StyleSettings = styled.div`
 `;
 
 const PanelSection = styled.section`
-  margin-bottom: var(--p16);
+  margin-bottom: var(--p24);
   h3 {
     font-family: ProximaNova-Semibold;
     color: var(--gray6);
@@ -251,7 +265,7 @@ const PanelSection = styled.section`
   .inline {
     display: flex;
     align-items: center;
-    margin-bottom: var(--p16);
+    margin-bottom: var(--p24);
   }
   .inline h3 {
     margin: 0;
@@ -266,11 +280,11 @@ const PanelSection = styled.section`
 
 const AttachmentRegion = styled.div`
   padding: var(--p8);
-  border-radius: var(--p4);
   border: 1px solid var(--gray2);
   display: flex;
   justify-content: center;
   font-size: var(--p16);
+  border-radius: 4px;
 `;
 
 const StyleTextArea = styled(TextareaAutosize)`
@@ -280,33 +294,50 @@ const StyleTextArea = styled(TextareaAutosize)`
   min-height: var(--p16);
   max-width: calc(100% - var(--p16));
   min-width: calc(100% - var(--p16));
-  background: var(--secondary);
   padding: var(--p16) var(--p8);
-  border-radius: var(--p4);
   border: 1px solid var(--gray2);
+  border-radius: 4px;
   &:focus {
-    outline: none !important;
-    background: var(--white1);
+    outline: none;
+    border: 1px solid var(--gray7);
   }
 `;
 
-const Field = styled(TextField)`
-  background: var(--secondary);
-  border-radius: var(--p4);
-  border: 1px solid var(--gray2);
+const TitleField = styled(TextField)`
+  margin: var(--p16) 0 var(--p16);
+
   & fieldset {
     border: none;
   }
-  & input {
-    font-family: ProximaNova-Regular;
+
+  & input,
+  input:focus {
     font-size: var(--p16);
-    padding: var(--p16) var(--p8);
+    font-family: ProximaNova-Bold;
+    border-radius: 4px;
+    padding: 0 var(--p8);
+  }
+  & input {
+    border: 1px solid var(--gray2);
   }
   & input:focus {
     outline: none;
-    border: none;
-    background: var(--white1);
-    border-radius: var(--p4);
+    border: 1px solid var(--gray7);
+  }
+`;
+
+const StyledFormControl = styled(FormControl)`
+  .field > div {
+    padding: var(--p8);
+    width: var(--p192);
+  }
+`;
+
+const StyledAssignedTo = styled.div`
+  display: flex;
+  align-items: center;
+  h3 {
+    min-width: var(--p96);
   }
 `;
 
@@ -358,12 +389,5 @@ const Controls = styled.div`
   button {
     margin: var(--p8);
     width: var(--p96);
-  }
-`;
-
-const StyledFormControl = styled(FormControl)`
-  margin-top: var(--p16);
-  .field > div {
-    padding: var(--p8);
   }
 `;

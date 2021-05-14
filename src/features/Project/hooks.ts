@@ -5,7 +5,7 @@ import { Memberships, Project, Team } from "./types";
 import { history } from "../../shared/history";
 
 export function useProject(projectId: string) {
-  return useQuery<Project>(
+  return useQuery<Project, Error>(
     ["project", projectId],
     async () => await api.get(`/projects/${projectId}`)
   );
@@ -51,7 +51,6 @@ export function useUpdateProject() {
       }),
     {
       onSuccess: (data) => {
-        console.log("======>", data);
         queryClient.setQueryData(["project", data.id], data);
       },
     }
@@ -60,7 +59,7 @@ export function useUpdateProject() {
 }
 
 export function useTeamMemberships(teamId?: string) {
-  return useQuery<Memberships[]>(["memberships", teamId], async () => {
+  return useQuery<Memberships[], Error>(["memberships", teamId], async () => {
     if (teamId) {
       return await api.get(`/users/teams/${teamId}/members`);
     }
@@ -85,7 +84,7 @@ export function useAllTeamMemberships(teamIds?: (string | undefined)[]) {
 }
 
 export function useTeam(teamId?: string) {
-  return useQuery<Team>(["team", teamId], async () => {
+  return useQuery<Team, Error>(["team", teamId], async () => {
     if (teamId) {
       return await api.get(`/users/teams/${teamId}`);
     }
@@ -94,7 +93,7 @@ export function useTeam(teamId?: string) {
 }
 
 export function useTeams() {
-  return useQuery<Team[]>(["teams"], async () => {
+  return useQuery<Team[], Error>(["teams"], async () => {
     return await api.get(`/users/teams`);
   });
 }
@@ -125,10 +124,10 @@ export function useCreateInvite() {
   const { mutate } = useMutation<
     Invite,
     Error,
-    { team: Team; emailList: string[] }
+    { teamId: string; emailList: string[] }
   >(
-    ({ team, emailList }) =>
-      api.post(`/users/teams/${team?.id}/invites`, {
+    ({ teamId, emailList }) =>
+      api.post(`/users/teams/${teamId}/invites`, {
         emailList,
       }),
     {

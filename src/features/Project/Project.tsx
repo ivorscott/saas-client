@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import IconButton from "@material-ui/core/IconButton";
-import Add from "@material-ui/icons/Add";
 import MoreHoriz from "@material-ui/icons/MoreHoriz";
 import { useParams } from "react-router-dom";
 import { history } from "../../shared/history";
@@ -8,17 +7,9 @@ import { SprintBoard } from "./SprintBoard";
 import { Loading } from "../../shared/components/Loading";
 import { ProjectTeam } from "./ProjectTeam";
 import { Memberships, Params, Project, Team } from "./types";
-import {
-  useProject,
-  useTeam,
-  useCreateTeam,
-  useCreateInvite,
-  useTeamMemberships,
-} from "./hooks";
-import { CreateTeamModal } from "./CreateTeamModal";
-import { InviteModal } from "./InviteModal";
-import styled from "styled-components";
 import { ProjectSettings } from "./ProjectSettings";
+import { useProject, useTeam, useTeamMemberships } from "./hooks";
+import styled from "styled-components";
 
 export const SelectedProject = () => {
   const params: Params = useParams();
@@ -50,14 +41,8 @@ export const SelectedProject = () => {
 const Component = ({ project }: { project: Project }) => {
   let team: Team | undefined;
   let memberships: Memberships[] | undefined;
-  const params: { id: string } = useParams();
 
-  const [mutateTeam] = useCreateTeam();
-  const [mutateInvite] = useCreateInvite();
-  const [isCreateTeamModalOpen, setCreateTeamModalOpen] = useState(false);
-  const [isInviteModalOpen, setInviteModalOpen] = useState(false);
   const [isSettingsOpen, setSettingsOpen] = useState(false);
-  const [scrolled, setScrolled] = React.useState(false);
 
   const selectedTeam = useTeam(project.teamId);
   if (selectedTeam.isSuccess) {
@@ -68,50 +53,6 @@ const Component = ({ project }: { project: Project }) => {
   if (members.isSuccess) {
     memberships = members.data;
   }
-
-  useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
-  }, [window]);
-
-  let navbarClasses = ["proj-management"];
-  if (scrolled) {
-    navbarClasses.push("scrolled");
-  }
-
-  const handleModal = async () => {
-    if (!team) {
-      setCreateTeamModalOpen(true);
-    } else {
-      setInviteModalOpen(true);
-    }
-  };
-
-  const handleTeam = async (teamName: string) => {
-    mutateTeam({
-      teamName,
-      projectId: params.id,
-    });
-    setCreateTeamModalOpen(false);
-  };
-
-  const handleInvite = async (emailList: string[]) => {
-    if (team) {
-      mutateInvite({
-        team,
-        emailList,
-      });
-    }
-    setInviteModalOpen(false);
-  };
-
-  const handleScroll = () => {
-    const offset = window.scrollY;
-    if (offset > 50) {
-      setScrolled(true);
-    } else {
-      setScrolled(false);
-    }
-  };
 
   const toggleSettings = () => setSettingsOpen(!isSettingsOpen);
 
@@ -128,32 +69,16 @@ const Component = ({ project }: { project: Project }) => {
             </h1>
             <span>{project.description}</span>
           </div>
-
-          <ProjectManagement className={navbarClasses.join(" ")}>
-            <IconButton onClick={toggleSettings}>
-              <MoreHoriz />
-            </IconButton>
-
-            <MemberManagement>
-              <StyledAdd onClick={handleModal} />
-              {team && (
-                <>
-                  <ProjectTeam team={team} />
-                  <InviteModal
-                    open={isInviteModalOpen}
-                    onClose={() => setInviteModalOpen(false)}
-                    onSubmit={handleInvite}
-                  />
-                </>
-              )}
-            </MemberManagement>
-
-            <CreateTeamModal
-              open={isCreateTeamModalOpen}
-              onClose={() => setCreateTeamModalOpen(false)}
-              onSubmit={handleTeam}
-            />
-          </ProjectManagement>
+          <ProjectControls>
+            <div>
+              <StyledIconButton size="small" onClick={toggleSettings}>
+                <MoreHoriz />
+              </StyledIconButton>
+            </div>
+            <TeamControls>
+              <ProjectTeam project={project} />
+            </TeamControls>
+          </ProjectControls>
         </Header>
         <SprintBoard project={project} />
         <ProjectSettings
@@ -171,35 +96,27 @@ const Header = styled.header`
   display: flex;
   justify-content: space-between;
   height: var(--p96);
+  margin: 0 var(--p8);
+  position: relative;
 `;
 const ProjectName = styled.span`
   text-transform: capitalize;
   font-family: ProximaNova-Light;
 `;
+const StyledIconButton = styled(IconButton)`
+  padding: 0 var(--p4);
+  border-radius: var(--p4);
+  margin: var(--p16) 0;
+`;
 
-const ProjectManagement = styled.div`
+const ProjectControls = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  justify-content: flex-end;
-  position: relative;
-  z-index: 1;
 
-  @media only screen and (max-width: 1400px) {
+  @media (max-width: 1400px) {
     position: fixed;
     right: var(--p16);
   }
 `;
-
-const MemberManagement = styled.div`
-  display: flex;
-  align-items: center;
-  padding-top: var(--p16);
-`;
-
-const StyledAdd = styled(Add)`
-  width: var(--p32);
-  height: var(--p32);
-  color: var(--gray7);
-  cursor: pointer;
-`;
+const TeamControls = styled.div``;

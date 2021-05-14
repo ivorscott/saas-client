@@ -35,6 +35,9 @@ export const updateTask = async ({ taskId, task }: UpdateTask) => {
   return (await client.patch(`/projects/tasks/${taskId}`, {
     title: task.title,
     content: task.content,
+    assignedTo: task.assignedTo,
+    attachments: task.attachments,
+    comments: task.comments,
   })) as Task;
 };
 

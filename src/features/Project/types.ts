@@ -92,6 +92,9 @@ export interface UpdateTask {
   task: {
     title: string;
     content: string;
+    assignedTo: string;
+    attachments: string[];
+    comments: string[];
   };
 }
 

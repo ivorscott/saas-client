@@ -1,38 +1,128 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { Add } from "@material-ui/icons";
 import { IconButton } from "@material-ui/core";
-import { Team } from "./types";
-import { useTeamMemberships } from "./hooks";
+import { useParams } from "react-router-dom";
+import { useCreateInvite, useCreateTeam, useTeamMemberships } from "./hooks";
+import { CreateTeamModal } from "./CreateTeamModal";
+import { InviteModal } from "./InviteModal";
+import { getInitials } from "../../shared/helpers";
 import styled from "styled-components";
+import { Project } from "./types";
 
 interface Props {
-  team: Team;
+  project: Project;
 }
 
-function getInitials(firstName: string, lastName: string) {
-  return firstName.substring(0, 1) + (lastName || "").substring(0, 1);
-}
+export const ProjectTeam = (props: Props) => {
+  const {
+    data: memberships,
+    isLoading,
+    isError,
+  } = useTeamMemberships(props.project.teamId);
+  const [scrolled, setScrolled] = React.useState(false);
+  const [isModalOpen, setModalOpen] = useState(false);
 
-export const ProjectTeam = ({ team }: Props) => {
-  const { data, isError } = useTeamMemberships(team.id);
+  const handleScroll = () => {
+    const offset = window.scrollY;
+    if (offset > 50) {
+      setScrolled(true);
+    } else {
+      setScrolled(false);
+    }
+  };
 
-  if (!data || isError) {
-    return null;
-  } else {
-    return (
-      <StyledMembers>
-        {data.map(({ id, picture, firstName, lastName }) => {
-          return picture ? (
-            <StyledImage key={id} src={picture} />
-          ) : (
-            <StyledAvatars key={id}>
-              {getInitials(firstName, lastName)}
-            </StyledAvatars>
-          );
-        })}
-      </StyledMembers>
-    );
+  const toggleModalOpen = async () => setModalOpen(!isModalOpen);
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+  }, [window]);
+
+  let classes = ["proj-management"];
+  if (scrolled) {
+    classes.push("scrolled");
   }
+
+  if (isLoading || isError) {
+    return null;
+  }
+
+  return (
+    <Container className={classes.join(" ")}>
+      <StyledAdd onClick={toggleModalOpen} />
+      {memberships && memberships.length > 0 && (
+        <StyledMembers>
+          {memberships.map(({ id, picture, firstName, lastName }) => {
+            return picture ? (
+              <StyledImage key={id} src={picture} />
+            ) : (
+              <StyledAvatars key={id}>
+                {getInitials(firstName, lastName)}
+              </StyledAvatars>
+            );
+          })}
+        </StyledMembers>
+      )}
+
+      <TeamModals
+        isOpen={isModalOpen}
+        teamId={props.project.teamId}
+        onClose={toggleModalOpen}
+      />
+    </Container>
+  );
 };
+
+const TeamModals = (props: {
+  teamId?: string;
+  isOpen: boolean;
+  onClose: () => void;
+}) => {
+  const params: { id: string } = useParams();
+  const [mutateTeam] = useCreateTeam();
+  const [mutateInvite] = useCreateInvite();
+
+  const handleTeam = async (teamName: string) => {
+    mutateTeam({ teamName, projectId: params.id });
+    props.onClose();
+  };
+
+  const handleInvite = async (emailList: string[]) => {
+    if (props.teamId) {
+      mutateInvite({ teamId: props.teamId, emailList });
+    }
+    props.onClose();
+  };
+
+  const teamExists = !!props.teamId;
+
+  return (
+    <>
+      <CreateTeamModal
+        open={props.isOpen && !teamExists}
+        onClose={props.onClose}
+        onSubmit={handleTeam}
+      />
+
+      <InviteModal
+        open={props.isOpen && teamExists}
+        onClose={props.onClose}
+        onSubmit={handleInvite}
+      />
+    </>
+  );
+};
+
+const Container = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const StyledAdd = styled(Add)`
+  width: var(--p32);
+  height: var(--p32);
+  color: var(--gray7);
+  cursor: pointer;
+`;
 
 const StyledMembers = styled.div`
   width: 100%;

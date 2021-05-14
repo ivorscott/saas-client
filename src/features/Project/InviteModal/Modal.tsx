@@ -1,18 +1,15 @@
 import React, { useEffect, useState } from "react";
+import md5 from "md5";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Close from "@material-ui/icons/Close";
 import TextField from "@material-ui/core/TextField";
-import { AxiosError } from "axios";
-import { useQuery } from "react-query";
+import { Params } from "../types";
 import { useParams } from "react-router";
-import { client as api } from "../../../services/APIService";
-import { Params, Project, Team } from "../types";
-import { history } from "../../../shared/history";
-import md5 from "md5";
 import { placeholder } from "../../../shared/components/ImageViewer/placeholder";
+import { useProject, useTeam } from "../hooks";
 import styled from "styled-components";
 
 interface Props {
@@ -26,25 +23,15 @@ interface PrettyEmail {
   image: string;
 }
 
+const defaultImage =
+  "https://devpie-client-local.s3.eu-central-1.amazonaws.com/public/default.png";
+
 export const Modal = ({ open, onClose, onSubmit }: Props) => {
+  const params: Params = useParams();
   const [emailList, setEmailList] = useState<string[]>([]);
   const [prettyList, setPrettyEmailList] = useState<PrettyEmail[]>([]);
-  const params: Params = useParams();
-  const defaultImage =
-    "https://devpie-client-local.s3.eu-central-1.amazonaws.com/public/default.png";
-  const { data: selected, error } = useQuery<Project, AxiosError>(
-    "project",
-    async () => await api.get(`/projects/${params.id}`)
-  );
-
-  if (error) {
-    history.push("/manage/projects");
-  }
-
-  const { data: team } = useQuery<Team, AxiosError>(
-    "team",
-    async () => await api.get(`/users/teams/${selected?.teamId}`)
-  );
+  const { data: project } = useProject(params.id);
+  const { data: team } = useTeam(project?.teamId);
 
   useEffect(() => {
     const renderedEmails = prettyList.map((item) => item.email);
@@ -52,11 +39,10 @@ export const Modal = ({ open, onClose, onSubmit }: Props) => {
     emailList.map(async (email) => {
       const hash = md5(email.trim().toLocaleLowerCase());
       try {
-        // fix cors policy so gravatar doesn't fail
+        // fix cors policy so gravatar doesn't fail communicating with s3 bucket
         const data = await fetch(
           `https://www.gravatar.com/avatar/${hash}?d=${encodeURI(defaultImage)}`
         );
-        console.log(data);
         if (!renderedEmails.includes(email)) {
           setPrettyEmailList([...prettyList, { email, image: data.url }]);
         }
@@ -68,13 +54,14 @@ export const Modal = ({ open, onClose, onSubmit }: Props) => {
     });
   }, [emailList]);
 
-  const keyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.code === "Enter") {
-      console.log("value", event.target.value);
-      if (!emailList.includes(event.target.value)) {
-        setEmailList([...emailList, event.target.value]);
+  const keyPress = (event: React.KeyboardEvent) => {
+    const target = event.target as HTMLInputElement;
+
+    if (event.key === "Enter") {
+      if (!emailList.includes(target.value)) {
+        setEmailList([...emailList, target.value]);
       }
-      event.target.value = "";
+      target.value = "";
     }
   };
 
@@ -126,7 +113,7 @@ export const Modal = ({ open, onClose, onSubmit }: Props) => {
         <DialogContent>
           <Field
             fullWidth={true}
-            onKeyDown={keyPress}
+            onKeyPress={keyPress}
             placeholder="Enter email address"
           />
           {renderPrettyEmails()}
@@ -158,7 +145,7 @@ const DialogContainer = styled.div`
 `;
 
 const DialogContent = styled.div`
-  min-height: var(--p192);
+  min-height: var(--p128);
 `;
 
 const StyledDialogTitle = styled(DialogTitle)`

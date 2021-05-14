@@ -2,13 +2,12 @@ import React, { useState } from "react";
 import MoreHoriz from "@material-ui/icons/MoreHoriz";
 import Close from "@material-ui/icons/Close";
 import IconButton from "@material-ui/core/IconButton";
-import TextareaAutosize from "@material-ui/core/TextareaAutosize";
 import TextField from "@material-ui/core/TextField";
 import Switch from "@material-ui/core/Switch";
 import { Memberships, Project } from "./types";
 import styled from "styled-components";
 import { MembersTable } from "./MembersTable";
-import { useUpdateProject, UpdateProject } from "./hooks";
+import { useUpdateProject } from "./hooks";
 import { Button } from "@material-ui/core";
 
 interface Actions {
@@ -39,7 +38,10 @@ export const ProjectSettings = ({
   const [isEditing, setEditing] = useState(false);
   const [formValues, setFormValues] = useState<FormValues>(initialState);
   const [updateProject] = useUpdateProject();
-  const toggleEditing = () => setEditing(!isEditing);
+  const toggleEditing = () => {
+    setFormValues(initialState);
+    setEditing(!isEditing);
+  };
 
   const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
@@ -81,8 +83,8 @@ export const ProjectSettings = ({
   };
 
   const handleClose = () => {
-    setFormValues(initialState);
     toggleEditing();
+    onClose();
   };
 
   if (open) {
@@ -106,7 +108,7 @@ export const ProjectSettings = ({
                 <StyledIconButton size="small">
                   <MoreHoriz />
                 </StyledIconButton>
-                <StyledIconButton size="small" onClick={onClose}>
+                <StyledIconButton size="small" onClick={handleClose}>
                   <Close fontSize="small" />
                 </StyledIconButton>
               </StyleSettings>
@@ -185,7 +187,7 @@ export const ProjectSettings = ({
               <CloseButton
                 className="opt-out"
                 variant="contained"
-                onClick={handleClose}
+                onClick={toggleEditing}
               >
                 Close
               </CloseButton>

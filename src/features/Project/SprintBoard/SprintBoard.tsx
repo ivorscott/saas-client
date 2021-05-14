@@ -90,10 +90,17 @@ export const SprintBoard: React.FC<{ project: Project }> = ({ project }) => {
     };
 
     setBoard({ columns, tasks: taskDict });
-    const { id: taskId, title, content } = newTask;
+    const {
+      id: taskId,
+      title,
+      content,
+      assignedTo,
+      attachments,
+      comments,
+    } = newTask;
     await updateTask({
       taskId,
-      task: { title, content },
+      task: { title, content, assignedTo, attachments, comments },
     });
   };
 
