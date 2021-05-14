@@ -197,7 +197,12 @@ const SelectAssignees = ({
     return null;
   }
   return (
-    <Select className="field" displayEmpty value={value} onChange={onChange}>
+    <Select
+      className="field"
+      displayEmpty
+      value={value ? value : ""}
+      onChange={onChange}
+    >
       <MenuItem value="">
         <em>None</em>
       </MenuItem>
@@ -249,6 +254,8 @@ const StyleTextArea = styled(TextareaAutosize)`
   background: var(--secondary);
   border: 1px solid var(--gray2);
   border-radius: 4px;
+  color: var(--gray10);
+
   &:focus {
     outline: none;
     background: var(--white1);
@@ -257,8 +264,13 @@ const StyleTextArea = styled(TextareaAutosize)`
 
 const StyledFormControl = styled(FormControl)`
   .field > div {
-    padding: var(--p8);
+    padding: var(--p4) var(--p8);
     width: var(--p192);
+    color: var(--gray10);
+  }
+
+  .field fieldset {
+    border: 1px solid var(--gray1);
   }
 `;
 

@@ -97,7 +97,6 @@ const SprintTask: React.FC<SprintTaskProps> = ({
 
   const handleTaskUpdate = (values: any) => {
     onUpdateTask(columnKey, { ...task, ...values });
-    setOpen(!isOpen);
   };
 
   return (

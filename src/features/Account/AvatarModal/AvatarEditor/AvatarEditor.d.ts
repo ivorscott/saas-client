@@ -116,8 +116,8 @@ export interface Props {
   onClose?: () => void;
 }
 
-declare class Avatar extends React.Component<Props> {
+declare class AvatarEditor extends React.Component<Props> {
   constructor(props: Props);
 }
 
-export default Avatar;
+export default AvatarEditor;

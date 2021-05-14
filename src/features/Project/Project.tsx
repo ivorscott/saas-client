@@ -12,17 +12,13 @@ import { MoreOptions } from "../../components/MoreOptions";
 export const SelectedProject = () => {
   const params: Params = useParams();
 
-  const { data, isError } = useProject(params.id);
+  const selected = useProject(params.id);
 
-  if (!data || isError) {
+  if (selected.isError) {
     history.push("/manage/projects");
-    return null;
+    return;
   }
 
-  return <ProjectComponent project={data} />;
-};
-
-const ProjectComponent = ({ project }: { project: Project }) => {
   // const handleDeleteProject = async () => {
   //   await dispatch(deleteProject(params.id));
   //   history.replace(`/manage/projects`);
@@ -33,26 +29,30 @@ const ProjectComponent = ({ project }: { project: Project }) => {
   //     return await client.delete(`/projects/${id}`);
   //   }
 
-  if (!project) {
+  if (!selected.data) {
     return null;
   } else {
-    return (
-      <>
-        <ProjectHeader>
-          <div>
-            <h1>
-              Project/
-              <span className="name">{project.name}</span>
-            </h1>
-            <span>{project.description}</span>
-          </div>
-          <Settings project={project} />
-        </ProjectHeader>
-
-        <SprintBoard project={project} />
-      </>
-    );
+    return <ProjectComponent project={selected.data} />;
   }
+};
+
+const ProjectComponent = ({ project }: { project: Project }) => {
+  return (
+    <>
+      <ProjectHeader>
+        <div>
+          <h1>
+            Project/
+            <span className="name">{project.name}</span>
+          </h1>
+          <span>{project.description}</span>
+        </div>
+        <Settings project={project} />
+      </ProjectHeader>
+
+      <SprintBoard project={project} />
+    </>
+  );
 };
 
 const Settings = (props: { project: Project }) => {

@@ -4,6 +4,7 @@ import { SprintColumn } from "../SprintColumn";
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import { Project, Board, ColumnDict, Task, TaskDict } from "../types";
 import styled from "styled-components";
+import { UpdateTask as UpdateTaskModal } from "../SprintTask/UpdateTask";
 
 interface BoardActions {
   onDragEnd: (result: DropResult) => void;
@@ -27,6 +28,10 @@ const Component = ({
   onDeleteTask,
   onUpdateTask,
 }: Props) => {
+  // store modal open state
+  // render one modal
+  // handle modal toggle
+
   return Object.keys(columnDict).length === 0 ? null : (
     <StyledBoard>
       <DragDropContext onDragEnd={onDragEnd}>
@@ -45,6 +50,13 @@ const Component = ({
           );
         })}
       </DragDropContext>
+      {/* <UpdateTaskModal
+        open={open}
+        task={task}
+        onTaskUpdate={onTaskUpdate}
+        onTaskDelete={onTaskDelete}
+        onTaskToggle={onTaskToggle}
+      /> */}
     </StyledBoard>
   );
 };

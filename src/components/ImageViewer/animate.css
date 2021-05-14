@@ -1,0 +1,12 @@
+.viewer-image {
+  animation: fade 1.2s ease;
+}
+
+@keyframes fade {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 100;
+  }
+}

@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import { Avatar as AvatarModal } from "./Avatar";
-import Grid from "@material-ui/core/Grid";
+import { AvatarModal } from "./AvatarModal";
 import IconButton from "@material-ui/core/IconButton";
 import PhotoCameraIcon from "@material-ui/icons/PhotoCamera";
 import ImageViewer from "../../components/ImageViewer";
 import { useQuery } from "react-query";
 import { UserPayload } from "../../services/AuthService/types";
 import { client } from "../../services/APIService";
+import styled from "styled-components";
 
 interface Actions {
   onToggle: () => void;
@@ -26,38 +26,34 @@ export const Component = ({
   defaultAvatar,
 }: Props) => {
   return (
-    <Grid data-test="component-account" container={true} spacing={10}>
-      <Grid item={true} xs={12}>
-        <header>
-          <h1>My Account</h1>
-        </header>
-      </Grid>
-      <Grid item={true} xs={12}>
-        <div onClick={onToggle}>
-          {defaultAvatar ? (
-            <div>
-              <ImageViewer alt="avatar" url={defaultAvatar} />
-            </div>
-          ) : (
-            <IconButton>
-              <PhotoCameraIcon fontSize="large" />
-            </IconButton>
-          )}
-        </div>
-        <div>
-          <AvatarModal
-            isOpen={isOpen}
-            defaultAvatar={defaultAvatar}
-            onSubmit={onSubmit}
-            onToggle={onToggle}
-          />
-        </div>
-      </Grid>
-    </Grid>
+    <div>
+      <header>
+        <h1>My Account</h1>
+      </header>
+      <Avatar onClick={onToggle}>
+        {defaultAvatar ? (
+          <div>
+            <ImageViewer size="lg" alt="avatar" url={defaultAvatar} />
+          </div>
+        ) : (
+          <IconButton>
+            <PhotoCameraIcon fontSize="large" />
+          </IconButton>
+        )}
+      </Avatar>
+      <div>
+        <AvatarModal
+          isOpen={isOpen}
+          defaultAvatar={defaultAvatar}
+          onSubmit={onSubmit}
+          onToggle={onToggle}
+        />
+      </div>
+    </div>
   );
 };
 
-const Account = () => {
+export const Account = () => {
   const [isOpen, setOpen] = useState(false);
 
   const { data: user } = useQuery<UserPayload>(
@@ -82,4 +78,8 @@ const Account = () => {
   );
 };
 
-export { Account };
+const Avatar = styled.div`
+  margin: var(--p16);
+  display: inline-block;
+  cursor: pointer;
+`;

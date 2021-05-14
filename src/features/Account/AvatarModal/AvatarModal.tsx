@@ -2,6 +2,7 @@ import React from "react";
 import { AvatarEditor } from "./AvatarEditor";
 import { Modal } from "../../../components/Modal";
 import ImageViewer from "../../../components/ImageViewer";
+import styled from "styled-components";
 
 interface Actions {
   onToggle: () => void;
@@ -18,7 +19,7 @@ interface State {
   src: string;
 }
 
-export class Avatar extends React.Component<Props, State> {
+export class AvatarModal extends React.Component<Props, State> {
   state = {
     preview: "",
     src: "",
@@ -58,18 +59,15 @@ export class Avatar extends React.Component<Props, State> {
     return (
       <div>
         <Modal
-          data-test="component-update-task-modal"
           open={isOpen}
           title="Edit Photo"
           onClose={onToggle}
           onSubmit={this.handlePreview}
-          callToActionText={"Save"}
-          callToActionColor={"secondary"}
         >
-          <div>
+          <EditorWindow>
             <AvatarEditor
               width="100%"
-              height={300}
+              height={200}
               cropRadius={100}
               minCropRadius={100}
               onCrop={this.handleCrop}
@@ -77,11 +75,24 @@ export class Avatar extends React.Component<Props, State> {
               src={this.state.src}
             />
             {this.state.preview && (
-              <ImageViewer url={this.state.preview} alt="Preview" />
+              <Preview>
+                <ImageViewer size="xl" url={this.state.preview} alt="Preview" />
+              </Preview>
             )}
-          </div>
+          </EditorWindow>
         </Modal>
       </div>
     );
   }
 }
+
+const EditorWindow = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
+
+const Preview = styled.div`
+  padding-top: var(--p24);
+`;

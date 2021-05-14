@@ -8,7 +8,7 @@ import "konva/src/shapes/Path";
 import "konva/src/Animation";
 import "konva/src/DragAndDrop";
 
-class AvatarEditor extends React.Component {
+export class AvatarEditor extends React.Component {
   static defaultProps = {
     shadingColor: "grey",
     shadingOpacity: 0.6,
@@ -531,8 +531,7 @@ class AvatarEditor extends React.Component {
     return new Konva.Path({
       x: this.halfWidth + this.cropRadius * 0.86 - 8,
       y: this.halfHeight + this.cropRadius * -0.5 - 10,
-      data:
-        "M47.624,0.124l12.021,9.73L44.5,24.5l10,10l14.661-15.161l9.963,12.285v-31.5H47.624z M24.5,44.5   L9.847,59.653L0,47.5V79h31.5l-12.153-9.847L34.5,54.5L24.5,44.5z",
+      data: "M47.624,0.124l12.021,9.73L44.5,24.5l10,10l14.661-15.161l9.963,12.285v-31.5H47.624z M24.5,44.5   L9.847,59.653L0,47.5V79h31.5l-12.153-9.847L34.5,54.5L24.5,44.5z",
       fill: this.cropColor,
       scale: {
         x: 0.2,
@@ -585,7 +584,7 @@ class AvatarEditor extends React.Component {
     };
 
     return (
-      <div>
+      <div style={{ width: "100%" }}>
         {this.state.showLoader ? (
           <div style={borderStyle}>
             <input
@@ -627,5 +626,3 @@ class AvatarEditor extends React.Component {
     );
   }
 }
-
-export { AvatarEditor };
