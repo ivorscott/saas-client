@@ -8,8 +8,8 @@ import Close from "@material-ui/icons/Close";
 import TextField from "@material-ui/core/TextField";
 import { Params } from "../types";
 import { useParams } from "react-router";
-import { placeholder } from "../../../shared/components/ImageViewer/placeholder";
-import { useProject, useTeam } from "../hooks";
+import { placeholder } from "../../../components/ImageViewer/placeholder";
+import { useProject, useTeam } from "../../../hooks/hooks";
 import styled from "styled-components";
 
 interface Props {

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { history } from "../../shared/history";
+import { history } from "../../features/App/history";
 import { client as authClient } from "./AuthService";
 import { client as devpieClient } from "../APIService";
 import { Auth0User, User, UserPayload } from "./types";

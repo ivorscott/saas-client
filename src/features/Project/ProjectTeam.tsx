@@ -2,10 +2,14 @@ import React, { useEffect, useState } from "react";
 import { Add } from "@material-ui/icons";
 import { IconButton } from "@material-ui/core";
 import { useParams } from "react-router-dom";
-import { useCreateInvite, useCreateTeam, useTeamMemberships } from "./hooks";
+import {
+  useCreateInvite,
+  useCreateTeam,
+  useTeamMemberships,
+} from "../../hooks/hooks";
 import { CreateTeamModal } from "./CreateTeamModal";
 import { InviteModal } from "./InviteModal";
-import { getInitials } from "../../shared/helpers";
+import { getInitials } from "../App/helpers";
 import styled from "styled-components";
 import { Project } from "./types";
 
@@ -19,35 +23,16 @@ export const ProjectTeam = (props: Props) => {
     isLoading,
     isError,
   } = useTeamMemberships(props.project.teamId);
-  const [scrolled, setScrolled] = React.useState(false);
   const [isModalOpen, setModalOpen] = useState(false);
 
-  const handleScroll = () => {
-    const offset = window.scrollY;
-    if (offset > 50) {
-      setScrolled(true);
-    } else {
-      setScrolled(false);
-    }
-  };
-
   const toggleModalOpen = async () => setModalOpen(!isModalOpen);
-
-  useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
-  }, [window]);
-
-  let classes = ["proj-management"];
-  if (scrolled) {
-    classes.push("scrolled");
-  }
 
   if (isLoading || isError) {
     return null;
   }
 
   return (
-    <Container className={classes.join(" ")}>
+    <Container>
       <StyledAdd onClick={toggleModalOpen} />
       {memberships && memberships.length > 0 && (
         <StyledMembers>

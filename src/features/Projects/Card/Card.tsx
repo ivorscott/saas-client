@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Project } from "../../Project";
 import styled from "styled-components";
-import { useTeam, useTeamMemberships } from "../../Project/hooks";
+import { useTeam, useTeamMemberships } from "../../../hooks/hooks";
 import { Memberships } from "../../Project/types";
 
 interface Props {

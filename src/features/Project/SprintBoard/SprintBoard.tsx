@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { addTask, updateTask, deleteTask, moveTask, fetchBoard } from "./api";
-import { Loading } from "../../../shared/components/Loading";
 import { SprintColumn } from "../SprintColumn";
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import { Project, Board, ColumnDict, Task, TaskDict } from "../types";
@@ -28,9 +27,7 @@ const Component = ({
   onDeleteTask,
   onUpdateTask,
 }: Props) => {
-  return Object.keys(columnDict).length === 0 ? (
-    <Loading />
-  ) : (
+  return Object.keys(columnDict).length === 0 ? null : (
     <StyledBoard>
       <DragDropContext onDragEnd={onDragEnd}>
         {columnOrder.map((columnKey: string) => {
@@ -236,9 +233,7 @@ export const SprintBoard: React.FC<{ project: Project }> = ({ project }) => {
       onDeleteTask={handleDeleteTaskSubmit}
       onUpdateTask={handleUpdateTaskSubmit}
     />
-  ) : (
-    <Loading />
-  );
+  ) : null;
 };
 
 const StyledBoard = styled.div`

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import IconButton from "@material-ui/core/IconButton";
 import Badge from "@material-ui/core/Badge";
 import Notifications from "@material-ui/icons/Notifications";
-import { UserMenu } from "../../../shared/components/UserMenu";
+import { UserMenu } from "../../../components/UserMenu";
 import { SearchBar } from "../SearchBar";
 import { NotifyModal } from "./NotifyModal";
 import { Invite } from "./types";

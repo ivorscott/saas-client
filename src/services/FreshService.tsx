@@ -1,4 +1,4 @@
-import { env } from "../shared/env";
+import { env } from "../features/App/env";
 
 const AUTHORIZATION_URL =
   "https://auth.freshbooks.com/service/auth/oauth/authorize";

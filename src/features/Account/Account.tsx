@@ -3,7 +3,7 @@ import { Avatar as AvatarModal } from "./Avatar";
 import Grid from "@material-ui/core/Grid";
 import IconButton from "@material-ui/core/IconButton";
 import PhotoCameraIcon from "@material-ui/icons/PhotoCamera";
-import ImageViewer from "../../shared/components/ImageViewer";
+import ImageViewer from "../../components/ImageViewer";
 import { useQuery } from "react-query";
 import { UserPayload } from "../../services/AuthService/types";
 import { client } from "../../services/APIService";

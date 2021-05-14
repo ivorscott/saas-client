@@ -45,7 +45,7 @@ const PageContent = styled.div`
 `;
 const Footer = styled.div`
   position: relative;
-  z-index: 3;
+  z-index: 2;
   padding: var(--p16);
   height: var(--p48);
   background: var(--blue6);

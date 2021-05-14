@@ -4,12 +4,8 @@ import Fab from "@material-ui/core/Fab";
 import Add from "@material-ui/icons/Add";
 import { List } from "./List";
 import { Modal } from "./Modal";
+import { useCreateProject, useProjects } from "../../hooks/hooks";
 import styled from "styled-components";
-import {
-  useCreateProject,
-  useProjects,
-  useAllTeamMemberships,
-} from "../Project/hooks";
 
 export const Projects = () => {
   let teamIds: (string | undefined)[] = [];
@@ -20,7 +16,7 @@ export const Projects = () => {
   if (projects.isSuccess) {
     teamIds = projects.data?.map((project) => project.teamId);
   }
- 
+
   const [createProject] = useCreateProject();
 
   const toggleModal = () => {

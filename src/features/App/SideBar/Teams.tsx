@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { Project } from "../../Project/types";
 import { CreateTeamModal } from "../../Project/CreateTeamModal";
-import { useProjects, useTeams, useCreateTeam } from "../../Project/hooks";
+import { useProjects, useTeams, useCreateTeam } from "../../../hooks/hooks";
 import { TeamProjects } from "./Projects";
 
 export const Teams = () => {

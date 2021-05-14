@@ -1,26 +1,28 @@
-import React, { useState } from "react";
-import IconButton from "@material-ui/core/IconButton";
-import MoreHoriz from "@material-ui/icons/MoreHoriz";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { history } from "../../shared/history";
+import { history } from "../App/history";
 import { SprintBoard } from "./SprintBoard";
-import { Loading } from "../../shared/components/Loading";
 import { ProjectTeam } from "./ProjectTeam";
 import { Memberships, Params, Project, Team } from "./types";
 import { ProjectSettings } from "./ProjectSettings";
-import { useProject, useTeam, useTeamMemberships } from "./hooks";
+import { useProject, useTeam, useTeamMemberships } from "../../hooks/hooks";
 import styled from "styled-components";
+import { MoreOptions } from "../../components/MoreOptions";
 
 export const SelectedProject = () => {
   const params: Params = useParams();
 
-  const selected = useProject(params.id);
+  const { data, isError } = useProject(params.id);
 
-  if (selected.isError) {
+  if (!data || isError) {
     history.push("/manage/projects");
-    return;
+    return null;
   }
 
+  return <ProjectComponent project={data} />;
+};
+
+const ProjectComponent = ({ project }: { project: Project }) => {
   // const handleDeleteProject = async () => {
   //   await dispatch(deleteProject(params.id));
   //   history.replace(`/manage/projects`);
@@ -31,20 +33,33 @@ export const SelectedProject = () => {
   //     return await client.delete(`/projects/${id}`);
   //   }
 
-  if (!selected.data) {
+  if (!project) {
     return null;
   } else {
-    return <Component project={selected.data} />;
+    return (
+      <>
+        <ProjectHeader>
+          <div>
+            <h1>
+              Project/
+              <span className="name">{project.name}</span>
+            </h1>
+            <span>{project.description}</span>
+          </div>
+          <Settings project={project} />
+        </ProjectHeader>
+
+        <SprintBoard project={project} />
+      </>
+    );
   }
 };
 
-const Component = ({ project }: { project: Project }) => {
+const Settings = (props: { project: Project }) => {
   let team: Team | undefined;
   let memberships: Memberships[] | undefined;
 
-  const [isSettingsOpen, setSettingsOpen] = useState(false);
-
-  const selectedTeam = useTeam(project.teamId);
+  const selectedTeam = useTeam(props.project.teamId);
   if (selectedTeam.isSuccess) {
     team = selectedTeam.data;
   }
@@ -54,69 +69,65 @@ const Component = ({ project }: { project: Project }) => {
     memberships = members.data;
   }
 
+  const [isSettingsOpen, setSettingsOpen] = useState(false);
+
   const toggleSettings = () => setSettingsOpen(!isSettingsOpen);
 
-  if (!project) {
-    return <Loading />;
-  } else {
-    return (
-      <>
-        <Header>
-          <div>
-            <h1>
-              Project/
-              <ProjectName>{project.name}</ProjectName>
-            </h1>
-            <span>{project.description}</span>
-          </div>
-          <ProjectControls>
-            <div>
-              <StyledIconButton size="small" onClick={toggleSettings}>
-                <MoreHoriz />
-              </StyledIconButton>
-            </div>
-            <TeamControls>
-              <ProjectTeam project={project} />
-            </TeamControls>
-          </ProjectControls>
-        </Header>
-        <SprintBoard project={project} />
-        <ProjectSettings
-          open={isSettingsOpen}
-          project={project}
-          memberships={memberships}
-          onClose={toggleSettings}
-        />
-      </>
-    );
+  const [scrolled, setScrolled] = React.useState(false);
+
+  const handleScroll = () => {
+    const offset = window.scrollY;
+    if (offset > 50) {
+      setScrolled(true);
+    } else {
+      setScrolled(false);
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+  }, [window]);
+
+  let classes = ["controls"];
+  if (scrolled) {
+    classes.push("scrolled");
   }
+
+  return (
+    <>
+      <div className={classes.join(" ")}>
+        <MoreOptions onClick={toggleSettings} />
+        <ProjectTeam project={props.project} />
+      </div>
+      <ProjectSettings
+        open={isSettingsOpen}
+        project={props.project}
+        memberships={memberships}
+        onClose={toggleSettings}
+      />
+    </>
+  );
 };
 
-const Header = styled.header`
+const ProjectHeader = styled.header`
   display: flex;
   justify-content: space-between;
   height: var(--p96);
   margin: 0 var(--p8);
   position: relative;
-`;
-const ProjectName = styled.span`
-  text-transform: capitalize;
-  font-family: ProximaNova-Light;
-`;
-const StyledIconButton = styled(IconButton)`
-  padding: 0 var(--p4);
-  border-radius: var(--p4);
-  margin: var(--p16) 0;
-`;
-
-const ProjectControls = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-
-  @media (max-width: 1400px) {
-    position: fixed;
-    right: var(--p16);
+  .name {
+    text-transform: capitalize;
+    font-family: ProximaNova-Light;
+  }
+  .controls {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    position: relative;
+    z-index: 2;
+    @media (max-width: 1400px) {
+      position: fixed;
+      right: var(--p16);
+    }
   }
 `;
-const TeamControls = styled.div``;

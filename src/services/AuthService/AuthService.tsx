@@ -1,5 +1,5 @@
 import { Auth0Client } from "@auth0/auth0-spa-js";
-import { env } from "../../shared/env";
+import { env } from "../../features/App/env";
 import { Auth0User } from "./types";
 
 interface AuthOptions {

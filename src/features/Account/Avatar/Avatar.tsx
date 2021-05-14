@@ -1,7 +1,7 @@
 import React from "react";
 import { AvatarEditor } from "./AvatarEditor";
-import { Modal } from "../../../shared/components/Modal";
-import ImageViewer from "../../../shared/components/ImageViewer";
+import { Modal } from "../../../components/Modal";
+import ImageViewer from "../../../components/ImageViewer";
 
 interface Actions {
   onToggle: () => void;

@@ -1,6 +1,5 @@
 import React, { lazy, Suspense } from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
-import { Loading } from "../../shared/components/Loading";
 const Account = lazy(() => import("../Account"));
 const NoMatch = lazy(() => import("../NoMatch"));
 const Projects = lazy(() => import("../Projects"));
@@ -8,7 +7,7 @@ const SelectedProject = lazy(() => import("../Project"));
 
 const Routes: React.FC = () => {
   return (
-    <Suspense fallback={<Loading />}>
+    <Suspense fallback={null}>
       <Switch>
         <Route
           exact={true}
