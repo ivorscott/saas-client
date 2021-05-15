@@ -152,7 +152,7 @@ export const UpdateTask = ({
               <StyleTextArea
                 defaultValue={formValues.task.content}
                 maxRows={3}
-                maxLength={60}
+                maxLength={120}
                 onChange={handleDescriptionChange}
                 placeholder="Enter a description"
               />
