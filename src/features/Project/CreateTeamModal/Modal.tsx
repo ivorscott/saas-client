@@ -5,7 +5,7 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import TextField from "@material-ui/core/TextField";
 import styled from "styled-components";
-import { FormControl, InputLabel, Select, MenuItem } from "@material-ui/core";
+import { FormControl, Select, MenuItem } from "@material-ui/core";
 import { useProjects } from "../../../hooks/project";
 
 interface Props {
@@ -78,7 +78,7 @@ export const Modal = ({ open, withProjects, onClose, onSubmit }: Props) => {
 const ProjectSelector = ({
   onChange,
 }: {
-  onChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
+  onChange: (event: React.ChangeEvent<{ value: string }>) => void;
 }) => {
   const projects = useProjects();
   if (!projects.data || projects.data.length === 0) {
@@ -96,8 +96,10 @@ const ProjectSelector = ({
         <MenuItem value="">
           <em>None</em>
         </MenuItem>
-        {projects.data.map((project, idx) => (
-          <MenuItem value={`${idx}0`}>{project.name}</MenuItem>
+        {projects.data.map((project) => (
+          <MenuItem key={project.id} value={project.id ? project.id : ""}>
+            {project.name}
+          </MenuItem>
         ))}
       </Select>
     </StyledFormControl>

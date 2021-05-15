@@ -5,7 +5,6 @@ import {
   PanelSection,
   PanelField,
 } from "../../../../../components/Panel";
-import FormControl from "@material-ui/core/FormControl";
 import TextareaAutosize from "@material-ui/core/TextareaAutosize";
 import styled from "styled-components";
 import dayjs from "dayjs";
@@ -24,7 +23,6 @@ export const TaskModal = ({
   const initialState = task;
   const [formValues, setFormValues] = useState(initialState);
   const [changed, setChangedState] = useState(false);
-
   const [isEditing, setEditing] = useState(false);
   const [updateTask] = useUpdateTask();
 
@@ -109,16 +107,12 @@ export const TaskModal = ({
         <PanelSection>
           <StyledAssignedTo className="inline">
             <h3 className="noselect">Assigned to:</h3>
-            {isEditing ? (
-              <StyledFormControl>
-                <SelectAssignees
-                  value={formValues.assignedTo ? formValues.assignedTo : ""}
-                  onChange={handleAssigneeChange}
-                />
-              </StyledFormControl>
-            ) : (
-              <span>{formValues.assignedTo}</span>
-            )}
+            <SelectAssignees
+              isEditing={isEditing}
+              formValues={formValues}
+              toggleEditing={toggleEditing}
+              onChange={handleAssigneeChange}
+            />
           </StyledAssignedTo>
           <div className="inline">
             <h3 className="noselect">Created:</h3>
@@ -139,9 +133,9 @@ export const TaskModal = ({
                 placeholder="Enter a description"
               />
             ) : (
-              <p onDoubleClick={toggleEditing} className="noselect">
-                {formValues.content}
-              </p>
+              <div className="content" onDoubleClick={toggleEditing}>
+                <p className="noselect">{formValues.content}</p>
+              </div>
             )}
           </Description>
         </PanelSection>
@@ -154,6 +148,7 @@ export const TaskModal = ({
         <PanelSection>
           <h3 className="noselect">Comments</h3>
           <StyleTextArea
+            className="noselect"
             maxRows={3}
             maxLength={60}
             onChange={handleNewCommentChange}
@@ -181,7 +176,9 @@ const TaskKey = styled.div`
 `;
 
 const Description = styled.div`
-  min-height: var(--p48);
+  .content {
+    min-height: var(--p48);
+  }
 `;
 
 const AttachmentRegion = styled.div`
@@ -210,18 +207,6 @@ const StyleTextArea = styled(TextareaAutosize)`
   &:focus {
     outline: none;
     background: var(--white1);
-  }
-`;
-
-const StyledFormControl = styled(FormControl)`
-  .field > div {
-    padding: var(--p4) var(--p8);
-    width: var(--p192);
-    color: var(--gray10);
-  }
-
-  .field fieldset {
-    border: 1px solid var(--gray1);
   }
 `;
 

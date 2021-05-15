@@ -47,10 +47,14 @@ export const SprintColumn = ({
               { innerRef, droppableProps, placeholder },
               { isDraggingOver }
             ) => (
-              <div ref={innerRef} {...droppableProps} {...isDraggingOver}>
+              <DroppableRegion
+                ref={innerRef}
+                {...droppableProps}
+                {...isDraggingOver}
+              >
                 {Object.keys(taskDict).length > 0 && renderTasks()}
                 {placeholder}
-              </div>
+              </DroppableRegion>
             )}
           </Droppable>
         </div>
@@ -87,4 +91,8 @@ const StyledColumn = styled(Paper)`
   .content-body {
     flex: 1;
   }
+`;
+
+const DroppableRegion = styled.div`
+  min-height: 100%;
 `;
