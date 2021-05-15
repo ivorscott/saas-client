@@ -89,6 +89,7 @@ export interface AddTask {
 
 export interface UpdateTask {
   taskId: string;
+  projectId: string;
   task: {
     title: string;
     content: string;
@@ -101,6 +102,7 @@ export interface UpdateTask {
 export interface DeleteTask {
   columnId: string;
   taskId: string;
+  projectId: string;
 }
 
 export interface MoveTask {
@@ -108,4 +110,5 @@ export interface MoveTask {
   from: string;
   taskId: string;
   taskIds: string[];
+  projectId: string;
 }

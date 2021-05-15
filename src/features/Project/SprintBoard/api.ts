@@ -1,62 +1,125 @@
 import { client } from "../../../services/APIService";
 import {
-  Board,
   Task,
   AddTask,
   UpdateTask,
   DeleteTask,
   MoveTask,
+  Column,
 } from "../types";
-import { makeColumnsDict, makeTasksDict } from "./helpers";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 
-export const fetchBoard = async (projectId: string) => {
-  const { columns, tasks } = await Promise.all([
-    await client.get(`/projects/${projectId}/columns`),
-    await client.get(`/projects/${projectId}/tasks`),
-  ]).then(([rawColumns, rawTasks]) => {
-    return {
-      columns: makeColumnsDict(rawColumns),
-      tasks: makeTasksDict(rawTasks),
-    };
+export function useColumns(projectId: string) {
+  return useQuery<Column[], Error>(["project", projectId, "columns"], () => {
+    return client.get(`/projects/${projectId}/columns`);
   });
-  return { columns, tasks } as Board;
-};
+}
+export function useTasks(projectId: string) {
+  return useQuery<Task[], Error>(["project", projectId, "tasks"], () => {
+    return client.get(`/projects/${projectId}/tasks`);
+  });
+}
 
-export const addTask = async ({ projectId, columnId, task }: AddTask) => {
-  return (await client.post(
-    `/projects/${projectId}/columns/${columnId}/tasks`,
+export function useAddTask() {
+  const queryClient = useQueryClient();
+
+  const { mutate } = useMutation<Task, Error, AddTask>(
+    ({ projectId, columnId, task }) =>
+      client.post(`/projects/${projectId}/columns/${columnId}/tasks`, {
+        title: task,
+      }),
     {
-      title: task,
+      onSuccess: (data, variables) => {
+        queryClient.setQueryData<Task[]>(
+          ["project", variables.projectId, "tasks"],
+          (prev = []) => [...prev, data]
+        );
+
+        queryClient.setQueryData(
+          ["project", variables.projectId, "columns"],
+          (prev) => {
+            let state = prev as Column[];
+
+            const column = (state || []).find((item) => {
+              return item.columnName === "column-1";
+            });
+
+            if (column) {
+              return [
+                ...state,
+                { ...column, taskIds: [...column.taskIds, data.id] },
+              ];
+            }
+
+            return state;
+          }
+        );
+      },
     }
-  )) as Task;
-};
+  );
+  return [mutate];
+}
 
-export const updateTask = async ({ taskId, task }: UpdateTask) => {
-  return (await client.patch(`/projects/tasks/${taskId}`, {
-    title: task.title,
-    content: task.content,
-    assignedTo: task.assignedTo,
-    attachments: task.attachments,
-    comments: task.comments,
-  })) as Task;
-};
+export function useUpdateTask() {
+  const queryClient = useQueryClient();
 
-export const deleteTask = async ({
-  columnId,
-  taskId,
-}: DeleteTask): Promise<void> => {
-  return await client.delete(`/projects/columns/${columnId}/tasks/${taskId}`);
-};
+  const { mutate } = useMutation<Task, Error, UpdateTask>(
+    ({ taskId, task }) =>
+      client.patch(`/projects/tasks/${taskId}`, {
+        title: task.title,
+        content: task.content,
+        assignedTo: task.assignedTo,
+        attachments: task.attachments,
+        comments: task.comments,
+      }),
+    {
+      onSuccess: (data, variables) => {
+        queryClient.setQueryData(
+          ["projects", variables.projectId, "tasks", { id: data.id }],
+          data
+        );
+      },
+    }
+  );
+  return [mutate];
+}
 
-export const moveTask = async ({
-  to,
-  from,
-  taskId,
-  taskIds,
-}: MoveTask): Promise<void> => {
-  await client.patch(`/projects/tasks/${taskId}/move`, {
-    to,
-    from,
-    taskIds,
-  });
-};
+export function useDeleteTask() {
+  const queryClient = useQueryClient();
+
+  const { mutate } = useMutation<Task, Error, DeleteTask>(
+    ({ columnId, taskId }) =>
+      client.delete(`/projects/columns/${columnId}/tasks/${taskId}`),
+    {
+      onSuccess: (data, variables) => {
+        queryClient.setQueryData(
+          ["projects", variables.projectId, "tasks", { id: data.id }],
+          data
+        );
+      },
+    }
+  );
+  return [mutate];
+}
+
+export function useMoveTask() {
+  const queryClient = useQueryClient();
+
+  const { mutate } = useMutation<Task, Error, MoveTask>(
+    ({ to, from, taskId, taskIds }) =>
+      client.patch(`/projects/tasks/${taskId}/move`, {
+        to,
+        from,
+        taskIds,
+      }),
+    {
+      onSuccess: (data, variables) => {
+        queryClient.setQueryData(
+          ["projects", variables.projectId, "tasks", { id: data.id }],
+          data
+        );
+      },
+    }
+  );
+  return [mutate];
+}

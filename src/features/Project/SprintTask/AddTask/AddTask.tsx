@@ -53,14 +53,14 @@ const Component = ({ task, isEditing, onClose, onChange, onSubmit }: Props) => {
   }
 };
 
-export const AddTask: React.FC<AddTaskProps> = ({
+export const AddTask = ({
   isEditing,
   toggleEditing,
   onAddTask,
-}) => {
+}: AddTaskProps) => {
   const params: Params = useParams();
   const { data: selected } = useQuery<Project, AxiosError>(
-    "project",
+    ["project", params.id],
     async () => await client.get(`/projects/${params.id}`)
   );
 

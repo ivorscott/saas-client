@@ -1,10 +1,19 @@
-import React, { useEffect, useState } from "react";
-import { addTask, updateTask, deleteTask, moveTask, fetchBoard } from "./api";
+import React, { useState } from "react";
+import {
+  useAddTask,
+  useUpdateTask,
+  useDeleteTask,
+  useMoveTask,
+  useColumns,
+  useTasks,
+} from "./api";
 import { SprintColumn } from "../SprintColumn";
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import { Project, Board, ColumnDict, Task, TaskDict } from "../types";
 import styled from "styled-components";
-import { UpdateTask as UpdateTaskModal } from "../SprintTask/UpdateTask";
+import { makeColumnsDict, makeTasksDict } from "./helpers";
+import { useEffect } from "react";
+// import { UpdateTask as UpdateTaskModal } from "../SprintTask/UpdateTask";
 
 interface BoardActions {
   onDragEnd: (result: DropResult) => void;
@@ -19,7 +28,7 @@ interface Props extends BoardActions {
   columnOrder: string[];
 }
 
-const Component = ({
+const BoardContent = ({
   taskDict,
   columnDict,
   columnOrder,
@@ -61,16 +70,39 @@ const Component = ({
   );
 };
 
-export const SprintBoard: React.FC<{ project: Project }> = ({ project }) => {
-  const [board, setBoard] = useState<Board>({ columns: {}, tasks: {} });
-  const { columns, tasks } = board;
+export const SprintBoard = ({ project }: { project: Project }) => {
+  const rawColumns = useColumns(project.id);
+  const rawTasks = useTasks(project.id);
+
+  if (!rawColumns.data || !rawTasks.data) {
+    return null;
+  }
+
+  let columns = makeColumnsDict(rawColumns.data);
+  let tasks = makeTasksDict(rawTasks.data);
+
+  return <BoardManager project={project} initialBoard={{ columns, tasks }} />;
+};
+
+const BoardManager = ({
+  project,
+  initialBoard,
+}: {
+  project: Project;
+  initialBoard: Board;
+}) => {
+  const [board, setBoard] = useState<Board>(initialBoard);
+  const [addTask] = useAddTask();
+  const [updateTask] = useUpdateTask();
+  const [deleteTask] = useDeleteTask();
+  const [moveTask] = useMoveTask();
+
   useEffect(() => {
-    const fetch = async ({ id }: Project) => {
-      const { columns, tasks } = await fetchBoard(id);
-      setBoard({ columns, tasks });
-    };
-    fetch(project);
-  }, [project]);
+    setBoard(initialBoard);
+  }, [initialBoard]);
+
+  const { columns, tasks } = board;
+
   const handleDeleteTaskSubmit = async (columnKey: string, taskId: string) => {
     const column = columns[columnKey];
 
@@ -89,7 +121,7 @@ export const SprintBoard: React.FC<{ project: Project }> = ({ project }) => {
     delete tasks[taskId];
 
     setBoard({ columns: updatedColumnDict, tasks });
-    deleteTask({ columnId: column.id, taskId });
+    deleteTask({ projectId: project.id, columnId: column.id, taskId });
   };
 
   const handleUpdateTaskSubmit = async (columnKey: string, newTask: Task) => {
@@ -110,37 +142,19 @@ export const SprintBoard: React.FC<{ project: Project }> = ({ project }) => {
     await updateTask({
       taskId,
       task: { title, content, assignedTo, attachments, comments },
+      projectId: project.id,
     });
   };
 
   const handleAddTask = async (task: string) => {
     const columnKey: string = "column-1";
     const column = columns[columnKey];
-    const newTask = await addTask({
+
+    await addTask({
       projectId: project.id,
       columnId: column.id,
       task,
     });
-
-    const newTaskIds = [...column.taskIds];
-    newTaskIds.unshift(newTask.id);
-
-    const columnUpdate = {
-      ...column,
-      taskIds: newTaskIds,
-    };
-
-    const updatedColumnDict = {
-      ...columns,
-      [columnUpdate.columnName]: columnUpdate,
-    };
-
-    const updatedTaskDict = {
-      ...tasks,
-      [newTask.id.toString()]: newTask,
-    };
-
-    setBoard({ columns: updatedColumnDict, tasks: updatedTaskDict });
   };
 
   const onDragEnd = async (result: DropResult) => {
@@ -230,13 +244,14 @@ export const SprintBoard: React.FC<{ project: Project }> = ({ project }) => {
       to: finish.id,
       from: start.id,
       taskId: draggableId,
-      taskIds: finishTaskIds,
+      taskIds: finishTaskIds as string[],
+      projectId: project.id,
     });
     return updatedColumnsDict;
   };
 
   return Object.keys(columns).length > 0 ? (
-    <Component
+    <BoardContent
       columnOrder={project.columnOrder}
       taskDict={tasks}
       columnDict={columns}

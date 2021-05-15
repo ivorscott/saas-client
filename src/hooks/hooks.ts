@@ -12,7 +12,7 @@ export function useProject(projectId: string) {
 }
 
 export function useProjects() {
-  return useQuery<Project[]>(
+  return useQuery<Project[], Error>(
     "projects",
     async () => await api.get("/projects")
   );
