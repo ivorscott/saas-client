@@ -1,33 +1,27 @@
 import React, { useState } from "react";
-import IconButton from "@material-ui/core/IconButton";
 import Badge from "@material-ui/core/Badge";
+import IconButton from "@material-ui/core/IconButton";
 import Notifications from "@material-ui/icons/Notifications";
 import { UserMenu } from "../../../components/UserMenu";
 import { SearchBar } from "../SearchBar";
 import { NotifyModal } from "./NotifyModal";
-import { Invite } from "./types";
-import { client as api } from "../../../services/APIService";
-import { useQuery } from "react-query";
-import { AxiosError } from "axios";
+import { useInvites } from "../../../hooks/project";
 import styled from "styled-components";
 
 export const TopBar = () => {
   const [isNotificationsOpen, setNotificationsOpen] = useState(false);
 
-  const { data: invites } = useQuery<Invite[], { error?: AxiosError }>(
-    "invites",
-    async () => await api.get("/users/teams/invites")
-  );
+  const invites = useInvites();
 
-  const unread = invites?.filter((invite) => invite.read === false);
+  const unread = (invites.data || []).filter((invite) => invite.read === false);
 
   const toggleNotifications = () => setNotificationsOpen(!isNotificationsOpen);
 
   return (
     <>
-      <TopContainer>
+      <Bar>
         <SearchBar />
-        <TopMenu>
+        <menu>
           <Badge
             color="primary"
             overlap="circular"
@@ -42,12 +36,27 @@ export const TopBar = () => {
             </AlertButton>
           </Badge>
           <UserMenu />
-        </TopMenu>
-      </TopContainer>
-      <NotifyModal invites={invites} open={isNotificationsOpen} />
+        </menu>
+      </Bar>
+      <NotifyModal invites={invites.data} open={isNotificationsOpen} />
     </>
   );
 };
+
+const Bar = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 var(--p32);
+  height: var(--p64);
+  background: var(--white2);
+  border-bottom: 1px solid var(--gray2);
+  menu {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+  }
+`;
 
 const AlertButton = styled(IconButton)`
   background: #d9e2ec;
@@ -56,20 +65,4 @@ const AlertButton = styled(IconButton)`
   .active {
     color: var(--blue6);
   }
-`;
-
-const TopContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 var(--p32);
-  height: var(--p64);
-  background: var(--white2);
-  border-bottom: 1px solid var(--gray2);
-`;
-
-const TopMenu = styled.div`
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
 `;

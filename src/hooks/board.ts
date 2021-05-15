@@ -1,12 +1,11 @@
-import { client } from "../../../services/APIService";
+import { client } from "../services/APIService";
 import {
   Task,
   AddTask,
-  UpdateTask,
   DeleteTask,
   MoveTask,
   Column,
-} from "../types";
+} from "../features/Project/types";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 
 export function useColumns(projectId: string) {
@@ -63,9 +62,9 @@ export function useAddTask() {
 export function useUpdateTask() {
   const queryClient = useQueryClient();
 
-  const { mutate } = useMutation<Task, Error, UpdateTask>(
-    ({ taskId, task }) =>
-      client.patch(`/projects/tasks/${taskId}`, {
+  const { mutate } = useMutation<Task, Error, Task>(
+    (task) =>
+      client.patch(`/projects/tasks/${task.id}`, {
         title: task.title,
         content: task.content,
         assignedTo: task.assignedTo,
@@ -74,9 +73,9 @@ export function useUpdateTask() {
       }),
     {
       onSuccess: (data, variables) => {
-        queryClient.setQueryData(
-          ["projects", variables.projectId, "tasks", { id: data.id }],
-          data
+        queryClient.setQueryData<Task[]>(
+          ["project", variables.projectId, "tasks"],
+          (prev = []) => [...prev, data]
         );
       },
     }
@@ -91,11 +90,12 @@ export function useDeleteTask() {
     ({ columnId, taskId }) =>
       client.delete(`/projects/columns/${columnId}/tasks/${taskId}`),
     {
-      onSuccess: (data, variables) => {
-        queryClient.setQueryData(
-          ["projects", variables.projectId, "tasks", { id: data.id }],
-          data
-        );
+      onSuccess: (_, variables) => {
+        queryClient.invalidateQueries([
+          "projects",
+          variables.projectId,
+          "tasks",
+        ]);
       },
     }
   );
@@ -103,23 +103,13 @@ export function useDeleteTask() {
 }
 
 export function useMoveTask() {
-  const queryClient = useQueryClient();
-
   const { mutate } = useMutation<Task, Error, MoveTask>(
     ({ to, from, taskId, taskIds }) =>
       client.patch(`/projects/tasks/${taskId}/move`, {
         to,
         from,
         taskIds,
-      }),
-    {
-      onSuccess: (data, variables) => {
-        queryClient.setQueryData(
-          ["projects", variables.projectId, "tasks", { id: data.id }],
-          data
-        );
-      },
-    }
+      })
   );
   return [mutate];
 }

@@ -1,74 +1,15 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { DropResult } from "react-beautiful-dnd";
+import { Project, Board, Task } from "../types";
+import { makeColumnsDict, makeTasksDict } from "./helpers";
+import { BoardContent } from "./Content";
 import {
   useAddTask,
-  useUpdateTask,
-  useDeleteTask,
+  // useDeleteTask,
   useMoveTask,
   useColumns,
   useTasks,
-} from "./api";
-import { SprintColumn } from "../SprintColumn";
-import { DragDropContext, DropResult } from "react-beautiful-dnd";
-import { Project, Board, ColumnDict, Task, TaskDict } from "../types";
-import styled from "styled-components";
-import { makeColumnsDict, makeTasksDict } from "./helpers";
-import { useEffect } from "react";
-// import { UpdateTask as UpdateTaskModal } from "../SprintTask/UpdateTask";
-
-interface BoardActions {
-  onDragEnd: (result: DropResult) => void;
-  onAddTask: (task: string) => void;
-  onUpdateTask: (columnKey: string, task: Task) => void;
-  onDeleteTask: (columnKey: string, taskId: string) => void;
-}
-
-interface Props extends BoardActions {
-  taskDict: TaskDict;
-  columnDict: ColumnDict;
-  columnOrder: string[];
-}
-
-const BoardContent = ({
-  taskDict,
-  columnDict,
-  columnOrder,
-  onDragEnd,
-  onAddTask,
-  onDeleteTask,
-  onUpdateTask,
-}: Props) => {
-  // store modal open state
-  // render one modal
-  // handle modal toggle
-
-  return Object.keys(columnDict).length === 0 ? null : (
-    <StyledBoard>
-      <DragDropContext onDragEnd={onDragEnd}>
-        {columnOrder.map((columnKey: string) => {
-          const column = columnDict[columnKey];
-          return (
-            <SprintColumn
-              key={column.id}
-              columnKey={columnKey}
-              column={column}
-              taskDict={taskDict}
-              onAddTask={onAddTask}
-              onDeleteTask={onDeleteTask}
-              onUpdateTask={onUpdateTask}
-            />
-          );
-        })}
-      </DragDropContext>
-      {/* <UpdateTaskModal
-        open={open}
-        task={task}
-        onTaskUpdate={onTaskUpdate}
-        onTaskDelete={onTaskDelete}
-        onTaskToggle={onTaskToggle}
-      /> */}
-    </StyledBoard>
-  );
-};
+} from "../../../hooks/board";
 
 export const SprintBoard = ({ project }: { project: Project }) => {
   const rawColumns = useColumns(project.id);
@@ -93,8 +34,7 @@ const BoardManager = ({
 }) => {
   const [board, setBoard] = useState<Board>(initialBoard);
   const [addTask] = useAddTask();
-  const [updateTask] = useUpdateTask();
-  const [deleteTask] = useDeleteTask();
+  // const [deleteTask] = useDeleteTask();
   const [moveTask] = useMoveTask();
 
   useEffect(() => {
@@ -103,48 +43,26 @@ const BoardManager = ({
 
   const { columns, tasks } = board;
 
-  const handleDeleteTaskSubmit = async (columnKey: string, taskId: string) => {
-    const column = columns[columnKey];
+  // const handleDeleteTaskSubmit = async (columnKey: string, taskId: string) => {
+  //   const column = columns[columnKey];
 
-    const newTaskIds = column.taskIds.filter((id: string) => id !== taskId);
+  //   const newTaskIds = column.taskIds.filter((id: string) => id !== taskId);
 
-    const columnUpdate = {
-      ...column,
-      taskIds: newTaskIds,
-    };
+  //   const columnUpdate = {
+  //     ...column,
+  //     taskIds: newTaskIds,
+  //   };
 
-    const updatedColumnDict = {
-      ...columns,
-      [column.columnName]: columnUpdate,
-    };
+  //   const updatedColumnDict = {
+  //     ...columns,
+  //     [column.columnName]: columnUpdate,
+  //   };
 
-    delete tasks[taskId];
+  //   delete tasks[taskId];
 
-    setBoard({ columns: updatedColumnDict, tasks });
-    deleteTask({ projectId: project.id, columnId: column.id, taskId });
-  };
-
-  const handleUpdateTaskSubmit = async (columnKey: string, newTask: Task) => {
-    const taskDict = {
-      ...tasks,
-      [newTask.id.toString()]: newTask,
-    };
-
-    setBoard({ columns, tasks: taskDict });
-    const {
-      id: taskId,
-      title,
-      content,
-      assignedTo,
-      attachments,
-      comments,
-    } = newTask;
-    await updateTask({
-      taskId,
-      task: { title, content, assignedTo, attachments, comments },
-      projectId: project.id,
-    });
-  };
+  //   setBoard({ columns: updatedColumnDict, tasks });
+  //   deleteTask({ projectId: project.id, columnId: column.id, taskId });
+  // };
 
   const handleAddTask = async (task: string) => {
     const columnKey: string = "column-1";
@@ -158,6 +76,7 @@ const BoardManager = ({
   };
 
   const onDragEnd = async (result: DropResult) => {
+    console.log(result);
     const { destination, source } = result;
 
     if (!destination) {
@@ -182,6 +101,8 @@ const BoardManager = ({
   };
 
   const columnDidNotChange = async (result: DropResult) => {
+    console.log(result);
+
     const { destination, source, draggableId } = result;
 
     if (!destination) {
@@ -244,7 +165,7 @@ const BoardManager = ({
       to: finish.id,
       from: start.id,
       taskId: draggableId,
-      taskIds: finishTaskIds as string[],
+      taskIds: finishTaskIds,
       projectId: project.id,
     });
     return updatedColumnsDict;
@@ -257,22 +178,7 @@ const BoardManager = ({
       columnDict={columns}
       onDragEnd={onDragEnd}
       onAddTask={handleAddTask}
-      onDeleteTask={handleDeleteTaskSubmit}
-      onUpdateTask={handleUpdateTaskSubmit}
+      // onDeleteTask={handleDeleteTaskSubmit}
     />
   ) : null;
 };
-
-const StyledBoard = styled.div`
-  display: flex;
-  flex: 1;
-  flex-direction: row;
-  justify-content: space-between;
-  height: 80vh;
-  max-width: 100%;
-  margin-top: var(--p8);
-
-  @media (min-width: 1400px) {
-    overflow-x: scroll;
-  }
-`;

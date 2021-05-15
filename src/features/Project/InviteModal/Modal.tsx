@@ -9,7 +9,7 @@ import TextField from "@material-ui/core/TextField";
 import { Params } from "../types";
 import { useParams } from "react-router";
 import { placeholder } from "../../../components/ImageViewer/placeholder";
-import { useProject, useTeam } from "../../../hooks/hooks";
+import { useProject, useTeam } from "../../../hooks/project";
 import styled from "styled-components";
 
 interface Props {

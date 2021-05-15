@@ -1,16 +1,16 @@
 import React, { useState } from "react";
 import Button from "@material-ui/core/Button";
 import TextareaAutosize from "@material-ui/core/TextareaAutosize";
-import { Params, Project } from "../../types";
+import { Params, Project } from "../../../types";
 import { AxiosError } from "axios";
 import { useQuery } from "react-query";
-import { client } from "../../../../services/APIService";
+import { client } from "../../../../../services/APIService";
 import { useParams } from "react-router";
 import styled from "styled-components";
 
 interface AddTaskProps {
-  isEditing: boolean;
-  toggleEditing: () => void;
+  isCreating: boolean;
+  toggleCreating: () => void;
   onAddTask: (task: string) => void;
 }
 
@@ -20,11 +20,17 @@ interface Props {
   onChange: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
   onSubmit: () => void;
   onKeyDown: (event: React.KeyboardEvent<HTMLDivElement>) => void;
-  isEditing: boolean;
+  isCreating: boolean;
 }
 
-const Component = ({ task, isEditing, onClose, onChange, onSubmit }: Props) => {
-  if (isEditing) {
+const Component = ({
+  task,
+  isCreating,
+  onClose,
+  onChange,
+  onSubmit,
+}: Props) => {
+  if (isCreating) {
     return (
       <div>
         <StyleTextArea
@@ -54,8 +60,8 @@ const Component = ({ task, isEditing, onClose, onChange, onSubmit }: Props) => {
 };
 
 export const AddTask = ({
-  isEditing,
-  toggleEditing,
+  isCreating,
+  toggleCreating,
   onAddTask,
 }: AddTaskProps) => {
   const params: Params = useParams();
@@ -67,7 +73,7 @@ export const AddTask = ({
   const [task, setTask] = useState("");
 
   const handleSubmit = () => {
-    toggleEditing();
+    toggleCreating();
     if (selected) {
       onAddTask(task);
       setTask("");
@@ -90,10 +96,10 @@ export const AddTask = ({
     <Component
       task={task}
       onKeyDown={handleKeyDown}
-      onClose={toggleEditing}
+      onClose={toggleCreating}
       onChange={handleChange}
       onSubmit={handleSubmit}
-      isEditing={isEditing}
+      isCreating={isCreating}
     />
   );
 };

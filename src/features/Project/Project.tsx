@@ -5,7 +5,7 @@ import { SprintBoard } from "./SprintBoard";
 import { ProjectTeam } from "./ProjectTeam";
 import { Memberships, Params, Project, Team } from "./types";
 import { ProjectSettings } from "./ProjectSettings";
-import { useProject, useTeam, useTeamMemberships } from "../../hooks/hooks";
+import { useProject, useTeam, useTeamMemberships } from "../../hooks/project";
 import styled from "styled-components";
 import { MoreOptions } from "../../components/MoreOptions";
 

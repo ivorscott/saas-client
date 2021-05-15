@@ -141,3 +141,10 @@ export function useCreateInvite() {
   );
   return [mutate];
 }
+
+export function useInvites() {
+  return useQuery<Invite[], Error>(
+    "invites",
+    async () => await api.get("/users/teams/invites")
+  );
+}

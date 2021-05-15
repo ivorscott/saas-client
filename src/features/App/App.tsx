@@ -22,7 +22,7 @@ export const DevPie = () => {
       <Footer>
         <Copyright /> <CopyrightText>Powered by DevPie</CopyrightText>
       </Footer>
-      <ReactQueryDevtools position="bottom-left" />
+      <ReactQueryDevtools position="bottom-right" />
     </>
   );
 };
@@ -47,7 +47,7 @@ const Footer = styled.div`
   position: relative;
   z-index: 2;
   padding: var(--p16);
-  height: var(--p48);
+  height: var(--p24);
   background: var(--blue6);
   display: flex;
   justify-content: flex-start;

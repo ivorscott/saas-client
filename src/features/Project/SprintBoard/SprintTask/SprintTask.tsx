@@ -1,8 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import MoreHoriz from "@material-ui/icons/MoreHoriz";
-import { Task } from "../types";
+import { Task } from "../../types";
 import { CSSProperties } from "@material-ui/styles";
-import { UpdateTask } from "./UpdateTask";
 import {
   Draggable,
   DraggingStyle,
@@ -10,34 +9,7 @@ import {
 } from "react-beautiful-dnd";
 import styled from "styled-components";
 
-interface Actions {
-  onDeleteTask: (columnKey: string, taskId: string) => void;
-  onUpdateTask: (columnKey: string, task: Task) => void;
-}
-
-interface SprintTaskProps extends Actions {
-  task: Task;
-  index: number;
-  columnKey: string;
-}
-
-interface Props {
-  task: Task;
-  open: boolean;
-  index: number;
-  onTaskToggle: () => void;
-  onTaskDelete: () => void;
-  onTaskUpdate: (values: any) => void;
-}
-
-const Component = ({
-  open,
-  task,
-  index,
-  onTaskToggle,
-  onTaskUpdate,
-  onTaskDelete,
-}: Props) => {
+export const SprintTask = ({ task, index }: { task: Task; index: number }) => {
   const badgeColor = (task.seq % 9) + 1;
 
   return (
@@ -46,7 +18,6 @@ const Component = ({
         {({ innerRef, draggableProps, dragHandleProps }, { isDragging }) => (
           <div
             ref={innerRef as any}
-            onClick={onTaskToggle}
             {...draggableProps}
             {...dragHandleProps}
             style={getItemStyle(isDragging, draggableProps.style)}
@@ -67,51 +38,9 @@ const Component = ({
           </div>
         )}
       </Draggable>
-      <UpdateTask
-        open={open}
-        task={task}
-        onTaskUpdate={onTaskUpdate}
-        onTaskDelete={onTaskDelete}
-        onTaskToggle={onTaskToggle}
-      />
     </div>
   );
 };
-
-const SprintTask: React.FC<SprintTaskProps> = ({
-  columnKey,
-  task,
-  index,
-  onDeleteTask,
-  onUpdateTask,
-}) => {
-  const [isOpen, setOpen] = useState(false);
-
-  const handleTaskToggle = () => {
-    setOpen(!isOpen);
-  };
-
-  const handleTaskDelete = () => {
-    onDeleteTask(columnKey, task.id);
-  };
-
-  const handleTaskUpdate = (values: any) => {
-    onUpdateTask(columnKey, { ...task, ...values });
-  };
-
-  return (
-    <Component
-      open={isOpen}
-      task={task}
-      index={index}
-      onTaskToggle={handleTaskToggle}
-      onTaskDelete={handleTaskDelete}
-      onTaskUpdate={handleTaskUpdate}
-    />
-  );
-};
-
-export { SprintTask };
 
 const TaskKey = styled.div`
   font-family: ProximaNovaA-Bold;

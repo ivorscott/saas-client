@@ -1,32 +1,31 @@
-import { TextField, IconButton, Button } from "@material-ui/core";
+import { TextField, IconButton } from "@material-ui/core";
 import MoreHoriz from "@material-ui/icons/MoreHoriz";
 import Close from "@material-ui/icons/Close";
 import React from "react";
 import styled from "styled-components";
 
-interface Props {
+interface Actions {
+  onClose: () => void;
+  onSubmit: () => void;
+  toggleEditing: () => void;
+}
+
+interface Props extends Actions {
   children: any;
   title: string;
   isEditing: boolean;
   hasChanged: boolean;
   ctaPrimaryText: string;
   ctaSecondaryText: string;
-  onClose: () => void;
-  onSubmit: () => void;
-  toggleEditing: () => void;
 }
 
 export const PanelForm = (props: Props) => {
   return (
-    <PanelContainer className="shade3">
-      <ProjectHeader>
-        <PanelTitle>{props.title}</PanelTitle>
+    <Panel className="shade3">
+      <header>
+        <h2>{props.title}</h2>
         <StyleSettings>
-          {props.hasChanged && (
-            <ChangedText>
-              <small>modified</small>
-            </ChangedText>
-          )}
+          {props.hasChanged && <span className="modified">modified</span>}
           {props.isEditing && props.hasChanged && (
             <PanelButton className="primary" onClick={props.onSubmit}>
               {props.ctaPrimaryText}
@@ -46,10 +45,10 @@ export const PanelForm = (props: Props) => {
             <Close fontSize="small" />
           </StyledIconButton>
         </StyleSettings>
-      </ProjectHeader>
+      </header>
 
       {props.children}
-    </PanelContainer>
+    </Panel>
   );
 };
 
@@ -98,7 +97,7 @@ export const PanelField = styled(TextField)`
   }
 `;
 
-const PanelContainer = styled.div`
+const Panel = styled.div`
   width: var(--p512);
   max-height: 100%;
   position: fixed;
@@ -108,23 +107,20 @@ const PanelContainer = styled.div`
   padding: var(--p32);
   background: var(--white1);
   overflow: auto;
-`;
-
-const PanelTitle = styled.div`
-  font-family: ProximaNova-Bold;
-  font-size: var(--p24);
-`;
-
-const ProjectHeader = styled.div`
-  display: flex;
-  align-items: center;
-`;
-
-const ChangedText = styled.div`
-  font-size: var(--p14);
-  display: flex;
-  align-items: center;
-  margin-right: var(--p8);
+  header {
+    display: flex;
+    align-items: center;
+  }
+  h2 {
+    font-family: ProximaNova-Bold;
+    font-size: var(--p24);
+  }
+  .modified {
+    font-size: var(--p12);
+    display: flex;
+    align-items: center;
+    margin-right: var(--p8);
+  }
 `;
 
 const StyleSettings = styled.div`

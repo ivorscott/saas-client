@@ -4,7 +4,7 @@ import Switch from "@material-ui/core/Switch";
 import { Memberships, Project } from "./types";
 import styled from "styled-components";
 import { MembersTable } from "./MembersTable";
-import { useUpdateProject } from "../../hooks/hooks";
+import { useUpdateProject } from "../../hooks/project";
 import { PanelForm, PanelSection, PanelField } from "../../components/Panel";
 
 interface Actions {

@@ -6,7 +6,7 @@ import {
   useCreateInvite,
   useCreateTeam,
   useTeamMemberships,
-} from "../../hooks/hooks";
+} from "../../hooks/project";
 import { CreateTeamModal } from "./CreateTeamModal";
 import { InviteModal } from "./InviteModal";
 import { getInitials } from "../App/helpers";

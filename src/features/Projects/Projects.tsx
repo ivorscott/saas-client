@@ -4,7 +4,7 @@ import Fab from "@material-ui/core/Fab";
 import Add from "@material-ui/icons/Add";
 import { List } from "./List";
 import { Modal } from "./Modal";
-import { useCreateProject, useProjects } from "../../hooks/hooks";
+import { useCreateProject, useProjects } from "../../hooks/project";
 import styled from "styled-components";
 
 export const Projects = () => {

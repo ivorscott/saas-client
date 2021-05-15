@@ -6,7 +6,7 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import TextField from "@material-ui/core/TextField";
 import styled from "styled-components";
 import { FormControl, InputLabel, Select, MenuItem } from "@material-ui/core";
-import { useProjects } from "../../../hooks/hooks";
+import { useProjects } from "../../../hooks/project";
 
 interface Props {
   open: boolean;

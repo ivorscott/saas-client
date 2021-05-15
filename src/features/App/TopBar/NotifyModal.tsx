@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import Star from "@material-ui/icons/Star";
@@ -19,7 +19,20 @@ interface Props {
 }
 
 export const NotifyModal = ({ invites, open }: Props) => {
+  const [sortedInvites, setSortedInvites] = useState<Invite[]>();
+
   const queryClient = useQueryClient();
+
+  useEffect(() => {
+    if (invites) {
+      const sorted = (invites || []).sort((a, b) => {
+        return (
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        );
+      });
+      setSortedInvites(sorted);
+    }
+  }, [invites]);
 
   const { mutate } = useMutation<
     Invite,
@@ -65,7 +78,7 @@ export const NotifyModal = ({ invites, open }: Props) => {
     } else {
       return (
         <InviteList>
-          {invites.map((invite) => (
+          {(sortedInvites || []).map((invite) => (
             <li key={invite.id}>
               <header>
                 <aside>
