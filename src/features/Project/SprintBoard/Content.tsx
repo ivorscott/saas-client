@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import { DropResult, DragDropContext } from "react-beautiful-dnd";
 import styled from "styled-components";
 import { SprintColumn } from "./SprintColumn";
-import { Task, TaskDict, ColumnDict } from "../types";
+import { Task, TaskDict, ColumnDict, Project } from "../types";
 import { TaskModal } from "./SprintTask/TaskModal";
+import { useTeamMemberships } from "../../../hooks/project";
+import { makeUserDict } from "./helpers";
 
 interface BoardActions {
   onDragEnd: (result: DropResult) => void;
@@ -14,18 +16,20 @@ interface BoardActions {
 interface Props extends BoardActions {
   taskDict: TaskDict;
   columnDict: ColumnDict;
-  columnOrder: string[];
+  project: Project;
 }
 
 export const BoardContent = ({
   taskDict,
+  project,
   columnDict,
-  columnOrder,
   onDragEnd,
   onAddTask,
 }: Props) => {
   const [selectedTask, setSelectedTask] = useState<Task>();
   const [isOpen, setOpen] = useState(false);
+  const { data, isError } = useTeamMemberships(project?.teamId);
+  const users = makeUserDict(data);
 
   const setupTaskModal = (task: Task) => {
     if (!selectedTask) {
@@ -50,11 +54,12 @@ export const BoardContent = ({
       )}
       <StyledBoard>
         <DragDropContext onDragEnd={onDragEnd}>
-          {columnOrder.map((columnKey: string) => {
+          {project.columnOrder.map((columnKey: string) => {
             const column = columnDict[columnKey];
             return (
               <SprintColumn
                 key={column.id}
+                users={users}
                 columnKey={columnKey}
                 column={column}
                 taskDict={taskDict}

@@ -173,7 +173,7 @@ const BoardManager = ({
 
   return Object.keys(columns).length > 0 ? (
     <BoardContent
-      columnOrder={project.columnOrder}
+      project={project}
       taskDict={tasks}
       columnDict={columns}
       onDragEnd={onDragEnd}

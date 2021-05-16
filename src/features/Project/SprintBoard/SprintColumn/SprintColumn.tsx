@@ -2,20 +2,25 @@ import React from "react";
 import Paper from "@material-ui/core/Paper";
 import { Droppable } from "react-beautiful-dnd";
 import { SprintTask } from "../SprintTask";
-import { Column, Task, TaskDict } from "../../types";
+import { Column, Task, TaskDict, UserDict } from "../../types";
 import { ColumnHeader } from "./Header";
 import styled from "styled-components";
 
-interface Props {
-  column: Column;
-  columnKey: string;
-  taskDict: TaskDict;
+interface Actions {
   onAddTask: (task: string) => void;
   onTaskClick: (task: Task) => void;
 }
 
+interface Props extends Actions {
+  column: Column;
+  users: UserDict | undefined;
+  columnKey: string;
+  taskDict: TaskDict;
+}
+
 export const SprintColumn = ({
   column,
+  users,
   taskDict,
   columnKey,
   onAddTask,
@@ -25,7 +30,7 @@ export const SprintColumn = ({
     if (column.taskIds.length > 0) {
       return column.taskIds.map((key, index) => (
         <div key={taskDict[key].id} onClick={() => onTaskClick(taskDict[key])}>
-          <SprintTask task={taskDict[key]} index={index} />
+          <SprintTask users={users} task={taskDict[key]} index={index} />
         </div>
       ));
     }

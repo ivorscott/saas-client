@@ -1,6 +1,6 @@
 import React from "react";
 import MoreHoriz from "@material-ui/icons/MoreHoriz";
-import { Task } from "../../types";
+import { Task, UserDict } from "../../types";
 import { CSSProperties } from "@material-ui/styles";
 import {
   Draggable,
@@ -8,10 +8,18 @@ import {
   NotDraggingStyle,
 } from "react-beautiful-dnd";
 import styled from "styled-components";
+import { Avatar } from "../../../../components/Avatar";
 
-export const SprintTask = ({ task, index }: { task: Task; index: number }) => {
+export const SprintTask = ({
+  users,
+  task,
+  index,
+}: {
+  users: UserDict | undefined;
+  task: Task;
+  index: number;
+}) => {
   const badgeColor = (task.seq % 9) + 1;
-
   return (
     <div>
       <Draggable key={task.id} draggableId={task.id} index={index}>
@@ -25,9 +33,19 @@ export const SprintTask = ({ task, index }: { task: Task; index: number }) => {
             <TaskHeader>
               <TaskKey>{task.key}</TaskKey>
               <TaskMeta>
-                <StoryPoints>{task.points}</StoryPoints>
-                <AssignedTo className={`badge${badgeColor}`}>
-                  {"TS" || task.assignedTo}
+                {task.points === 0 ? null : (
+                  <StoryPoints>{task.points}</StoryPoints>
+                )}
+                <AssignedTo>
+                  {users && task.assignedTo && (
+                    <Avatar
+                      key={task.assignedTo}
+                      alt="user avatar"
+                      size="sm"
+                      badgeColor={`badge${badgeColor}`}
+                      membership={users[task.assignedTo]}
+                    />
+                  )}
                 </AssignedTo>
               </TaskMeta>
               <StyleSettings>
@@ -55,29 +73,29 @@ const TaskTitle = styled.div`
 const TaskHeader = styled.div`
   display: flex;
   align-items: center;
+  min-height: 40px;
   margin-bottom: var(--p8);
 `;
 const TaskMeta = styled.div`
   display: flex;
+  align-items: center;
   margin-left: var(--p8);
 `;
 const StoryPoints = styled.div`
   font-family: ProximaNova-Medium;
-  height: var(--p24);
-  width: var(--p24);
+  height: var(--p32);
+  width: var(--p32);
   display: flex;
   font-size: var(--p12);
   justify-content: center;
   align-items: center;
   background: var(--gray2);
   border-radius: 50px;
-  border: 1px solid var(--gray6);
-  margin: var(--p4);
+  margin: var(--p4) 0 var(--p4) var(--p4);
 `;
 const AssignedTo = styled.div`
   font-family: ProximaNova-Semibold;
-  height: var(--p24);
-  width: var(--p24);
+
   display: flex;
   font-size: var(--p12);
   justify-content: center;

@@ -1,25 +1,10 @@
 import { Select, MenuItem, FormControl } from "@material-ui/core";
-import React, { useState } from "react";
+import React from "react";
 import { useParams } from "react-router";
 import { useProject, useTeamMemberships } from "../../../../../hooks/project";
-import { Memberships, Task } from "../../../types";
+import { Task } from "../../../types";
 import styled from "styled-components";
-
-function makeUserDict(members: Memberships[] | undefined): {
-  [index: string]: Memberships | undefined;
-} {
-  if (!members) {
-    return;
-  }
-  return (members || []).reduce((acc, curr) => {
-    return {
-      ...acc,
-      [`${curr.userId}`]: {
-        ...curr,
-      },
-    };
-  }, {});
-}
+import { makeUserDict } from "../../helpers";
 
 export const SelectAssignees = ({
   formValues,
@@ -42,7 +27,7 @@ export const SelectAssignees = ({
   }
 
   const getAssignee = () => {
-    const user = users[formValues.assignedTo];
+    const user = users && users[formValues.assignedTo];
     if (user) {
       return `${user.firstName} ${user.lastName || ""}`;
     }

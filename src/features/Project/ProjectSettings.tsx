@@ -6,6 +6,8 @@ import styled from "styled-components";
 import { MembersTable } from "./MembersTable";
 import { useUpdateProject } from "../../hooks/project";
 import { PanelForm, PanelSection, PanelField } from "../../components/Panel";
+import { getUserInitials } from "../App/helpers";
+import { Avatar } from "../../components/Avatar";
 
 interface Actions {
   onClose: () => void;
@@ -148,15 +150,14 @@ export const ProjectSettings = ({
 
           {memberships && (
             <StyledMembers>
-              {memberships.map(({ id, picture, firstName, lastName }) => {
-                return picture ? (
-                  <StyledImage key={id} src={picture} />
-                ) : (
-                  <StyledAvatars key={id}>
-                    {getInitials(firstName, lastName)}
-                  </StyledAvatars>
-                );
-              })}
+              {memberships.map((membership) => (
+                <Avatar
+                  key={membership.id}
+                  alt="user avatar"
+                  size="lg"
+                  membership={membership}
+                />
+              ))}
             </StyledMembers>
           )}
         </PanelSection>
@@ -167,10 +168,6 @@ export const ProjectSettings = ({
   }
   return null;
 };
-
-function getInitials(firstName: string, lastName: string) {
-  return firstName.substring(0, 1) + (lastName || "").substring(0, 1);
-}
 
 const StyledMembers = styled.div`
   width: 100%;

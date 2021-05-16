@@ -8,7 +8,7 @@ import {
 import "./animate.css";
 import styled from "styled-components";
 
-interface Props {
+export interface ImageViewerProps {
   alt: string;
   url: string;
   size?: "sm" | "md" | "lg" | "xl";
@@ -20,8 +20,11 @@ interface State {
   rotate: any;
 }
 
-export default class ImageViewer extends React.Component<Props, State> {
-  constructor(props: Props) {
+export default class ImageViewer extends React.Component<
+  ImageViewerProps,
+  State
+> {
+  constructor(props: ImageViewerProps) {
     super(props);
 
     this.state = {
@@ -103,6 +106,7 @@ export default class ImageViewer extends React.Component<Props, State> {
 
 const StyledImage = styled.img`
   border-radius: 50%;
+  margin: 0 var(--p4);
   &.xl {
     height: var(--p192);
     width: var(--p192);

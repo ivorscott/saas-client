@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Add } from "@material-ui/icons";
 import { IconButton } from "@material-ui/core";
 import { useParams } from "react-router-dom";
@@ -9,9 +9,9 @@ import {
 } from "../../hooks/project";
 import { CreateTeamModal } from "./CreateTeamModal";
 import { InviteModal } from "./InviteModal";
-import { getInitials } from "../App/helpers";
 import styled from "styled-components";
 import { Project } from "./types";
+import { Avatar } from "../../components/Avatar";
 
 interface Props {
   project: Project;
@@ -36,15 +36,14 @@ export const ProjectTeam = (props: Props) => {
       <StyledAdd onClick={toggleModalOpen} />
       {memberships && memberships.length > 0 && (
         <StyledMembers>
-          {memberships.map(({ id, picture, firstName, lastName }) => {
-            return picture ? (
-              <StyledImage key={id} src={picture} />
-            ) : (
-              <StyledAvatars key={id}>
-                {getInitials(firstName, lastName)}
-              </StyledAvatars>
-            );
-          })}
+          {memberships.map((membership) => (
+            <Avatar
+              key={membership.id}
+              alt="user avatar"
+              size="sm"
+              membership={membership}
+            />
+          ))}
         </StyledMembers>
       )}
 

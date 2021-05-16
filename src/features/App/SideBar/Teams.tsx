@@ -1,11 +1,10 @@
 import Add from "@material-ui/icons/Add";
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { Project } from "../../Project/types";
 import { CreateTeamModal } from "../../Project/CreateTeamModal";
 import { useProjects, useTeams, useCreateTeam } from "../../../hooks/project";
 import { TeamProjects } from "./Projects";
+import { getTeamInitials } from "../helpers";
 
 export const Teams = () => {
   const projects = useProjects();
@@ -30,7 +29,7 @@ export const Teams = () => {
           <li key={team.id}>
             <TeamRow>
               <aside>
-                <Icon>{getInitials(team.name)}</Icon>
+                <Icon>{getTeamInitials(team.name)}</Icon>
                 <span>{team.name}</span>
               </aside>
             </TeamRow>
@@ -52,15 +51,6 @@ export const Teams = () => {
     </div>
   );
 };
-
-function getInitials(teamName: string) {
-  if (teamName.includes(" ")) {
-    const names = teamName.split(" ");
-    return names[0].substring(0, 1) + names[1].substring(0, 1);
-  } else {
-    return teamName.substring(0, 2);
-  }
-}
 
 const Title = styled.h3`
   color: var(--gray3);

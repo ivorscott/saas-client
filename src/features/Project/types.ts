@@ -1,3 +1,15 @@
+export interface UserDict {
+  [index: string]: Memberships;
+}
+
+export interface ColumnDict {
+  [index: string]: Column;
+}
+
+export interface TaskDict {
+  [index: string]: Task;
+}
+
 export interface Params {
   id: string;
 }
@@ -47,14 +59,6 @@ export interface Memberships {
 export interface Board {
   columns: ColumnDict;
   tasks: TaskDict;
-}
-
-export interface ColumnDict {
-  [index: string]: Column;
-}
-
-export interface TaskDict {
-  [index: string]: Task;
 }
 
 export interface Column {
