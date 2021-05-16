@@ -4,7 +4,7 @@ import { Button } from "@material-ui/core";
 import { useQuery } from "react-query";
 import { UserPayload } from "../../services/AuthService/types";
 import { client as authClient } from "../../services/AuthService";
-import { client } from "../../services/APIService";
+import { client as api } from "../../services/APIService";
 import ImageViewer from "../ImageViewer";
 import styled from "styled-components";
 
@@ -15,7 +15,7 @@ export const UserMenu = () => {
   const { data: user } = useQuery<UserPayload, UserPayload["error"]>(
     "auth",
     async () => {
-      const user = await client.get("/users/me");
+      const user = await api.get("/users/me");
       const authResult = await authClient.getAuthDetails();
       const roles = authResult.claims["https://client.devpie.io/claims/roles"];
       return { ...user, roles };
@@ -85,7 +85,7 @@ export const UserMenu = () => {
 const StyledButton = styled(Button)`
   height: var(--p32);
   padding: 0;
-  margin-left: var(--p8);
+  margin: 0 var(--p32);
   aside {
     height: var(--p32);
   }

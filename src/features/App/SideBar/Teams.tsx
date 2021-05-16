@@ -2,17 +2,29 @@ import Add from "@material-ui/icons/Add";
 import React, { useState } from "react";
 import styled from "styled-components";
 import { CreateTeamModal } from "../../Project/CreateTeamModal";
-import { useProjects, useTeams, useCreateTeam } from "../../../hooks/project";
+import { useProjects } from "../../../hooks/project";
+import { useTeams, useCreateTeam } from "../../../hooks/teams";
 import { TeamProjects } from "./Projects";
 import { getTeamInitials } from "../helpers";
 import { Team } from "../../Project/types";
+import { AssignProjectModal } from "../../Project/AssignProjectModal";
 
 export const Teams = () => {
   const projects = useProjects();
   const { data } = useTeams();
   const [createTeam] = useCreateTeam();
   const [isTeamModalOpen, setTeamModalOpen] = useState(false);
+  const [isAssignProjectModalOpen, setAssignProjectModalOpen] = useState(false);
+  const [selectedTeam, setSelectedTeam] = useState<string>("");
+
   const toggleCreateTeamModal = () => setTeamModalOpen(!isTeamModalOpen);
+  const toggleAssignProjectModal = () =>
+    setAssignProjectModalOpen(!isAssignProjectModalOpen);
+
+  const handleAssignProject = (teamName: string) => {
+    setSelectedTeam(teamName);
+    toggleAssignProjectModal();
+  };
 
   if (!data || data.length === 0) {
     return null;
@@ -21,16 +33,23 @@ export const Teams = () => {
   const handleCreateTeam = () => {
     // createTeam();
   };
+
   return (
     <div>
-      <Title>My Teams</Title>
+      <Title>Teams</Title>
       <ul>
         {data.map((team: Team) => (
           <li key={team.id}>
             <TeamRow>
               <aside>
-                <Icon>{getTeamInitials(team.name)}</Icon>
-                <span>{team.name}</span>
+                <div className="team">
+                  <Icon>{getTeamInitials(team.name)}</Icon>
+                  <span>{team.name}</span>
+                </div>
+                <AssignProject
+                  onClick={(e) => handleAssignProject(team.name)}
+                  fontSize="small"
+                />
               </aside>
             </TeamRow>
 
@@ -45,9 +64,14 @@ export const Teams = () => {
       </CreateTeam>
       <CreateTeamModal
         open={isTeamModalOpen}
-        withProjects={true}
         onClose={toggleCreateTeamModal}
         onSubmit={handleCreateTeam}
+      />
+      <AssignProjectModal
+        open={isAssignProjectModalOpen}
+        teamName={selectedTeam}
+        onClose={toggleAssignProjectModal}
+        onSubmit={handleAssignProject}
       />
     </div>
   );
@@ -67,9 +91,15 @@ const TeamRow = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: var(--p8);
+  margin-top: var(--p16);
   padding: 0 var(--p24);
   aside {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .team {
     display: flex;
     align-items: center;
   }
@@ -105,4 +135,9 @@ const CreateTeam = styled.div`
   span {
     margin-left: var(--p12);
   }
+`;
+
+const AssignProject = styled(Add)`
+  cursor: pointer;
+  color: var(--gray7);
 `;

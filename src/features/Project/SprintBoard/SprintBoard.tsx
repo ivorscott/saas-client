@@ -53,7 +53,6 @@ const BoardManager = ({
   };
 
   const onDragEnd = async (result: DropResult) => {
-    console.log(result);
     const { destination, source } = result;
 
     if (!destination) {
@@ -78,8 +77,6 @@ const BoardManager = ({
   };
 
   const columnDidNotChange = async (result: DropResult) => {
-    console.log(result);
-
     const { destination, source, draggableId } = result;
 
     if (!destination) {

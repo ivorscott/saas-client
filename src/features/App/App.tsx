@@ -35,16 +35,18 @@ const Page = styled.div`
   width: 100%;
 `;
 const PageContent = styled.div`
-  height: 100vh;
   overflow-x: scroll;
-  padding: var(--p32) 5%;
+  min-height: 80vh;
+  padding: var(--p32) 5% var(--p96);
 
   @media (max-width: 1400px) {
     padding: var(--p16);
   }
 `;
 const Footer = styled.div`
-  position: relative;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
   z-index: 2;
   padding: var(--p16);
   height: var(--p24);

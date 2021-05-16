@@ -8,9 +8,8 @@ import Check from "@material-ui/icons/Check";
 import Close from "@material-ui/icons/Close";
 import Button from "@material-ui/core/Button";
 import { Invite } from "./types";
-import { useMutation, useQueryClient } from "react-query";
-import { client as api } from "../../../services/APIService";
 import styled from "styled-components";
+import { useInviteDecision } from "../../../hooks/invites";
 dayjs.extend(relativeTime);
 
 interface Props {
@@ -21,7 +20,7 @@ interface Props {
 export const NotifyModal = ({ invites, open }: Props) => {
   const [sortedInvites, setSortedInvites] = useState<Invite[]>();
 
-  const queryClient = useQueryClient();
+  const [decide] = useInviteDecision();
 
   useEffect(() => {
     if (invites) {
@@ -34,24 +33,8 @@ export const NotifyModal = ({ invites, open }: Props) => {
     }
   }, [invites]);
 
-  const { mutate } = useMutation<
-    Invite,
-    Error,
-    { invite: Invite; accepted: boolean }
-  >(
-    ({ invite, accepted }) =>
-      api.patch(`/users/teams/${invite.teamId}/invites/${invite.id}`, {
-        accepted,
-      }),
-    {
-      onSuccess: (data, variable) => {
-        queryClient.setQueryData(["invites", { id: variable.invite.id }], data);
-      },
-    }
-  );
-
   const handleInvite = (invite: Invite, accepted: boolean) => {
-    mutate({ invite, accepted });
+    decide({ invite, accepted });
   };
 
   const renderDecision = (invite: Invite) => {
@@ -102,8 +85,7 @@ export const NotifyModal = ({ invites, open }: Props) => {
                       variant="contained"
                       name="reject"
                       onClick={() => handleInvite(invite, false)}
-                      color="secondary"
-                      className="secondary"
+                      className="opt-out"
                     >
                       Reject
                     </Button>
@@ -234,18 +216,19 @@ const InviteList = styled.ul`
     align-items: center;
   }
   .decision button {
-    padding: var(--p8) var(--p34);
+    padding: var(--p4) var(--p32);
     margin-right: var(--p16);
     font-family: ProximaNova-Bold;
     font-size: var(--p16);
     text-transform: capitalize;
   }
-  .secondary {
+  .opt-out {
     color: var(--gray4);
-  }
-  .secondary:hover {
-    color: var(--gray9);
-    background: var(--gray2);
+    background: var(--gray1);
+    &:hover {
+      color: var(--gray9);
+      background: var(--gray2);
+    }
   }
 `;
 

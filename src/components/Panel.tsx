@@ -26,7 +26,7 @@ export const PanelForm = (props: Props) => {
       <header>
         <h2>{props.title}</h2>
         <StyleSettings>
-          {props.hasChanged && <span className="modified">modified</span>}
+          {props.hasChanged && <div className="modified">modified</div>}
           {props.isEditing && props.hasChanged && (
             <PanelButton className="save" onClick={props.onSubmit}>
               {props.ctaPrimaryText}
@@ -98,10 +98,10 @@ export const PanelField = styled(TextField)`
 
 const Panel = styled.div`
   width: var(--p512);
-  max-height: 100%;
+  height: 70vh;
   position: fixed;
-  top: var(--p16);
-  right: var(--p16);
+  top: var(--p48);
+  right: calc(50% - var(--p512) + var(--p256) - var(--p64) + var(--p32));
   z-index: 3;
   padding: var(--p32);
   background: var(--white1);
@@ -114,12 +114,6 @@ const Panel = styled.div`
     font-family: ProximaNova-Bold;
     font-size: var(--p24);
   }
-  .modified {
-    font-size: var(--p12);
-    display: flex;
-    align-items: center;
-    margin-right: var(--p8);
-  }
 `;
 
 const StyleSettings = styled.div`
@@ -127,6 +121,13 @@ const StyleSettings = styled.div`
   flex: 1;
   align-items: flex-end;
   justify-content: flex-end;
+  .modified {
+    font-size: var(--p12);
+    display: flex;
+    align-items: center;
+    margin-right: var(--p8);
+    padding: var(--p4);
+  }
 `;
 
 const StyledIconButton = styled(IconButton)`
@@ -138,8 +139,8 @@ const StyledIconButton = styled(IconButton)`
 
 const PanelButton = styled.button`
   background: var(--gray1);
-  color: var(--gray6);
-  padding: var(--p4) var(--p16);
+  color: var(--gray7);
+  padding: var(--p4) var(--p12);
   border-radius: 4px;
   border-style: none;
   margin: 0 var(--p4);

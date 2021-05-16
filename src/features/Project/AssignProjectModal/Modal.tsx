@@ -4,21 +4,36 @@ import Dialog from "@material-ui/core/Dialog";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import TextField from "@material-ui/core/TextField";
+import FormControl from "@material-ui/core/FormControl";
+import MenuItem from "@material-ui/core/MenuItem";
+import Select from "@material-ui/core/Select";
+import { useProjects } from "../../../hooks/project";
 import styled from "styled-components";
 
 interface Props {
   open: boolean;
+  teamName: string;
   onClose: () => void;
-  onSubmit: (team: string) => void;
+  onSubmit: (name: string) => void;
 }
 
-export const Modal = ({ open, onClose, onSubmit }: Props) => {
-  const [team, setTeam] = useState("");
+export const Modal = ({ open, teamName, onClose, onSubmit }: Props) => {
+  const [name, setName] = useState("");
+  const [project, setProject] = useState("");
 
-  const handleTeamChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleProjectChange = (event: React.ChangeEvent<{ value: string }>) => {
     event.preventDefault();
-    const team = event.target.value;
-    setTeam(team);
+    const selectedProjected = event.target.value;
+    setProject(selectedProjected);
+  };
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const name = event.target.value;
+    setName(name);
+  };
+
+  const handleSubmit = () => {
+    onSubmit && onSubmit(name);
   };
 
   return (
@@ -31,17 +46,25 @@ export const Modal = ({ open, onClose, onSubmit }: Props) => {
     >
       <DialogContainer>
         <StyledDialogTitle id="responsive-dialog-title">
-          Create Team
+          Add Project
         </StyledDialogTitle>
-
-        <DialogContentText>Team name</DialogContentText>
+        <DialogContentText>
+          Add a new or existing project to the team.
+        </DialogContentText>
+        <DialogContentText>
+          <small className="team">{teamName}</small>
+        </DialogContentText>
         <DialogContent>
           <Field
             fullWidth={true}
-            onChange={handleTeamChange}
-            placeholder="Enter a name"
+            onChange={handleChange}
+            value={name}
+            placeholder="Enter project name"
           />
         </DialogContent>
+
+        <ProjectSelector teamName={teamName} onChange={handleProjectChange} />
+
         <StyledDialogActions>
           <Button
             className="opt-out"
@@ -51,11 +74,7 @@ export const Modal = ({ open, onClose, onSubmit }: Props) => {
           >
             Cancel
           </Button>
-          <Button
-            variant="contained"
-            onClick={() => onSubmit(team)}
-            color="primary"
-          >
+          <Button variant="contained" onClick={handleSubmit} color="primary">
             Create
           </Button>
         </StyledDialogActions>
@@ -64,12 +83,53 @@ export const Modal = ({ open, onClose, onSubmit }: Props) => {
   );
 };
 
+const ProjectSelector = ({
+  teamName,
+  onChange,
+}: {
+  teamName: string;
+  onChange: (event: React.ChangeEvent<{ value: string }>) => void;
+}) => {
+  const projects = useProjects();
+  if (!projects.data || projects.data.length === 0) {
+    return null;
+  }
+  return (
+    <StyledFormControl fullWidth={true}>
+      <DialogContentText>
+        <span>Or choose existing project</span>
+      </DialogContentText>
+
+      <Select className="field" displayEmpty onChange={onChange}>
+        <MenuItem value="">
+          <em>None</em>
+        </MenuItem>
+        {projects.data.map((project) => (
+          <MenuItem key={project.id} value={project.id ? project.id : ""}>
+            {project.name}
+          </MenuItem>
+        ))}
+      </Select>
+    </StyledFormControl>
+  );
+};
+
+const StyledFormControl = styled(FormControl)`
+  margin-top: var(--p16);
+  .field > div {
+    padding: var(--p8);
+  }
+`;
+
 const StyledDialog = styled(Dialog)`
   .modal {
     border-radius: var(--p8);
     max-height: none;
     position: fixed;
     top: 15%;
+  }
+  .team {
+    font-family: ProximaNova-Bold;
   }
 `;
 
@@ -79,7 +139,7 @@ const DialogContainer = styled.div`
 `;
 
 const DialogContent = styled.div`
-  min-height: var(--p96);
+  min-height: var(--p48);
 `;
 
 const StyledDialogTitle = styled(DialogTitle)`

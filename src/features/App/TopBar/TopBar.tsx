@@ -5,7 +5,7 @@ import Notifications from "@material-ui/icons/Notifications";
 import { UserMenu } from "../../../components/UserMenu";
 import { SearchBar } from "../SearchBar";
 import { NotifyModal } from "./NotifyModal";
-import { useInvites } from "../../../hooks/project";
+import { useInvites } from "../../../hooks/invites";
 import styled from "styled-components";
 
 export const TopBar = () => {

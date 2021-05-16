@@ -4,13 +4,12 @@ import styled from "styled-components";
 import { SprintColumn } from "./SprintColumn";
 import { Task, TaskDict, ColumnDict, Project } from "../types";
 import { TaskModal } from "./SprintTask/TaskModal";
-import { useTeamMemberships } from "../../../hooks/project";
+import { useTeamMemberships } from "../../../hooks/teams";
 import { makeUserDict } from "./helpers";
 
 interface BoardActions {
   onDragEnd: (result: DropResult) => void;
   onAddTask: (task: string) => void;
-  // onDeleteTask: (columnKey: string, taskId: string) => void;
 }
 
 interface Props extends BoardActions {

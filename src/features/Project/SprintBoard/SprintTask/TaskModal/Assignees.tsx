@@ -1,7 +1,8 @@
 import { Select, MenuItem, FormControl } from "@material-ui/core";
 import React from "react";
 import { useParams } from "react-router";
-import { useProject, useTeamMemberships } from "../../../../../hooks/project";
+import { useProject } from "../../../../../hooks/project";
+import { useTeamMemberships } from "../../../../../hooks/teams";
 import { Task } from "../../../types";
 import styled from "styled-components";
 import { makeUserDict } from "../../helpers";

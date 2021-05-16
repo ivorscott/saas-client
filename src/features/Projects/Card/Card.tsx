@@ -1,8 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Project } from "../../Project";
+import { Project } from "../../Project/types";
 import styled from "styled-components";
-import { useTeam, useTeamMemberships } from "../../../hooks/project";
+import { useTeam, useTeamMemberships } from "../../../hooks/teams";
 import { Memberships } from "../../Project/types";
 
 interface Props {
@@ -21,7 +21,7 @@ export const Card = ({ project, seq }: Props) => {
         <div className={`color-tip badge${color}`} />
         <CardHeader>
           <CardTitle>{project.name}</CardTitle>
-          {team && <CardSubtitle>Developed by {team.name}</CardSubtitle>}
+          <CardSubtitle>Developed by {team ? team.name : "Me"}</CardSubtitle>
         </CardHeader>
         <CardBody>
           <CardText>{project.description}</CardText>
@@ -95,6 +95,7 @@ const StyledCard = styled.div`
 
 const CardHeader = styled.div`
   width: 100%;
+  min-height: 82px;
   padding: var(--p16);
   box-sizing: border-box;
   border-bottom: 1px solid var(--gray1);

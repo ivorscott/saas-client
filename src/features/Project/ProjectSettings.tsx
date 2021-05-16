@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import IconButton from "@material-ui/core/IconButton";
 import Switch from "@material-ui/core/Switch";
 import { Memberships, Project } from "./types";
 import styled from "styled-components";
@@ -181,27 +180,4 @@ const StyledMembers = styled.div`
   display: flex;
   justify-content: space-evenly;
   align-items: center;
-`;
-
-const StyledAvatars = styled(IconButton)`
-  background: var(--gray1);
-  color: var(--gray4);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 50%;
-  width: var(--p64);
-  height: var(--p64);
-  text-align: center;
-  font-size: var(--p12);
-  margin: 0 var(--p4);
-  text-transform: uppercase;
-`;
-
-const StyledImage = styled.img`
-  width: var(--p64);
-  height: var(--p64);
-  border-radius: 50px;
-  margin: var(--p4);
-  cursor: pointer;
 `;

@@ -92,6 +92,7 @@ const MenuBody = ({
 const StyledPopper = styled(Popper)`
   position: relative;
   z-index: 3;
+  width: var(--p192);
   a,
   li {
     text-decoration: none;

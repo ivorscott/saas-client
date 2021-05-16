@@ -19,11 +19,11 @@ export const SideBar = () => {
             <div>Projects</div>
           </StyledLink>
         </li>
-        <li>
+        {/* <li>
           <StyledLink to="/manage/projects">
             <div>Estimates</div>
           </StyledLink>
-        </li>
+        </li> */}
       </PrimaryNav>
       <Teams />
     </StyledSideBar>

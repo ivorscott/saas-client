@@ -1,11 +1,8 @@
 import React, { useState } from "react";
 import { Add } from "@material-ui/icons";
 import { useParams } from "react-router-dom";
-import {
-  useCreateInvite,
-  useCreateTeam,
-  useTeamMemberships,
-} from "../../hooks/project";
+import { useCreateTeam, useTeamMemberships } from "../../hooks/teams";
+import { useCreateInvite } from "../../hooks/invites";
 import { CreateTeamModal } from "./CreateTeamModal";
 import { InviteModal } from "./InviteModal";
 import styled from "styled-components";

@@ -52,7 +52,6 @@ class APIService {
     return fetch(url, options).then(async (res) => {
       const type = res.headers.get("content-type");
       if (!res.ok) {
-        console.log(res);
         throw new Error(`(${res.status}) ${res.statusText}`);
       }
       return type && type.includes("application/json") && res.json();

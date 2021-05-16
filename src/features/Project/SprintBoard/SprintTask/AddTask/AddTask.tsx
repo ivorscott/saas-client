@@ -4,7 +4,7 @@ import TextareaAutosize from "@material-ui/core/TextareaAutosize";
 import { Params, Project } from "../../../types";
 import { AxiosError } from "axios";
 import { useQuery } from "react-query";
-import { client } from "../../../../../services/APIService";
+import { client as api } from "../../../../../services/APIService";
 import { useParams } from "react-router";
 import styled from "styled-components";
 
@@ -36,7 +36,7 @@ const Component = ({
         <StyleTextArea
           value={task}
           maxRows={3}
-          maxLength={60}
+          maxLength={48}
           onChange={onChange}
           placeholder="Describe the task"
         />
@@ -67,7 +67,7 @@ export const AddTask = ({
   const params: Params = useParams();
   const { data: selected } = useQuery<Project, AxiosError>(
     ["project", params.id],
-    async () => await client.get(`/projects/${params.id}`)
+    async () => await api.get(`/projects/${params.id}`)
   );
 
   const [task, setTask] = useState("");

@@ -63,7 +63,7 @@ const TaskKey = styled.div`
   text-transform: uppercase;
 `;
 const TaskTitle = styled.div`
-  font-family: ProximaNovaA-Medium;
+  font-family: ProximaNova-Medium;
   color: var(--gray6);
 `;
 const TaskHeader = styled.div`
