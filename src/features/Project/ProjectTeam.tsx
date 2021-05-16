@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Add } from "@material-ui/icons";
-import { IconButton } from "@material-ui/core";
 import { useParams } from "react-router-dom";
 import {
   useCreateInvite,
@@ -99,6 +98,7 @@ const TeamModals = (props: {
 const Container = styled.div`
   display: flex;
   align-items: center;
+  margin-top: var(--p32);
 `;
 
 const StyledAdd = styled(Add)`
@@ -113,27 +113,4 @@ const StyledMembers = styled.div`
   display: flex;
   justify-content: flex-end;
   align-items: center;
-`;
-
-const StyledAvatars = styled(IconButton)`
-  background: #ececec;
-  color: #bbbbbb;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 50%;
-  width: var(--p32);
-  height: var(--p32);
-  text-align: center;
-  font-size: var(--p12);
-  margin: 0 var(--p4);
-  text-transform: uppercase;
-`;
-
-const StyledImage = styled.img`
-  width: var(--p32);
-  height: var(--p32);
-  border-radius: 50px;
-  margin: var(--p4);
-  cursor: pointer;
 `;

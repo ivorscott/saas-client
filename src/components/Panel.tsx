@@ -1,12 +1,13 @@
 import { TextField, IconButton } from "@material-ui/core";
-import MoreHoriz from "@material-ui/icons/MoreHoriz";
 import Close from "@material-ui/icons/Close";
 import React from "react";
 import styled from "styled-components";
+import { DropdownButton } from "./DropdownButton";
 
 interface Actions {
   onClose: () => void;
   onSubmit: () => void;
+  onDelete: () => void;
   toggleEditing: () => void;
 }
 
@@ -27,7 +28,7 @@ export const PanelForm = (props: Props) => {
         <StyleSettings>
           {props.hasChanged && <span className="modified">modified</span>}
           {props.isEditing && props.hasChanged && (
-            <PanelButton className="primary" onClick={props.onSubmit}>
+            <PanelButton className="save" onClick={props.onSubmit}>
               {props.ctaPrimaryText}
             </PanelButton>
           )}
@@ -38,9 +39,7 @@ export const PanelForm = (props: Props) => {
           >
             {props.isEditing ? "Cancel" : "Edit"}
           </PanelButton>
-          <StyledIconButton size="small">
-            <MoreHoriz />
-          </StyledIconButton>
+          <DropdownButton onDelete={props.onDelete} />
           <StyledIconButton size="small" onClick={props.onClose}>
             <Close fontSize="small" />
           </StyledIconButton>
@@ -126,14 +125,13 @@ const Panel = styled.div`
 const StyleSettings = styled.div`
   display: flex;
   flex: 1;
+  align-items: flex-end;
   justify-content: flex-end;
-  align-self: flex-start;
-  color: var(--gray6);
-  cursor: pointer;
 `;
 
 const StyledIconButton = styled(IconButton)`
-  padding: 0 var(--p4);
+  height: var(--p24);
+  padding: 0 var(--p8);
   border-radius: var(--p4);
   margin-left: var(--p4);
 `;
@@ -141,16 +139,16 @@ const StyledIconButton = styled(IconButton)`
 const PanelButton = styled.button`
   background: var(--gray1);
   color: var(--gray6);
-  padding: var(--p4) var(--p12);
+  padding: var(--p4) var(--p16);
   border-radius: 4px;
   border-style: none;
-  margin: var(--p4);
+  margin: 0 var(--p4);
 
   &:hover {
     background: var(--gray2);
     cursor: pointer;
   }
-  &.primary {
+  &.save {
     color: var(--white1);
     background: var(--green4);
     padding: var(--p4) var(--p12);

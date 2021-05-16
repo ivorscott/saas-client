@@ -27,6 +27,10 @@ export interface UpdateProject {
   columnOrder?: string[];
 }
 
+export interface DeleteProject {
+  id: string;
+}
+
 export function useCreateProject() {
   const queryClient = useQueryClient();
 
@@ -52,6 +56,23 @@ export function useUpdateProject() {
     {
       onSuccess: (data) => {
         queryClient.setQueryData(["project", data.id], data);
+      },
+    }
+  );
+  return [mutate];
+}
+
+export function useDeleteProject() {
+  const queryClient = useQueryClient();
+  const { mutate } = useMutation<null, Error, string>(
+    (id) => api.delete(`/projects/${id}`),
+    {
+      onSuccess: (_, projectId) => {
+        queryClient.invalidateQueries(["project", projectId], {
+          refetchActive: false,
+          refetchInactive: false,
+        });
+        queryClient.invalidateQueries("projects");
       },
     }
   );

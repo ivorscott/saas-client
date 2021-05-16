@@ -50,8 +50,6 @@ const Header = styled.header`
   }
 `;
 
-// const
-
 const StyledIconButton = styled(IconButton)`
   padding: 0 var(--p4);
   border-radius: var(--p4);

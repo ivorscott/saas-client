@@ -12,7 +12,7 @@ interface Props {
 const renderProjectCards = (projects: Project[]) => {
   const seq = projects.map((_, idx) => idx);
   return projects.map((project: Project, index: number) => (
-    <Card key={"C-0" + index} project={project} seq={seq[index]} />
+    <Card key={project.id} project={project} seq={seq[index]} />
   ));
 };
 

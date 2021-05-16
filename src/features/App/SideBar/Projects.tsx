@@ -26,7 +26,7 @@ export function TeamProjects(props: TeamProjectsProps) {
 
   return (
     <>
-      {map[`${props.teamId}`].map((link: LinkData) => (
+      {(map[`${props.teamId}`] || []).map((link: LinkData) => (
         <StyledTeamProject key={link.id}>
           <Link to={`/manage/projects/${link.id}`}>
             <span>{link.name}</span>

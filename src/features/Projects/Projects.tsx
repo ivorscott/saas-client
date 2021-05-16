@@ -14,7 +14,7 @@ export const Projects = () => {
   const projects = useProjects();
 
   if (projects.isSuccess) {
-    teamIds = projects.data?.map((project) => project.teamId);
+    teamIds = projects.data.map((project) => project.teamId);
   }
 
   const [createProject] = useCreateProject();

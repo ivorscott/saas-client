@@ -9,22 +9,23 @@ import TextareaAutosize from "@material-ui/core/TextareaAutosize";
 import styled from "styled-components";
 import dayjs from "dayjs";
 import { SelectAssignees } from "./Assignees";
-import { useUpdateTask } from "../../../../../hooks/board";
+import { useDeleteTask, useUpdateTask } from "../../../../../hooks/board";
 
 export const TaskModal = ({
-  task,
+  data,
   open,
   onClose,
 }: {
   open: boolean;
-  task: Task;
+  data: { columnId: string; task: Task };
   onClose: () => void;
 }) => {
-  const initialState = task;
+  const initialState = data.task;
   const [formValues, setFormValues] = useState(initialState);
   const [changed, setChangedState] = useState(false);
   const [isEditing, setEditing] = useState(false);
   const [updateTask] = useUpdateTask();
+  const [deleteTask] = useDeleteTask();
 
   const toggleEditing = () => {
     setEditing(!isEditing);
@@ -61,6 +62,15 @@ export const TaskModal = ({
     // add new comment - then merge to comments list
   };
 
+  const handleDelete = () => {
+    deleteTask({
+      projectId: formValues.projectId,
+      taskId: formValues.id,
+      columnId: data.columnId,
+    });
+    handleClose();
+  };
+
   const handleSubmit = () => {
     updateTask(formValues);
     setChangedState(false);
@@ -84,6 +94,7 @@ export const TaskModal = ({
         ctaPrimaryText={"Save"}
         ctaSecondaryText={"Cancel"}
         onClose={handleClose}
+        onDelete={handleDelete}
         onSubmit={handleSubmit}
       >
         <PanelSection>

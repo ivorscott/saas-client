@@ -26,15 +26,16 @@ export const BoardContent = ({
   onDragEnd,
   onAddTask,
 }: Props) => {
-  const [selectedTask, setSelectedTask] = useState<Task>();
+  const [selectedTask, setSelectedTask] =
+    useState<{ columnId: string; task: Task }>();
   const [isOpen, setOpen] = useState(false);
-  const { data, isError } = useTeamMemberships(project?.teamId);
+  const { data } = useTeamMemberships(project?.teamId);
   const users = makeUserDict(data);
 
-  const setupTaskModal = (task: Task) => {
+  const setupTaskModal = (columnId: string, task: Task) => {
     if (!selectedTask) {
       setOpen(true);
-      setSelectedTask(task);
+      setSelectedTask({ columnId, task });
     }
   };
 
@@ -48,7 +49,7 @@ export const BoardContent = ({
       {selectedTask && (
         <TaskModal
           open={isOpen}
-          task={selectedTask}
+          data={selectedTask}
           onClose={destroyTaskModal}
         />
       )}

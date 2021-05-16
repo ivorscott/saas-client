@@ -8,7 +8,7 @@ import styled from "styled-components";
 
 interface Actions {
   onAddTask: (task: string) => void;
-  onTaskClick: (task: Task) => void;
+  onTaskClick: (columnId: string, task: Task) => void;
 }
 
 interface Props extends Actions {
@@ -28,11 +28,18 @@ export const SprintColumn = ({
 }: Props) => {
   const renderTasks = () => {
     if (column.taskIds.length > 0) {
-      return column.taskIds.map((key, index) => (
-        <div key={taskDict[key].id} onClick={() => onTaskClick(taskDict[key])}>
-          <SprintTask users={users} task={taskDict[key]} index={index} />
-        </div>
-      ));
+      return column.taskIds.map((key, index) => {
+        return (
+          taskDict[key] && (
+            <div
+              key={taskDict[key].id}
+              onClick={() => onTaskClick(column.id, taskDict[key])}
+            >
+              <SprintTask users={users} task={taskDict[key]} index={index} />
+            </div>
+          )
+        );
+      });
     }
     return null;
   };

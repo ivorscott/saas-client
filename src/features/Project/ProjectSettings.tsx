@@ -4,10 +4,10 @@ import Switch from "@material-ui/core/Switch";
 import { Memberships, Project } from "./types";
 import styled from "styled-components";
 import { MembersTable } from "./MembersTable";
-import { useUpdateProject } from "../../hooks/project";
+import { useDeleteProject, useUpdateProject } from "../../hooks/project";
 import { PanelForm, PanelSection, PanelField } from "../../components/Panel";
-import { getUserInitials } from "../App/helpers";
 import { Avatar } from "../../components/Avatar";
+import { history } from "../App/history";
 
 interface Actions {
   onClose: () => void;
@@ -38,6 +38,7 @@ export const ProjectSettings = ({
   const [isEditing, setEditing] = useState(false);
   const [formValues, setFormValues] = useState<FormValues>(initialState);
   const [updateProject] = useUpdateProject();
+  const [deleteProject] = useDeleteProject();
   const toggleEditing = () => {
     setFormValues(initialState);
     setEditing(!isEditing);
@@ -69,6 +70,11 @@ export const ProjectSettings = ({
     });
   };
 
+  const handleDelete = () => {
+    deleteProject(project.id);
+    setTimeout(() => history.push("/manage/projects"), 2000);
+  };
+
   const handleSubmit = () => {
     setFormValues({
       project: formValues.project,
@@ -97,6 +103,7 @@ export const ProjectSettings = ({
         isEditing={isEditing}
         toggleEditing={toggleEditing}
         onClose={handleClose}
+        onDelete={handleDelete}
         onSubmit={handleSubmit}
       >
         <PanelSection>

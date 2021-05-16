@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { DropResult } from "react-beautiful-dnd";
-import { Project, Board, Task } from "../types";
+import { Project, Board } from "../types";
 import { makeColumnsDict, makeTasksDict } from "./helpers";
 import { BoardContent } from "./Content";
 import {
   useAddTask,
-  // useDeleteTask,
   useMoveTask,
   useColumns,
   useTasks,
@@ -34,7 +33,6 @@ const BoardManager = ({
 }) => {
   const [board, setBoard] = useState<Board>(initialBoard);
   const [addTask] = useAddTask();
-  // const [deleteTask] = useDeleteTask();
   const [moveTask] = useMoveTask();
 
   useEffect(() => {
@@ -42,27 +40,6 @@ const BoardManager = ({
   }, [initialBoard]);
 
   const { columns, tasks } = board;
-
-  // const handleDeleteTaskSubmit = async (columnKey: string, taskId: string) => {
-  //   const column = columns[columnKey];
-
-  //   const newTaskIds = column.taskIds.filter((id: string) => id !== taskId);
-
-  //   const columnUpdate = {
-  //     ...column,
-  //     taskIds: newTaskIds,
-  //   };
-
-  //   const updatedColumnDict = {
-  //     ...columns,
-  //     [column.columnName]: columnUpdate,
-  //   };
-
-  //   delete tasks[taskId];
-
-  //   setBoard({ columns: updatedColumnDict, tasks });
-  //   deleteTask({ projectId: project.id, columnId: column.id, taskId });
-  // };
 
   const handleAddTask = async (task: string) => {
     const columnKey: string = "column-1";
@@ -178,7 +155,6 @@ const BoardManager = ({
       columnDict={columns}
       onDragEnd={onDragEnd}
       onAddTask={handleAddTask}
-      // onDeleteTask={handleDeleteTaskSubmit}
     />
   ) : null;
 };

@@ -28,31 +28,9 @@ export function useAddTask() {
         title: task,
       }),
     {
-      onSuccess: (data, variables) => {
-        queryClient.setQueryData<Task[]>(
-          ["project", variables.projectId, "tasks"],
-          (prev = []) => [...prev, data]
-        );
-
-        queryClient.setQueryData(
-          ["project", variables.projectId, "columns"],
-          (prev) => {
-            let state = prev as Column[];
-
-            const column = (state || []).find((item) => {
-              return item.columnName === "column-1";
-            });
-
-            if (column) {
-              return [
-                ...state,
-                { ...column, taskIds: [...column.taskIds, data.id] },
-              ];
-            }
-
-            return state;
-          }
-        );
+      onSuccess: (_, { projectId }) => {
+        queryClient.invalidateQueries(["project", projectId, "tasks"]);
+        queryClient.invalidateQueries(["project", projectId, "columns"]);
       },
     }
   );
@@ -91,11 +69,37 @@ export function useDeleteTask() {
       client.delete(`/projects/columns/${columnId}/tasks/${taskId}`),
     {
       onSuccess: (_, variables) => {
-        queryClient.invalidateQueries([
-          "projects",
-          variables.projectId,
-          "tasks",
-        ]);
+        queryClient.setQueryData<Task[]>(
+          ["project", variables.projectId, "tasks"],
+          (prev = []) => [
+            ...prev.filter((task) => task.id !== variables.taskId),
+          ]
+        );
+
+        queryClient.setQueryData(
+          ["project", variables.projectId, "columns"],
+          (prev) => {
+            let state = prev as Column[];
+
+            const column = (state || []).find((item) => {
+              return item.columnName === variables.columnId;
+            });
+
+            if (column) {
+              return [
+                ...state,
+                {
+                  ...column,
+                  taskIds: column.taskIds.filter(
+                    (id) => id !== variables.taskId
+                  ),
+                },
+              ];
+            }
+
+            return state;
+          }
+        );
       },
     }
   );

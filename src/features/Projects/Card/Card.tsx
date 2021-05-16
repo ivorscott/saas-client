@@ -62,6 +62,11 @@ const StyledCard = styled.div`
   border-radius: 4px;
   text-transform: capitalize;
   position: relative;
+  transition: transform 0.3s ease-out;
+  &:hover {
+    transform: translate(0, -8px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12), 0 3px 6px rgba(0, 0, 0, 0.15);
+  }
   a {
     display: flex;
     flex: 0 1 calc(25% - var(--p16));

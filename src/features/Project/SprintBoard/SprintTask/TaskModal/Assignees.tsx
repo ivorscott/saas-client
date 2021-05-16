@@ -44,7 +44,7 @@ export const SelectAssignees = ({
           onChange={onChange}
         >
           <MenuItem value="">
-            <em>None</em>
+            <em>Unassign</em>
           </MenuItem>
           {data.map((member) => (
             <MenuItem key={member.userId} value={member.userId}>

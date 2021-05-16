@@ -19,16 +19,6 @@ export const SelectedProject = () => {
     return;
   }
 
-  // const handleDeleteProject = async () => {
-  //   await dispatch(deleteProject(params.id));
-  //   history.replace(`/manage/projects`);
-  // };
-
-  // Do mutation
-  // export const deleteProject = async (id: string) => {
-  //     return await client.delete(`/projects/${id}`);
-  //   }
-
   if (!selected.data) {
     return null;
   } else {
@@ -123,6 +113,7 @@ const ProjectHeader = styled.header`
     display: flex;
     flex-direction: column;
     align-items: flex-end;
+    justify-content: space-around;
     position: relative;
     z-index: 2;
     @media (max-width: 1400px) {

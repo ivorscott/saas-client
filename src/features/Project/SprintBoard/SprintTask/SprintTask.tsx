@@ -1,5 +1,4 @@
 import React from "react";
-import MoreHoriz from "@material-ui/icons/MoreHoriz";
 import { Task, UserDict } from "../../types";
 import { CSSProperties } from "@material-ui/styles";
 import {
@@ -48,9 +47,6 @@ export const SprintTask = ({
                   )}
                 </AssignedTo>
               </TaskMeta>
-              <StyleSettings>
-                <MoreHoriz />
-              </StyleSettings>
             </TaskHeader>
             <TaskTitle>{task.title}</TaskTitle>
           </div>
@@ -74,7 +70,12 @@ const TaskHeader = styled.div`
   display: flex;
   align-items: center;
   min-height: 40px;
+  position: relative;
   margin-bottom: var(--p8);
+  .dropdown {
+    position: absolute;
+    right: 0;
+  }
 `;
 const TaskMeta = styled.div`
   display: flex;
@@ -103,15 +104,6 @@ const AssignedTo = styled.div`
   border-radius: 50px;
   margin: var(--p4);
   padding: 1px;
-`;
-
-const StyleSettings = styled.div`
-  display: flex;
-  flex: 1;
-  justify-content: flex-end;
-  align-self: flex-start;
-  color: var(--gray6);
-  cursor: pointer;
 `;
 
 const getItemStyle = (

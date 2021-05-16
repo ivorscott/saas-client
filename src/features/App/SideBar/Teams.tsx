@@ -5,6 +5,7 @@ import { CreateTeamModal } from "../../Project/CreateTeamModal";
 import { useProjects, useTeams, useCreateTeam } from "../../../hooks/project";
 import { TeamProjects } from "./Projects";
 import { getTeamInitials } from "../helpers";
+import { Team } from "../../Project/types";
 
 export const Teams = () => {
   const projects = useProjects();
@@ -20,12 +21,11 @@ export const Teams = () => {
   const handleCreateTeam = () => {
     // createTeam();
   };
-
   return (
     <div>
       <Title>My Teams</Title>
       <ul>
-        {data.map((team) => (
+        {data.map((team: Team) => (
           <li key={team.id}>
             <TeamRow>
               <aside>
@@ -33,6 +33,7 @@ export const Teams = () => {
                 <span>{team.name}</span>
               </aside>
             </TeamRow>
+
             {projects.data && (
               <TeamProjects teamId={team.id} projects={projects.data} />
             )}
