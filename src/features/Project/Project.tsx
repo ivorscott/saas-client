@@ -92,6 +92,7 @@ const Settings = (props: { project: Project }) => {
       </div>
       <ProjectSettings
         open={isSettingsOpen}
+        team={team}
         project={props.project}
         memberships={memberships}
         onClose={toggleSettings}

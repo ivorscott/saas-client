@@ -63,7 +63,7 @@ function makeProjectTeamMap(projects?: Project[]): TeamToProjectsMap {
 }
 
 const StyledTeamProject = styled.div`
-  padding: var(--p8) 0 var(--p12) calc(var(--p8) + var(--p48));
+  padding: var(--p8) 0 var(--p12) var(--p32);
   font-size: 14px;
   margin: var(--p4) 0;
   a {

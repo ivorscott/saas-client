@@ -4,6 +4,10 @@ import Dialog from "@material-ui/core/Dialog";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import TextField from "@material-ui/core/TextField";
+import FormControl from "@material-ui/core/FormControl";
+import MenuItem from "@material-ui/core/MenuItem";
+import Select from "@material-ui/core/Select";
+import { useTeams } from "../../../hooks/teams";
 import styled from "styled-components";
 
 interface Props {
@@ -15,10 +19,18 @@ interface Props {
 export const Modal = ({ open, onClose, onSubmit }: Props) => {
   const [team, setTeam] = useState("");
 
-  const handleTeamChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleTeamChange = (event: React.ChangeEvent<{ value: string }>) => {
     event.preventDefault();
     const team = event.target.value;
     setTeam(team);
+  };
+
+  const handleExistingTeamChange = (
+    event: React.ChangeEvent<{ value: string }>
+  ) => {
+    event.preventDefault();
+    const teamId = event.target.value;
+    setTeam(teamId);
   };
 
   return (
@@ -31,10 +43,9 @@ export const Modal = ({ open, onClose, onSubmit }: Props) => {
     >
       <DialogContainer>
         <StyledDialogTitle id="responsive-dialog-title">
-          Create Team
+          Assign Team
         </StyledDialogTitle>
-
-        <DialogContentText>Team name</DialogContentText>
+        <DialogContentText>Add a new team to the project.</DialogContentText>
         <DialogContent>
           <Field
             fullWidth={true}
@@ -42,6 +53,9 @@ export const Modal = ({ open, onClose, onSubmit }: Props) => {
             placeholder="Enter a name"
           />
         </DialogContent>
+
+        <TeamsSelector onChange={handleExistingTeamChange} />
+
         <StyledDialogActions>
           <Button
             className="opt-out"
@@ -56,11 +70,40 @@ export const Modal = ({ open, onClose, onSubmit }: Props) => {
             onClick={() => onSubmit(team)}
             color="primary"
           >
-            Create
+            Assign
           </Button>
         </StyledDialogActions>
       </DialogContainer>
     </StyledDialog>
+  );
+};
+
+const TeamsSelector = ({
+  onChange,
+}: {
+  onChange: (event: React.ChangeEvent<{ value: string }>) => void;
+}) => {
+  const teams = useTeams();
+  if (!teams.data || teams.data.length === 0) {
+    return null;
+  }
+  return (
+    <StyledFormControl fullWidth={true}>
+      <DialogContentText>
+        <span>Or choose an existing team.</span>
+      </DialogContentText>
+
+      <Select className="field" displayEmpty onChange={onChange}>
+        <MenuItem value="">
+          <em>None</em>
+        </MenuItem>
+        {teams.data.map((team) => (
+          <MenuItem key={team.id} value={team.id ? team.id : ""}>
+            {team.name}
+          </MenuItem>
+        ))}
+      </Select>
+    </StyledFormControl>
   );
 };
 
@@ -73,13 +116,19 @@ const StyledDialog = styled(Dialog)`
   }
 `;
 
+const StyledFormControl = styled(FormControl)`
+  .field > div {
+    padding: var(--p8);
+  }
+`;
+
 const DialogContainer = styled.div`
   width: calc(var(--p384) - var(--p32) - var(--p32));
   padding: var(--p32);
 `;
 
 const DialogContent = styled.div`
-  min-height: var(--p96);
+  min-height: var(--p64);
 `;
 
 const StyledDialogTitle = styled(DialogTitle)`

@@ -21,8 +21,8 @@ export interface Project {
   description: string;
   teamId?: string;
   userId: string;
-  active: string;
-  public: string;
+  active: boolean;
+  public: boolean;
   columnOrder: string[];
   createdAt: string;
   updatedAt: string;

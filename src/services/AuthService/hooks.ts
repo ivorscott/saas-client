@@ -6,7 +6,10 @@ import { Auth0User, User, UserPayload } from "./types";
 import { IdToken } from "@auth0/auth0-spa-js";
 import { useQuery } from "react-query";
 
-const MISSING_USER_ID = "users error: missing user id";
+enum Errors {
+  NOT_FOUND = "Error: (404) Not Found",
+  MISSING_USER_ID = "users error: missing user id"
+}
 
 export function useAuth() {
   const [isError, setIsError] = useState(false);
@@ -54,7 +57,7 @@ export function useAuth() {
     authenticate();
   }, []);
 
-  const { data } = useQuery<UserPayload, UserPayload["error"]>(
+  const { data, error } = useQuery<UserPayload, UserPayload["error"]>(
     "auth",
     async () => await devpieClient.get("/users/me")
   );
@@ -68,8 +71,8 @@ export function useAuth() {
   }
 
   // auth0User exists but internal user id is missing from token
-  if (auth0User && data?.error) {
-    if (data?.error === MISSING_USER_ID) {
+  if (auth0User && error) {
+    if (error.toString() === Errors.MISSING_USER_ID || error.toString()  === Errors.NOT_FOUND) {
       const { identity } = auth0User;
       const newUser = transformAuth0User(identity);
       create(newUser);

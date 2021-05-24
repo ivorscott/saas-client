@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import Switch from "@material-ui/core/Switch";
-import { Memberships, Project } from "./types";
+import { Memberships, Project, Team } from "./types";
 import styled from "styled-components";
 import { MembersTable } from "./MembersTable";
 import { useDeleteProject, useUpdateProject } from "../../hooks/project";
+import { useLeaveTeam } from "../../hooks/teams";
 import { PanelForm, PanelSection, PanelField } from "../../components/Panel";
 import { Avatar } from "../../components/Avatar";
 import { history } from "../App/history";
@@ -14,6 +15,7 @@ interface Actions {
 
 interface Props extends Actions {
   open: boolean;
+  team: Team | undefined;
   project: Project;
   memberships: Memberships[] | undefined;
 }
@@ -24,6 +26,7 @@ interface FormValues {
 }
 
 export const ProjectSettings = ({
+  team,
   project,
   memberships,
   open,
@@ -38,9 +41,20 @@ export const ProjectSettings = ({
   const [formValues, setFormValues] = useState<FormValues>(initialState);
   const [updateProject] = useUpdateProject();
   const [deleteProject] = useDeleteProject();
+  const [leaveTeam] = useLeaveTeam();
+
   const toggleEditing = () => {
-    setFormValues(initialState);
     setEditing(!isEditing);
+  };
+
+  const resetForm = () => {
+    setFormValues(initialState);
+    toggleEditing();
+  };
+
+  const handleClose = () => {
+    resetForm();
+    onClose();
   };
 
   const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -69,6 +83,34 @@ export const ProjectSettings = ({
     });
   };
 
+  const handleActiveStateChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    event.preventDefault();
+
+    const active = !formValues.project.active;
+    const updates = formValues.project;
+
+    setFormValues({
+      project: { ...updates, active: active },
+      changed: initialState.project.active !== active,
+    });
+  };
+
+  const handlePublicStateChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    event.preventDefault();
+
+    const publicState = !formValues.project.public;
+    const updates = formValues.project;
+
+    setFormValues({
+      project: { ...updates, public: publicState },
+      changed: initialState.project.active !== publicState,
+    });
+  };
+
   const handleDelete = () => {
     deleteProject(project.id);
     setTimeout(() => history.push("/manage/projects"), 2000);
@@ -87,9 +129,11 @@ export const ProjectSettings = ({
     toggleEditing();
   };
 
-  const handleClose = () => {
-    toggleEditing();
-    onClose();
+  const handleLeaveTeam = () => {
+    const teamId = formValues.project.teamId;
+    if (teamId) {
+      leaveTeam(teamId);
+    }
   };
 
   if (open) {
@@ -100,7 +144,7 @@ export const ProjectSettings = ({
         ctaSecondaryText="Close"
         hasChanged={formValues.changed}
         isEditing={isEditing}
-        toggleEditing={toggleEditing}
+        toggleEditing={resetForm}
         onClose={handleClose}
         onDelete={handleDelete}
         onSubmit={handleSubmit}
@@ -135,24 +179,27 @@ export const ProjectSettings = ({
           <div>
             <span>Active</span>
             <Switch
-              onChange={() => {}}
-              color="secondary"
-              name="checkedB"
+              onChange={handleActiveStateChange}
+              checked={formValues.project.active}
+              disabled={isEditing ? false : true}
+              name="active"
               inputProps={{ "aria-label": "primary checkbox" }}
             />
           </div>
           <div>
             <span>Public</span>
             <Switch
-              onChange={() => {}}
+              onChange={handlePublicStateChange}
+              checked={formValues.project.public}
+              disabled={isEditing ? false : true}
               color="secondary"
-              name="checkedB"
+              name="public"
               inputProps={{ "aria-label": "primary checkbox" }}
             />
           </div>
         </PanelSection>
         <PanelSection>
-          <h3>Team Members</h3>
+          {team && <h3>Team</h3>}
 
           {memberships && (
             <StyledMembers>
@@ -165,6 +212,15 @@ export const ProjectSettings = ({
                 />
               ))}
             </StyledMembers>
+          )}
+
+          {team && (
+            <TeamControls>
+              <span className="developed-by">Developed By {team.name}</span>
+              <span className="leave" onClick={handleLeaveTeam}>
+                Leave team
+              </span>
+            </TeamControls>
           )}
         </PanelSection>
 
@@ -180,4 +236,20 @@ const StyledMembers = styled.div`
   display: flex;
   justify-content: space-evenly;
   align-items: center;
+`;
+
+const TeamControls = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: var(--p32) var(--p8) 0;
+  font-size: 14px;
+  .developed-by {
+    font-family: ProximaNova-Medium;
+    color: var(--gray6);
+  }
+  .leave {
+    color: var(--blue5);
+    cursor: pointer;
+  }
 `;

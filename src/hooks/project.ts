@@ -39,8 +39,8 @@ export function useUpdateProject() {
     Error,
     {
       id: string;
-      active?: string;
-      public?: string;
+      active?: boolean;
+      public?: boolean;
       description?: string;
       name?: string;
       columnOrder?: string[];

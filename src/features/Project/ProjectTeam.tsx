@@ -1,9 +1,14 @@
 import React, { useState } from "react";
 import { Add } from "@material-ui/icons";
 import { useParams } from "react-router-dom";
-import { useCreateTeam, useTeamMemberships } from "../../hooks/teams";
+import {
+  useCreateTeam,
+  useExistingTeam,
+  useTeam,
+  useTeamMemberships,
+} from "../../hooks/teams";
 import { useCreateInvite } from "../../hooks/invites";
-import { CreateTeamModal } from "./CreateTeamModal";
+import { AssignTeamModal } from "./AssignTeamModal";
 import { InviteModal } from "./InviteModal";
 import styled from "styled-components";
 import { Project } from "./types";
@@ -58,11 +63,19 @@ const TeamModals = (props: {
   onClose: () => void;
 }) => {
   const params: { id: string } = useParams();
-  const [mutateTeam] = useCreateTeam();
+  const [mutateNewTeam] = useCreateTeam();
+  const [mutateExistingTeam] = useExistingTeam();
   const [mutateInvite] = useCreateInvite();
 
-  const handleTeam = async (teamName: string) => {
-    mutateTeam({ teamName, projectId: params.id });
+  const handleTeam = async (team: string) => {
+    const v4 = new RegExp(
+      /^[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i
+    );
+    if (team.match(v4)) {
+      mutateExistingTeam({ teamId: team, projectId: params.id });
+    } else {
+      mutateNewTeam({ teamName: team, projectId: params.id });
+    }
     props.onClose();
   };
 
@@ -77,7 +90,7 @@ const TeamModals = (props: {
 
   return (
     <>
-      <CreateTeamModal
+      <AssignTeamModal
         open={props.isOpen && !teamExists}
         onClose={props.onClose}
         onSubmit={handleTeam}

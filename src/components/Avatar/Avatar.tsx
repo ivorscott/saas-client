@@ -7,7 +7,7 @@ import ImageViewer, { ImageViewerProps } from "../ImageViewer";
 interface Props {
   alt: ImageViewerProps["alt"];
   size?: ImageViewerProps["size"];
-  membership: Memberships;
+  membership: Memberships | undefined;
   badgeColor?: string;
   classNames?: string;
 }
@@ -19,6 +19,10 @@ export const Avatar = ({
   badgeColor,
   ...props
 }: Props) => {
+  if (!membership) {
+    return null
+  }
+
   return membership.picture ? (
     <StyledAvatars alt={alt} size={size} url={membership.picture} {...props} />
   ) : (

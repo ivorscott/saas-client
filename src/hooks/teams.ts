@@ -1,6 +1,7 @@
 import { useQuery, useQueryClient, useMutation } from "react-query";
 import { Memberships, Team } from "../features/Project/types";
 import { client as api } from "../services/APIService";
+import { history } from "../features/App/history";
 
 export function useTeamMemberships(teamId?: string) {
   return useQuery<Memberships[], Error>(["memberships", teamId], async () => {
@@ -8,22 +9,6 @@ export function useTeamMemberships(teamId?: string) {
       return await api.get(`/users/teams/${teamId}/members`);
     }
     return;
-  });
-}
-
-export function useAllTeamMemberships(teamIds?: (string | undefined)[]) {
-  if (!teamIds || teamIds.length === 0) {
-    return [];
-  }
-  return useQuery<Memberships[], Error>("memberships", () => {
-    const promises = teamIds.map((teamId) => {
-      if (teamId) {
-        return api.get(`/users/teams/${teamId}/members`);
-      }
-      return;
-    });
-
-    return Promise.all(promises);
   });
 }
 
@@ -57,6 +42,43 @@ export function useCreateTeam() {
     {
       onSuccess: (data) => {
         queryClient.setQueryData(["team", data.id], data);
+      },
+    }
+  );
+  return [mutate];
+}
+
+export function useExistingTeam() {
+  const queryClient = useQueryClient();
+  const { mutate } = useMutation<
+    void,
+    Error,
+    { teamId: string; projectId: string }
+  >(
+    ({ teamId, projectId }) =>
+      api.post(`/users/teams/${teamId}/project/${projectId}`, {}),
+    {
+      onSuccess: (_, variables) => {
+        queryClient.invalidateQueries("projects");
+        queryClient.invalidateQueries(["project", variables.projectId]);
+      },
+    }
+  );
+  return [mutate];
+}
+
+export function useLeaveTeam() {
+  const queryClient = useQueryClient();
+  const { mutate } = useMutation<void, Error, string>(
+    (teamId) => api.post(`/users/teams/${teamId}/leave`, {}),
+    {
+      onSuccess: (_, teamId) => {
+        queryClient.invalidateQueries(["memberships", teamId]);
+        queryClient.invalidateQueries(["team", teamId]);
+
+        setTimeout(() => {
+          history.push("/manage/projects");
+        }, 2000);
       },
     }
   );

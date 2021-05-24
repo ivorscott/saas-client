@@ -19,11 +19,11 @@ export const SideBar = () => {
             <div>Projects</div>
           </StyledLink>
         </li>
-        {/* <li>
+        <li>
           <StyledLink to="/manage/projects">
             <div>Estimates</div>
           </StyledLink>
-        </li> */}
+        </li>
       </PrimaryNav>
       <Teams />
     </StyledSideBar>
@@ -37,17 +37,17 @@ const StyledSideBar = styled.div`
   position: relative;
   ul {
     list-style: none;
-    padding: 0;
+    padding-bottom: var(--p24);
   }
   @media (max-width: 1400px) {
     display: none;
   }
 `;
-const PrimaryNav = styled.div`
+const PrimaryNav = styled.ul`
   list-style: none;
-  padding: 0 var(--p24);
+  padding: 0;
   li {
-    padding-bottom: var(--p16);
+    padding: var(--p8) var(--p24);
   }
 `;
 const Container = styled.div`
@@ -57,7 +57,7 @@ const Container = styled.div`
 const Logo = styled.img`
   height: var(--p32);
   margin-top: var(--p4);
-  margin-bottom: var(--p64);
+  margin-bottom: var(--p32);
 `;
 
 const StyledLink = styled(Link)`

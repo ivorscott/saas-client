@@ -71,5 +71,5 @@ const StyledTableRow = styled(TableRow)``;
 
 const StyledTableCell = styled(TableCell)`
   color: var(--primary);
-  font-size: var(--p16);
+  font-size: 14px;
 `;
