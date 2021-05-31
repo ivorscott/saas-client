@@ -12,16 +12,15 @@ import { MoreOptions } from "../../components/MoreOptions";
 
 export const SelectedProject = () => {
   const params: Params = useParams();
-
   const selected = useProject(params.id);
 
   if (selected.isError) {
     history.push("/manage/projects");
-    return;
+    return null
   }
 
   if (!selected.data) {
-    return null;
+    return null
   } else {
     return <ProjectComponent project={selected.data} />;
   }

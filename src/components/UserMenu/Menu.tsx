@@ -17,13 +17,16 @@ import { Link } from "react-router-dom";
 import ImageViewer from "../ImageViewer";
 import styled from "styled-components";
 
-interface Props {
-  user: User | undefined;
-  isOpen: boolean;
-  anchorRef: RefObject<HTMLButtonElement>;
+interface Actions {
   onClose: (event: React.MouseEvent<EventTarget>) => void;
   onLogOut: () => void;
   onKeyDown: (event: React.KeyboardEvent) => void;
+}
+
+interface Props extends Actions {
+  user: User | undefined;
+  isOpen: boolean;
+  anchorRef: RefObject<HTMLButtonElement>;
 }
 
 export const Menu: React.FC<Props> = ({
@@ -44,7 +47,7 @@ export const Menu: React.FC<Props> = ({
     {({ TransitionProps }) => (
       <Grow {...TransitionProps}>
         <Paper>
-          <ClickAwayListener onClickAway={onClose}>
+          <ClickAwayListener onClickAway={()=>onClose}>
             <div>
               <MenuBody user={user} onClose={onClose} />
               <MenuList autoFocusItem={isOpen} onKeyDown={onKeyDown}>

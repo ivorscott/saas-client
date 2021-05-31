@@ -8,14 +8,8 @@ import { useCreateProject, useProjects } from "../../hooks/project";
 import styled from "styled-components";
 
 export const Projects = () => {
-  let teamIds: (string | undefined)[] = [];
-
   const [isOpen, setOpen] = useState(false);
   const projects = useProjects();
-
-  if (projects.isSuccess) {
-    teamIds = projects.data.map((project) => project.teamId);
-  }
 
   const [createProject] = useCreateProject();
 
