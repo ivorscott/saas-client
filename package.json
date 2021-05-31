@@ -1,5 +1,5 @@
 {
-  "name": "newapp",
+  "name": "devpie-client",
   "version": "0.0.0",
   "scripts": {
     "dev": "vite",
@@ -19,7 +19,7 @@
     "history": "^4.7.2",
     "jsonwebtoken": "^8.5.1",
     "jwt-decode": "^2.2.0",
-    "konva": "^2.5.1",
+    "konva": "^8.0.2",
     "md5": "^2.3.0",
     "piexifjs": "^1.0.6",
     "react": "^17.0.0",
@@ -37,7 +37,6 @@
   },
   "devDependencies": {
     "@testing-library/react-hooks": "^5.1.2",
-    "@types/classnames": "^2.2.10",
     "@types/jsonwebtoken": "^8.5.0",
     "@types/jwt-decode": "^2.2.1",
     "@types/md5": "^2.3.0",

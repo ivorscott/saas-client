@@ -19,7 +19,7 @@ RUN npm run build
 
 FROM nginx:1.15-alpine as prod
 EXPOSE 80
-COPY --from=build-stage /build /usr/share/nginx/html
+COPY --from=build-stage /dist /usr/share/nginx/html
 COPY --from=build-stage /nginx /etc/nginx
 
 

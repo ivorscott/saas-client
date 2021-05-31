@@ -1,12 +1,6 @@
 import React from "react";
 import piexif from "piexifjs";
-import Konva from "konva/src/Core";
-import "konva/src/shapes/Image";
-import "konva/src/shapes/Circle";
-import "konva/src/shapes/Rect";
-import "konva/src/shapes/Path";
-import "konva/src/Animation";
-import "konva/src/DragAndDrop";
+import Konva from "konva/lib/Core";
 
 export class AvatarEditor extends React.Component {
   static defaultProps = {
@@ -20,7 +14,6 @@ export class AvatarEditor extends React.Component {
     mimeTypes: "image/jpeg,image/png",
     mobileScaleSpeed: 0.5, // experimental
     onClose: () => {},
-    onCrop: () => {},
     onFileLoad: () => {},
     onImageLoad: () => {},
     onBeforeFileLoad: () => {},
@@ -161,7 +154,7 @@ export class AvatarEditor extends React.Component {
   componentDidMount() {
     if (this.state.showLoader) return;
 
-    const image = this.props.img || new Image();
+    const image = this.props.img || new Konva.Image();
     if (!this.props.img && this.props.src) image.src = this.props.src;
     this.setState({ image }, () => {
       if (this.image.complete) return this.init();
@@ -183,7 +176,7 @@ export class AvatarEditor extends React.Component {
 
     this.onFileLoadCallback(file);
 
-    const image = new Image();
+    const image = new Konva.Image();
     const ref = this;
     reader.onloadend = () => {
       this.resetOrientation(reader.result, (data) => {
@@ -216,7 +209,7 @@ export class AvatarEditor extends React.Component {
       return callback(srcBase64);
     }
 
-    const img = new Image();
+    const img = new Konva.Image();
 
     img.onload = () => {
       const width = img.width,

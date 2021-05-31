@@ -8,5 +8,6 @@ export default defineConfig({
       "@material-ui/icons": "@material-ui/icons/esm",
     },
   },
-  plugins: [reactRefresh()],
+  plugins: [reactRefresh(),
+  ],
 });
