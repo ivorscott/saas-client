@@ -4,7 +4,7 @@ on:
   push:
     paths:
       - ".github/workflows/publish-spa-client.yml"
-      - "*"
+      - "**"
 
 jobs:
   publish:
