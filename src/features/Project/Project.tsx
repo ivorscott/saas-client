@@ -1,70 +1,125 @@
-import React from "react";
-import { Grid, Typography } from "@material-ui/core";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { fetchProject, deleteProject, Project } from "./reducer";
-import { history } from "../../history";
-import { RootState } from "../../store";
-import { SprintControls } from "./SprintControls";
+import { history } from "../App/history";
 import { SprintBoard } from "./SprintBoard";
-import { Loading } from "../../shared/components/Loading";
+import { ProjectTeam } from "./ProjectTeam";
+import { Memberships, Params, Project, Team } from "./types";
+import { ProjectSettings } from "./ProjectSettings";
+import { useProject } from "../../hooks/project";
+import { useTeam, useTeamMemberships } from "../../hooks/teams";
+import styled from "styled-components";
+import { MoreOptions } from "../../components/MoreOptions";
 
-interface Params {
-  id: string;
-}
+export const SelectedProject = () => {
+  const params: Params = useParams();
+  const selected = useProject(params.id);
 
-interface Props {
-  project: null | Project;
-  onDelete: () => void;
-}
+  if (selected.isError) {
+    history.push("/manage/projects");
+    return null
+  }
 
-const Component = ({ project, onDelete }: Props) => {
-  if (!project) {
-    return <Loading />;
+  if (!selected.data) {
+    return null
   } else {
-    return (
-      <Grid data-test="component-project" container={true} spacing={10}>
-        <Grid item={true} xs={12}>
-          <header>
-            <div>
-              <Typography variant="h1" gutterBottom={true}>
-                <span>Project</span>
-              </Typography>
-            </div>
-            <Typography variant="h2">
-              Manage <span>{project.name}</span>
-            </Typography>
-
-            <SprintControls onDeleteProjectClick={onDelete} />
-          </header>
-        </Grid>
-        <SprintBoard project={project} />
-      </Grid>
-    );
+    return <ProjectComponent project={selected.data} />;
   }
 };
 
-const SelectedProject: React.FC = () => {
-  const params: Params = useParams();
-  const dispatch = useDispatch();
-  const project = useSelector((state: RootState) => state.project);
-
-  useEffect(() => {
-    const fetch = async (params: Params) => {
-      await dispatch(fetchProject(params.id));
-    };
-    fetch(params);
-  }, [params, dispatch]);
-
-  const handleDeleteProject = async () => {
-    await dispatch(deleteProject(params.id));
-    history.replace(`/manage/projects`);
-  };
-
+const ProjectComponent = ({ project }: { project: Project }) => {
   return (
-    <Component project={project.selected} onDelete={handleDeleteProject} />
+    <>
+      <ProjectHeader>
+        <div>
+          <h1>
+            Project/
+            <span className="name">{project.name}</span>
+          </h1>
+          <span>{project.description}</span>
+        </div>
+        <Settings project={project} />
+      </ProjectHeader>
+
+      <SprintBoard project={project} />
+    </>
   );
 };
 
-export { SelectedProject };
+const Settings = (props: { project: Project }) => {
+  let team: Team | undefined;
+  let memberships: Memberships[] | undefined;
+
+  const selectedTeam = useTeam(props.project.teamId);
+  if (selectedTeam.isSuccess) {
+    team = selectedTeam.data;
+  }
+
+  const members = useTeamMemberships(team?.id);
+  if (members.isSuccess) {
+    memberships = members.data;
+  }
+
+  const [isSettingsOpen, setSettingsOpen] = useState(false);
+
+  const toggleSettings = () => setSettingsOpen(!isSettingsOpen);
+
+  const [scrolled, setScrolled] = React.useState(false);
+
+  const handleScroll = () => {
+    const offset = window.scrollY;
+    if (offset > 50) {
+      setScrolled(true);
+    } else {
+      setScrolled(false);
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+  }, [window]);
+
+  let classes = ["controls"];
+  if (scrolled) {
+    classes.push("scrolled");
+  }
+
+  return (
+    <>
+      <div className={classes.join(" ")}>
+        <MoreOptions onClick={toggleSettings} />
+        <ProjectTeam project={props.project} />
+      </div>
+      <ProjectSettings
+        open={isSettingsOpen}
+        team={team}
+        project={props.project}
+        memberships={memberships}
+        onClose={toggleSettings}
+      />
+    </>
+  );
+};
+
+const ProjectHeader = styled.header`
+  display: flex;
+  justify-content: space-between;
+  height: var(--p96);
+  margin: 0 var(--p8);
+  position: relative;
+  .name {
+    text-transform: capitalize;
+    font-family: ProximaNova-Light;
+  }
+  .controls {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: space-around;
+    position: relative;
+    z-index: 2;
+    @media (max-width: 1400px) {
+      position: fixed;
+      right: var(--p16);
+    }
+  }
+`;

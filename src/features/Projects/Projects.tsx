@@ -1,48 +1,43 @@
-import React, { useState, useEffect } from "react";
-import { unwrapResult } from "@reduxjs/toolkit";
-import { AppDispatch, RootState } from "../../store";
-import { useSelector, useDispatch } from "react-redux";
-import { createProject } from "../Project/reducer";
-import { fetchProjects } from "./reducer";
-import { history } from "../../history";
+import React, { useState } from "react";
+import Grid from "@material-ui/core/Grid";
+import Fab from "@material-ui/core/Fab";
+import Add from "@material-ui/icons/Add";
 import { List } from "./List";
+import { Modal } from "./Modal";
+import { useCreateProject, useProjects } from "../../hooks/project";
+import styled from "styled-components";
 
-const Projects: React.FC = () => {
-  const dispatch: AppDispatch = useDispatch();
+export const Projects = () => {
   const [isOpen, setOpen] = useState(false);
+  const projects = useProjects();
 
-  useEffect(() => {
-    const fetch = async () => await dispatch(fetchProjects());
-    fetch();
-  }, [dispatch]);
-
-  const { entities, loading } = useSelector(
-    (state: RootState) => state.projects
-  );
+  const [createProject] = useCreateProject();
 
   const toggleModal = () => {
     setOpen(!isOpen);
   };
 
-  const handleNewProject = async (name: string) => {
-    const resultAction = await dispatch(createProject(name));
-
-    if (createProject.fulfilled.match(resultAction)) {
-      toggleModal();
-      const { id } = unwrapResult(resultAction);
-      history.push(`/manage/projects/${id}`);
-    }
-  };
-
   return (
-    <List
-      isOpen={isOpen}
-      loading={loading}
-      onSubmit={handleNewProject}
-      onToggle={toggleModal}
-      projects={entities}
-    />
+    <Grid container={true} spacing={10}>
+      <Grid item={true} xs={12}>
+        <Header>
+          <div>
+            <h1>Projects</h1>
+          </div>
+          <Fab onClick={toggleModal} color="primary" aria-label="Add">
+            <Add />
+          </Fab>
+        </Header>
+        <List isLoading={projects.isLoading} projects={projects.data} />
+        <Grid item={true} xs={12}>
+          <Modal open={isOpen} onClose={toggleModal} onSubmit={createProject} />
+        </Grid>
+      </Grid>
+    </Grid>
   );
 };
 
-export { Projects };
+const Header = styled.header`
+  display: flex;
+  justify-content: space-between;
+`;

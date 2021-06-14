@@ -1,38 +1,203 @@
-.App {
-  text-align: center;
+:root {
+  --primary: #334e68;
+  --secondary: #f0f4f8;
+
+  --white2: #fafbfc;
+  --white1: #ffffff;
+
+  --gray10: #102a43;
+  --gray9: #243b53;
+  --gray8: #334e68;
+  --gray7: #486581;
+  --gray6: #627d98;
+  --gray5: #829ab1;
+  --gray4: #9fb3c8;
+  --gray3: #bcccdc;
+  --gray2: #d9e2ec;
+  --gray1: #f0f4f8;
+
+  --blue10: #035388;
+  --blue9: #0b69a3;
+  --blue8: #127fbf;
+  --blue7: #1992d4;
+  --blue6: #2bb0ed;
+  --blue5: #40c3f7;
+  --blue4: #5ed0fa;
+  --blue3: #81defd;
+  --blue2: #b3ecff;
+  --blue1: #e3f8ff;
+
+  --cyan10: #044e54;
+  --cyan9: #0a6c74;
+  --cyan8: #0e7c86;
+  --cyan7: #14919b;
+  --cyan6: #2cb1bc;
+  --cyan5: #38bec9;
+  --cyan4: #54d1db;
+  --cyan3: #87eaf2;
+  --cyan2: #bef8fd;
+  --cyan1: #e0fcff;
+
+  --green10: #014d40;
+  --green9: #0c6b58;
+  --green8: #147d64;
+  --green7: #199473;
+  --green6: #27ab83;
+  --green5: #3ebd93;
+  --green4: #65d6ad;
+  --green3: #8eedc7;
+  --green2: #c6f7e2;
+  --green1: #effcf6;
+
+  --yellow10: #8d2b0b;
+  --yellow9: #b44d12;
+  --yellow8: #cb6e17;
+  --yellow7: #de911d;
+  --yellow6: #f0b429;
+  --yellow5: #f7c948;
+  --yellow4: #fadb5f;
+  --yellow3: #fce588;
+  --yellow2: #fff3c4;
+  --yellow1: #fffbea;
+
+  --red10: #8a041a;
+  --red9: #8a041a;
+  --red8: #ab091e;
+  --red7: #cf1124;
+  --red6: #e12d39;
+  --red5: #ef4e4e;
+  --red4: #f86a6a;
+  --red3: #ff9b9b;
+  --red2: #ffbdbd;
+  --red1: #ffe3e3;
+
+  --pink10: #620042;
+  --pink9: #870557;
+  --pink8: #a30664;
+  --pink7: #bc0a6f;
+  --pink6: #da127d;
+  --pink5: #e8368f;
+  --pink4: #f364a2;
+  --pink3: #ff8cba;
+  --pink2: #ffb8d2;
+  --pink1: #ffe3ec;
+
+  --p768: 48rem;
+  --p640: 40rem;
+  --p512: 32rem;
+  --p384: 24rem;
+  --p256: 16rem;
+  --p192: 12rem;
+  --p128: 8rem;
+  --p96: 6rem;
+  --p64: 4rem;
+  --p48: 3rem;
+  --p32: 2rem;
+  --p24: 1.5rem;
+  --p16: 1rem;
+  --p12: 0.75rem;
+  --p8: 0.5rem;
+  --p4: 0.25rem;
+  --p2: 0.125;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.badge10 {
+  background: var(--green4);
+}
+.badge9 {
+  background: var(--yellow4);
+}
+.badge8 {
+  background: var(--red4);
+}
+.badge7 {
+  background: var(--pink4);
+}
+.badge6 {
+  background: var(--blue3);
+}
+.badge5 {
+  background: var(--pink3);
+}
+.badge4 {
+  background: var(--green3);
+}
+.badge3 {
+  background: var(--red3);
+}
+.badge2 {
+  background: var(--cyan2);
+}
+.badge1 {
+  background: var(--yellow3);
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.shade5 {
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+}
+.shade4 {
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.05), 0 15px 25px rgba(0, 0, 0, 0.15);
+}
+.shade3 {
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+.shade2 {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12), 0 3px 6px rgba(0, 0, 0, 0.15);
+}
+.shade1 {
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.24), 0 1px 3px rgba(0, 0, 0, 0.12);
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.scrolled {
+  display: none !important;
 }
 
-.App-link {
-  color: #61dafb;
+/* hide scrollbar for chrome */
+html {
+  overflow: scroll;
+  overflow-x: hidden;
+}
+::-webkit-scrollbar {
+  width: 0; /* Remove scrollbar space */
+  background: transparent; /* Optional: just make scrollbar invisible */
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.hide-scrollbar {
+  overflow: auto;
+  -ms-overflow-style: none; /* IE 11 */
+  scrollbar-width: none; /* Firefox 64 */
+}
+
+/* no select */
+.noselect {
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Old versions of Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Edge, Opera and Firefox */
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: ProximaNova-Regular, Arial, Helvetica, sans-serif;
+  font-size: var(--p16);
+  color: var(--gray10);
+}
+
+h1 {
+  font-size: var(--p24);
+  font-family: ProximaNova-Bold;
+}
+
+h2 {
+  font-size: var(--p18);
+  font-family: ProximaNova-Bold;
+}
+
+h3 {
+  font-size: var(--p16);
+  font-family: ProximaNova-Semibold;
 }

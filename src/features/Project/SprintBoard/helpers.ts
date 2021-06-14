@@ -1,4 +1,27 @@
-import { Column, ColumnDict, Task, TaskDict } from "../types";
+import {
+  Column,
+  ColumnDict,
+  Memberships,
+  Task,
+  TaskDict,
+  UserDict,
+} from "../types";
+
+export function makeUserDict(
+  members: Memberships[] | undefined
+): UserDict | undefined {
+  if (!members) {
+    return;
+  }
+  return (members || []).reduce((acc, curr) => {
+    return {
+      ...acc,
+      [`${curr.userId}`]: {
+        ...curr,
+      },
+    };
+  }, {});
+}
 
 export function makeColumnsDict(columns: Column[]): ColumnDict {
   return Object.keys(columns).reduce((acc: any, key: any) => {

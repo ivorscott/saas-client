@@ -1,24 +1,61 @@
 import React from "react";
-import { withStyles, WithStyles, CssBaseline } from "@material-ui/core";
-import { Layout } from "./Layout";
-import { SideBar } from "../../shared/components/Sidebar";
-import { Footer } from "../../shared/components/Footer";
-import { styles } from "./styles";
+import Copyright from "@material-ui/icons/Copyright";
+import { TopBar } from "./TopBar/TopBar";
+import { SideBar } from "./SideBar";
+import { ReactQueryDevtools } from "react-query/devtools";
+import Routes from "./Routes";
+import styled from "styled-components";
+import "./App.css";
 
-interface Props extends WithStyles<typeof styles> {}
-
-const app: React.FC<Props> = ({ classes }) => {
+export const DevPie = () => {
   return (
-    <div className="App">
-      <CssBaseline />
-      <div className={classes.root}>
+    <>
+      <App data-theme="light">
         <SideBar />
-        <Layout />
-      </div>
-
-      <Footer />
-    </div>
+        <Page>
+          <TopBar />
+          <PageContent>
+            <Routes />
+          </PageContent>
+        </Page>
+      </App>
+      <Footer>
+        <Copyright /> <CopyrightText>Powered by DevPie</CopyrightText>
+      </Footer>
+      <ReactQueryDevtools position="bottom-right" />
+    </>
   );
 };
 
-export const App = withStyles(styles)(app);
+const App = styled.div`
+  display: flex;
+`;
+const Page = styled.div`
+  background: var(--white2);
+  width: 100%;
+`;
+const PageContent = styled.div`
+  overflow-x: scroll;
+  min-height: 80vh;
+  padding: var(--p32) 5% var(--p96);
+
+  @media (max-width: 1400px) {
+    padding: var(--p16);
+  }
+`;
+const Footer = styled.div`
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  z-index: 2;
+  padding: var(--p16);
+  height: var(--p24);
+  background: var(--blue6);
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  color: var(--white1);
+`;
+const CopyrightText = styled.div`
+  padding-left: var(--p16);
+`;

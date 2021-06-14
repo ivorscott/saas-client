@@ -1,80 +1,46 @@
 import React from "react";
-import {
-  CircularProgress,
-  Divider,
-  Fab,
-  Grid,
-  Typography,
-  withStyles,
-  WithStyles,
-} from "@material-ui/core";
-import { Add } from "@material-ui/icons";
-import { Modal } from "../Modal";
-import { Project } from "../../Project";
-import { styles } from "./styles";
+import { CircularProgress, Grid } from "@material-ui/core";
 import { Card } from "../Card";
-import { loading, succeeded } from "../../../shared/types";
+import styled from "styled-components";
+import { Project } from "../../Project/types";
 
-interface Props extends WithStyles<typeof styles> {
-  isOpen: boolean;
-  loading: loading;
-  onToggle: () => void;
-  onSubmit: (name: string) => void;
-  projects: Project[];
+interface Props {
+  isLoading: boolean;
+  projects: Project[] | undefined;
 }
 
 const renderProjectCards = (projects: Project[]) => {
+  const seq = projects.map((_, idx) => idx);
   return projects.map((project: Project, index: number) => (
-    <Card key={"C-0" + index} project={project} />
+    <Card key={project.id} project={project} seq={seq[index]} />
   ));
 };
 
-const List = withStyles(styles)(
-  ({ loading, projects, isOpen, onToggle, onSubmit, classes }: Props) => {
+export const List = ({ isLoading, projects }: Props) => {
+  if (isLoading) {
     return (
-      <Grid data-test="component-projects" container={true} spacing={10}>
-        <Grid item={true} xs={12}>
-          <header className={classes.header}>
-            <div>
-              <Typography variant="h1" gutterBottom={true}>
-                Projects
-              </Typography>
-
-              <Typography variant="h2">Manage Projects</Typography>
-            </div>
-            <Fab
-              onClick={onToggle}
-              color="secondary"
-              aria-label="Add"
-              className={classes.fab}
-            >
-              <Add />
-            </Fab>
-          </header>
-        </Grid>
-
-        <Divider className={classes.divider} variant="fullWidth" />
-
-        <Grid item={true} xs={12} />
-
-        <Grid className={classes.projects} item={true} xs={12}>
-          {loading !== succeeded ? (
-            <div style={{ textAlign: "center", marginTop: "50vh" }}>
-              <CircularProgress />
-            </div>
-          ) : Object.keys(projects).length ? (
-            <div className={classes.cardList}>
-              {renderProjectCards(projects)}
-            </div>
-          ) : null}
-        </Grid>
-
-        <Grid item={true} xs={12}>
-          <Modal open={isOpen} onClose={onToggle} onSubmit={onSubmit} />
-        </Grid>
+      <Grid item={true} xs={12}>
+        <div style={{ textAlign: "center", marginTop: "25vh" }}>
+          <CircularProgress />
+        </div>
       </Grid>
     );
   }
-);
 
-export { List };
+  if (!projects || projects.length === 0) {
+    return null;
+  } else {
+    return (
+      <Grid item={true} xs={12}>
+        <ListContainer>{renderProjectCards(projects)}</ListContainer>
+      </Grid>
+    );
+  }
+};
+
+const ListContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  padding-top: var(--p32);
+`;

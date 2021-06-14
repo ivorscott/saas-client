@@ -1,95 +1,85 @@
 import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { uploadImage } from "./reducer";
-import { AppDispatch, RootState } from "../../store";
-import AvatarModal from "./Avatar";
-import styles from "./styles";
-import {
-  withStyles,
-  WithStyles,
-  Grid,
-  IconButton,
-  Typography,
-} from "@material-ui/core";
+import { AvatarModal } from "./AvatarModal";
+import IconButton from "@material-ui/core/IconButton";
 import PhotoCameraIcon from "@material-ui/icons/PhotoCamera";
-import ImageViewer from "../../shared/components/ImageViewer";
+import ImageViewer from "../../components/ImageViewer";
+import { useQuery } from "react-query";
+import { UserPayload } from "../../services/AuthService/types";
+import { client } from "../../services/APIService";
+import styled from "styled-components";
 
 interface Actions {
   onToggle: () => void;
   onSubmit: (image: any) => void;
 }
 
-interface Props extends Actions, WithStyles<typeof styles> {
+interface Props extends Actions {
   user: any;
   isOpen: boolean;
   defaultAvatar: any;
 }
 
-export const Component = withStyles(styles)(
-  ({ isOpen, onSubmit, onToggle, defaultAvatar, classes }: Props) => {
-    return (
-      <Grid data-test="component-account" container={true} spacing={10}>
-        <Grid item={true} xs={12}>
-          <header>
-            <Typography variant="h1" gutterBottom={true}>
-              My Account
-            </Typography>
-            <Typography variant="h2">
-              Edit and Personalize Preferences
-            </Typography>
-          </header>
-        </Grid>
-        <Grid className={classes.avatarWrapper} item={true} xs={12}>
-          <div onClick={onToggle} className={classes.placeholderImage}>
-            {defaultAvatar ? (
-              <div className={classes.overlay}>
-                <ImageViewer
-                  alt="avatar"
-                  className={classes.avatar}
-                  url={defaultAvatar}
-                />
-              </div>
-            ) : (
-              <IconButton className={classes.uploadButton}>
-                <PhotoCameraIcon fontSize="large" />
-              </IconButton>
-            )}
-          </div>
+export const Component = ({
+  isOpen,
+  onSubmit,
+  onToggle,
+  defaultAvatar,
+}: Props) => {
+  return (
+    <div>
+      <header>
+        <h1>My Account</h1>
+      </header>
+      <Avatar onClick={onToggle}>
+        {defaultAvatar ? (
           <div>
-            <AvatarModal
-              isOpen={isOpen}
-              defaultAvatar={defaultAvatar}
-              onSubmit={onSubmit}
-              onToggle={onToggle}
-            />
+            <ImageViewer size="lg" alt="avatar" url={defaultAvatar} />
           </div>
-        </Grid>
-      </Grid>
-    );
-  }
-);
+        ) : (
+          <IconButton>
+            <PhotoCameraIcon fontSize="large" />
+          </IconButton>
+        )}
+      </Avatar>
+      <div>
+        <AvatarModal
+          isOpen={isOpen}
+          defaultAvatar={defaultAvatar}
+          onSubmit={onSubmit}
+          onToggle={onToggle}
+        />
+      </div>
+    </div>
+  );
+};
 
-const Account: React.FC = () => {
-  const dispatch: AppDispatch = useDispatch();
+export const Account = () => {
   const [isOpen, setOpen] = useState(false);
-  const user = useSelector((state: RootState) => state.auth);
-  const { image } = useSelector((state: RootState) => state.account);
+
+  const { data: user } = useQuery<UserPayload>(
+    "auth",
+    async () => await client.get("/users/me")
+  );
 
   const toggle = () => setOpen(!isOpen);
 
   const upload = async (blob: Blob) => {
-    await dispatch(uploadImage({ blob, auth0Id: user.auth0Id }));
+    // await dispatch(uploadImage({ blob, id: user.id }));
   };
 
   return (
     <Component
       user={user}
       isOpen={isOpen}
-      defaultAvatar={image}
+      defaultAvatar={user?.picture}
       onToggle={toggle}
       onSubmit={upload}
     />
   );
 };
 
-export { Account };
+const Avatar = styled.div`
+  margin: var(--p16);
+  display: inline-block;
+  cursor: pointer;
+`;

@@ -1,0 +1,69 @@
+name: publish-spa-client
+
+on:
+  push:
+    paths:
+      - ".github/workflows/publish-spa-client.yml"
+      - "**"
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and Push Image
+        env:
+          OWNER: ${{ github.repository_owner }}
+          IMAGE: spa-client
+        run: |
+          export SHA=$(git rev-parse --short HEAD)
+
+          cat > .env <<EOF
+          REACT_APP__BACKEND=${{ secrets.BACKEND }}
+          REACT_APP__FRESHBOOKS_CLIENT_ID=${{ secrets.FRESHBOOKS_CLIENT_ID }}
+          REACT_APP__FRESHBOOKS_CLIENT_SECRET=${{ secrets.FRESHBOOKS_CLIENT_SECRET }}
+          REACT_APP__AWS_COGNITO_IDENTITY=${{ secrets.AWS_COGNITO_IDENTITY }}
+          REACT_APP__AWS_REGION=${{ secrets.AWS_REGION }}
+          REACT_APP__AWS_S3_BUCKET=${{ secrets.AWS_S3_BUCKET }}
+          REACT_APP__AUTH0_DOMAIN=${{ secrets.AUTH0_DOMAIN }}
+          REACT_APP__AUTH0_AUDIENCE=${{ secrets.AUTH0_AUDIENCE }}
+          REACT_APP__AUTH0_CLIENT_ID=${{ secrets.AUTH0_CLIENT_ID }}
+          EOF
+
+          docker build . --tag ghcr.io/$OWNER/$IMAGE:$SHA
+          docker push ghcr.io/$OWNER/$IMAGE:$SHA
+
+          echo $OWNER/$IMAGE:$SHA > .build-version
+
+          cat > patch.sh <<EOF
+          #!/bin/bash
+          sed -i 's/$IMAGE:.*/$IMAGE:$SHA/' $IMAGE-depl.yaml
+          EOF
+
+          chmod +x patch.sh
+
+      - uses: actions/checkout@v2
+        with:
+          repository: ${{ github.repository_owner }}/devpie-infra
+          token: ${{ secrets.PAT }}
+          path: devpie-infra
+      - run: |
+          export IMAGE=$(cat .build-version)
+
+          mv patch.sh devpie-infra/manifests
+          cd devpie-infra/manifests
+
+          ./patch.sh
+          rm patch.sh
+
+          git config --local user.email github-actions@github.com
+          git config --local user.name github-actions
+          git add .
+          git commit -m "new release: $IMAGE"
+          git push
