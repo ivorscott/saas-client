@@ -28,29 +28,7 @@ spec:
             - name: PORT
               value: "80"
             - name: REACT_APP__BACKEND
-              value: "https://client-backend.devpie.local/v1"
-            - name: REACT_APP__FRESHBOOKS_CLIENT_ID
-              valueFrom:
-                secretKeyRef:
-                  name: secrets
-                  key: freshbooks-client-id
-            - name: REACT_APP__FRESHBOOKS_CLIENT_SECRET
-              valueFrom:
-                secretKeyRef:
-                  name: secrets
-                  key: freshbooks-client-secret
-            - name: REACT_APP__AWS_COGNITO_IDENTITY
-              valueFrom:
-                secretKeyRef:
-                  name: secrets
-                  key: aws-cognito-identity
-            - name: REACT_APP__AWS_REGION
-              value: "eu-central-1"
-            - name: REACT_APP__AWS_S3_BUCKET
-              valueFrom:
-                secretKeyRef:
-                  name: secrets
-                  key: aws-s3-bucket
+              value: "http://localhost/api/v1"
             - name: REACT_APP__AUTH0_DOMAIN
               valueFrom:
                 secretKeyRef:
