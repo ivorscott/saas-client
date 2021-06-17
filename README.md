@@ -29,5 +29,5 @@ REACT_APP__AUTH0_CLIENT_ID=
 
 ```
 npm install
-npm start
+npm run dev
 ```
