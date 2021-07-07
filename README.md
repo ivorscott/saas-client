@@ -16,10 +16,8 @@ kanaban or agile style board management and auxiliary services like cost estimat
 
 ## Requirements
 
-- AWS Account
-- Auth0 Account
-- Freshbooks Account
 - [DevPie Client Core](https://github.com/devpies/devpie-client-core)
+- Secrets
 
 ## Environment Variables
 
