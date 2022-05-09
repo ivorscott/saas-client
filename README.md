@@ -2,17 +2,6 @@
 
 SaaS app for independent software developers and their clients.
 
-![frontend preview](docs/images/demo.png)
-
-## Design
-
-- [See Figma](https://www.figma.com/file/M0FVvRZWGUPWgJlby4UPjm/Devpie-Client?node-id=237%3A16)
-
-## Requirements
-
-- [Core](https://github.com/devpies/core)
-- Environment Variables
-
 ## Environment Variables
 
 Create an `.env` file with the below content:
