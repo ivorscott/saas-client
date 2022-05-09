@@ -4,12 +4,14 @@ SaaS app for independent software developers and their clients.
 
 ![frontend preview](docs/images/demo.png)
 
-- [See Figma design](https://www.figma.com/file/M0FVvRZWGUPWgJlby4UPjm/Devpie-Client?node-id=237%3A16)
+## Design
+
+- [See Figma](https://www.figma.com/file/M0FVvRZWGUPWgJlby4UPjm/Devpie-Client?node-id=237%3A16)
 
 ## Requirements
 
 - [Core](https://github.com/devpies/core)
-- Secrets
+- Environment Variables
 
 ## Environment Variables
 
