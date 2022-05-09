@@ -1,57 +1,43 @@
 {
-  "name": "devpie-client",
-  "version": "0.0.0",
-  "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
-    "serve": "vite preview"
-  },
+  "name": "v2",
+  "version": "0.1.0",
+  "private": true,
   "dependencies": {
-    "@auth0/auth0-spa-js": "^1.12.0",
-    "@emotion/react": "^11.4.0",
-    "@emotion/styled": "^11.3.0",
-    "@material-ui/core": "^5.0.0-alpha.32",
-    "@material-ui/icons": "^5.0.0-alpha.29",
-    "@reduxjs/toolkit": "^1.5.1",
-    "axios": "^0.21.1",
-    "classnames": "^2.2.6",
-    "dayjs": "^1.10.4",
-    "history": "^4.7.2",
-    "jsonwebtoken": "^8.5.1",
-    "jwt-decode": "^2.2.0",
-    "konva": "^8.0.2",
-    "md5": "^2.3.0",
-    "piexifjs": "^1.0.6",
-    "react": "^17.0.0",
-    "react-beautiful-dnd": "^13.1.0",
-    "react-dom": "^17.0.0",
-    "react-query": "^3.15.2",
-    "react-redux": "^7.1.0",
-    "react-router": "^5.2.0",
-    "react-router-dom": "^5.2.0",
-    "react-select": "^4.3.1",
-    "redux": "^4.0.1",
-    "redux-thunk": "^2.3.0",
-    "styled-components": "^5.2.3",
-    "ua-parser-js": "^0.7.22"
+    "@testing-library/jest-dom": "^5.16.4",
+    "@testing-library/react": "^13.2.0",
+    "@testing-library/user-event": "^13.5.0",
+    "@types/jest": "^27.5.0",
+    "@types/node": "^16.11.33",
+    "@types/react": "^18.0.9",
+    "@types/react-dom": "^18.0.3",
+    "react": "^18.1.0",
+    "react-dom": "^18.1.0",
+    "react-scripts": "5.0.1",
+    "typescript": "^4.6.4",
+    "web-vitals": "^2.1.4"
   },
-  "devDependencies": {
-    "@testing-library/react-hooks": "^5.1.2",
-    "@types/jsonwebtoken": "^8.5.0",
-    "@types/jwt-decode": "^2.2.1",
-    "@types/md5": "^2.3.0",
-    "@types/node": "^12.0.0",
-    "@types/react": "^16.9.49",
-    "@types/react-beautiful-dnd": "^13.0.0",
-    "@types/react-dom": "^16.9.8",
-    "@types/react-redux": "^7.1.9",
-    "@types/react-router": "^5.1.8",
-    "@types/react-router-dom": "^5.1.5",
-    "@types/styled-components": "^5.1.9",
-    "@types/ua-parser-js": "^0.7.33",
-    "@vitejs/plugin-react-refresh": "^1.3.1",
-    "react-test-renderer": "^17.0.2",
-    "typescript": "^4.1.2",
-    "vite": "^2.2.3"
+  "scripts": {
+    "start": "v2/node_modules/.bin/react-scripts start",
+    "build": "v2/node_modules/.bin/react-scripts build",
+    "test": "v2/node_modules/.bin/react-scripts test",
+    "eject": "v2/node_modules/.bin/react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }
