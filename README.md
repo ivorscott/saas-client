@@ -1,6 +1,8 @@
-# Client
+# Sass-Client
 
-SaaS app for independent software developers and their clients.
+Frontend for application users.
+
+_Proof of Concept._
 
 ## Usage
 
