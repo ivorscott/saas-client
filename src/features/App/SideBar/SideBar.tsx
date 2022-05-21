@@ -19,11 +19,6 @@ export const SideBar = () => {
             <div>Projects</div>
           </StyledLink>
         </li>
-        <li>
-          <StyledLink to="/manage/projects">
-            <div>Estimates</div>
-          </StyledLink>
-        </li>
       </PrimaryNav>
       <Teams />
     </StyledSideBar>

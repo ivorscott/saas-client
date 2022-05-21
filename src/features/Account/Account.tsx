@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { AvatarModal } from "./AvatarModal";
-import IconButton from "@material-ui/core/IconButton";
-import PhotoCameraIcon from "@material-ui/icons/PhotoCamera";
+import IconButton from "@mui/material/IconButton";
+import PhotoCameraIcon from "@mui/icons-material/PhotoCamera";
 import ImageViewer from "../../components/ImageViewer";
 import { useQuery } from "react-query";
 import { UserPayload } from "../../services/AuthService/types";

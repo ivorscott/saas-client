@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import Button from "@material-ui/core/Button";
-import TextareaAutosize from "@material-ui/core/TextareaAutosize";
+import Button from "@mui/material/Button";
+import TextareaAutosize from "@mui/material/TextareaAutosize";
 import { Params, Project } from "../../../types";
 import { AxiosError } from "axios";
 import { useQuery } from "react-query";

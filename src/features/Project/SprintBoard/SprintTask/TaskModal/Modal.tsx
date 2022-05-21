@@ -5,11 +5,12 @@ import {
   PanelSection,
   PanelField,
 } from "../../../../../components/Panel";
-import TextareaAutosize from "@material-ui/core/TextareaAutosize";
+import TextareaAutosize from "@mui/material/TextareaAutosize";
 import styled from "styled-components";
 import dayjs from "dayjs";
 import { SelectAssignees } from "./Assignees";
 import { useDeleteTask, useUpdateTask } from "../../../../../hooks/board";
+import {SelectChangeEvent} from "@mui/material";
 
 export const TaskModal = ({
   data,
@@ -32,7 +33,7 @@ export const TaskModal = ({
   };
 
   const handleAssigneeChange = (
-    event: React.ChangeEvent<{ value: string }>
+    event: SelectChangeEvent<string>, child: React.ReactNode
   ) => {
     const assignedTo = event.target.value;
     const updates = formValues;

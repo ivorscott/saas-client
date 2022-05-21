@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
-import Star from "@material-ui/icons/Star";
-import MoreHoriz from "@material-ui/icons/MoreHoriz";
-import IconButton from "@material-ui/core/IconButton";
-import Check from "@material-ui/icons/Check";
-import Close from "@material-ui/icons/Close";
-import Button from "@material-ui/core/Button";
+import Star from "@mui/icons-material/Star";
+import MoreHoriz from "@mui/icons-material/MoreHoriz";
+import IconButton from "@mui/material/IconButton";
+import Check from "@mui/icons-material/Check";
+import Close from "@mui/icons-material/Close";
+import Button from "@mui/material/Button";
 import { Invite } from "./types";
 import styled from "styled-components";
 import { useInviteDecision } from "../../../hooks/invites";

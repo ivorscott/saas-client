@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import Grid from "@material-ui/core/Grid";
-import Fab from "@material-ui/core/Fab";
-import Add from "@material-ui/icons/Add";
+import Grid from "@mui/material/Grid";
+import Fab from "@mui/material/Fab";
+import Add from "@mui/icons-material/Add";
 import { List } from "./List";
 import { Modal } from "./Modal";
 import { useCreateProject, useProjects } from "../../hooks/project";

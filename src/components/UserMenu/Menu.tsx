@@ -10,7 +10,7 @@ import {
   ClickAwayListener,
   ListItemText,
   ListItemAvatar,
-} from "@material-ui/core";
+} from "@mui/material";
 import { MenuLink } from "../MenuLink";
 import { User } from "../../services/AuthService/types";
 import { Link } from "react-router-dom";
@@ -44,7 +44,7 @@ export const Menu: React.FC<Props> = ({
     transition
     disablePortal
   >
-    {({ TransitionProps }) => (
+    {({ TransitionProps }: any) => (
       <Grow {...TransitionProps}>
         <Paper>
           <ClickAwayListener onClickAway={()=>onClose}>

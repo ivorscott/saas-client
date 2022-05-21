@@ -1,18 +1,19 @@
+// TODO: Replace Auth0 with AWS Cognito - Use AWS Amplify
 import React from "react";
-import { Grid } from "@material-ui/core";
-import { Loader } from "../../components/Loader";
-import { useAuth } from "./hooks";
+// import Grid  from "@mui/material/Grid";
+// import { Loader } from "../../components/Loader";
+// import { useAuth } from "./hooks";
 
-export const Auth0Provider: React.FC<{ children: any }> = ({ children }) => {
-  const isAuthenticated = useAuth();
+export const AuthProvider: React.FC<{ children: any }> = ({ children }) => {
+  // const isAuthenticated = useAuth();
 
-  if (!isAuthenticated) {
-    return (
-      <Grid item={true} xs={12}>
-        <Loader />
-      </Grid>
-    );
-  }
+  // if (!isAuthenticated) {
+  //   return (
+  //     <Grid item={true} xs={12}>
+  //       <Loader />
+  //     </Grid>
+  //   );
+  // }
 
   return children;
 };

@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { MenuItem } from "@material-ui/core";
+import { MenuItem } from "@mui/material";
 
 interface Props {
   to: string;

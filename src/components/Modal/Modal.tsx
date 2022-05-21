@@ -1,9 +1,9 @@
 import React from "react";
-import Dialog from "@material-ui/core/Dialog";
-import DialogContent from "@material-ui/core/DialogContent";
-import IconButton from "@material-ui/core/IconButton";
+import Dialog from "@mui/material/Dialog";
+import DialogContent from "@mui/material/DialogContent";
+import IconButton from "@mui/material/IconButton";
 import styled from "styled-components";
-import Close from "@material-ui/icons/Close";
+import Close from "@mui/icons-material/Close";
 
 export interface Props {
   open: boolean;

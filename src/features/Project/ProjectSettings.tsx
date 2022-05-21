@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Switch from "@material-ui/core/Switch";
+import Switch from "@mui/material/Switch";
 import { Memberships, Project, Team } from "./types";
 import styled from "styled-components";
 import { MembersTable } from "./MembersTable";

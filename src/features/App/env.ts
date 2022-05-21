@@ -1,5 +1,5 @@
 import packageJson from "../../../package.json";
-
+// TODO: Import AWS Environment Variables
 export enum Env {
   BACKEND = "BACKEND",
   AUTH0_DOMAIN = "AUTH0_DOMAIN",
@@ -10,12 +10,7 @@ export enum Env {
 }
 
 export interface Environment {
-  [Env.BACKEND]: string;
-  [Env.AUTH0_DOMAIN]: string;
-  [Env.AUTH0_AUDIENCE]: string;
-  [Env.AUTH0_CLIENT_ID]: string;
-  [Env.REDIRECT_URI]: string;
-  [Env.VERSION]: string;
+  [index:string]: string;
 }
 
 type Maybe<T> = T | undefined;
@@ -28,16 +23,16 @@ function checkValue<T>(value: Maybe<T>, name: string): T {
 }
 
 function importFromEnv(key: string): string {
-  const value = import.meta.env[`VITE__${key}`] as string;
+  const value = process.env[`REACT_APP_${key}`];
   return checkValue<string>(value, key);
 }
 
 const env: Environment = {
-  [Env.BACKEND]: importFromEnv(Env.BACKEND),
-  [Env.AUTH0_DOMAIN]: importFromEnv(Env.AUTH0_DOMAIN),
-  [Env.AUTH0_AUDIENCE]: importFromEnv(Env.AUTH0_AUDIENCE),
-  [Env.AUTH0_CLIENT_ID]: importFromEnv(Env.AUTH0_CLIENT_ID),
-  [Env.REDIRECT_URI]: window.location.origin,
+  // [Env.BACKEND]: importFromEnv(Env.BACKEND),
+  // [Env.AUTH0_DOMAIN]: importFromEnv(Env.AUTH0_DOMAIN),
+  // [Env.AUTH0_AUDIENCE]: importFromEnv(Env.AUTH0_AUDIENCE),
+  // [Env.AUTH0_CLIENT_ID]: importFromEnv(Env.AUTH0_CLIENT_ID),
+  // [Env.REDIRECT_URI]: window.location.origin,
   [Env.VERSION]: packageJson.version,
 };
 

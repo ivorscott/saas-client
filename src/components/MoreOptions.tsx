@@ -1,6 +1,6 @@
 import React from "react";
-import IconButton from "@material-ui/core/IconButton";
-import { MoreHoriz } from "@material-ui/icons";
+import IconButton from "@mui/material/IconButton";
+import MoreHoriz from "@mui/icons-material/MoreHoriz";
 import styled from "styled-components";
 
 export const MoreOptions = ({

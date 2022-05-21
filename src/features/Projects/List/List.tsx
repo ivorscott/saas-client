@@ -1,5 +1,5 @@
 import React from "react";
-import { CircularProgress, Grid } from "@material-ui/core";
+import { CircularProgress, Grid } from "@mui/material";
 import { Card } from "../Card";
 import styled from "styled-components";
 import { Project } from "../../Project/types";

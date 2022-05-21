@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from "react";
 import { Menu } from "./Menu";
-import { Button } from "@material-ui/core";
+import Button from "@mui/material/Button";
 import { useQuery } from "react-query";
 import { UserPayload } from "../../services/AuthService/types";
 import { client as authClient } from "../../services/AuthService";
@@ -16,8 +16,9 @@ export const UserMenu = () => {
     "auth",
     async () => {
       const user = await api.get("/users/me");
-      const authResult = await authClient.getAuthDetails();
-      const roles = authResult.claims["https://client.devpie.io/claims/roles"];
+      const roles: string[] = []
+      // const authResult = await authClient.getAuthDetails();
+      // const roles = authResult.claims["https://client.devpie.io/claims/roles"];
       return { ...user, roles };
     }
   );
@@ -27,7 +28,7 @@ export const UserMenu = () => {
   };
 
   const handleLogOut = async () => {
-    authClient.logout();
+    // authClient.logout();
   };
 
   const handleClose = (event: React.MouseEvent<EventTarget>) => {

@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import md5 from "md5";
-import Button from "@material-ui/core/Button";
-import Dialog from "@material-ui/core/Dialog";
-import DialogContentText from "@material-ui/core/DialogContentText";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import Close from "@material-ui/icons/Close";
-import TextField from "@material-ui/core/TextField";
+import Button from "@mui/material/Button";
+import Dialog from "@mui/material/Dialog";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
+import Close from "@mui/icons-material/Close";
+import TextField from "@mui/material/TextField";
 import { Params } from "../types";
 import { useParams } from "react-router";
 import { placeholder } from "../../../components/ImageViewer/placeholder";

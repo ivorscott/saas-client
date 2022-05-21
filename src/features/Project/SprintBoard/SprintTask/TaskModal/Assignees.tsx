@@ -1,4 +1,4 @@
-import { Select, MenuItem, FormControl } from "@material-ui/core";
+import {Select, MenuItem, FormControl, SelectChangeEvent} from "@mui/material";
 import React from "react";
 import { useParams } from "react-router";
 import { useProject } from "../../../../../hooks/project";
@@ -16,7 +16,7 @@ export const SelectAssignees = ({
   formValues: Task;
   isEditing: boolean;
   toggleEditing: () => void;
-  onChange: (event: React.ChangeEvent<{ value: string }>) => void;
+  onChange: (event: SelectChangeEvent<string>, child: React.ReactNode) => void;
 }) => {
   const params: { id: string } = useParams();
   const { data: project } = useProject(params.id);

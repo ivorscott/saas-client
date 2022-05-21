@@ -1,5 +1,5 @@
 import React from "react";
-import Copyright from "@material-ui/icons/Copyright";
+import Copyright from "@mui/icons-material/Copyright";
 import { TopBar } from "./TopBar/TopBar";
 import { SideBar } from "./SideBar";
 import { ReactQueryDevtools } from "react-query/devtools";

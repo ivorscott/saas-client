@@ -1,4 +1,4 @@
-import { Add } from "@material-ui/icons";
+import Add from "@mui/icons-material/Add";
 import React, { useState } from "react";
 import styled from "styled-components";
 import { AddTask } from "../SprintTask";

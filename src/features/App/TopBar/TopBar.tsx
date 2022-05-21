@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import Badge from "@material-ui/core/Badge";
-import IconButton from "@material-ui/core/IconButton";
-import Notifications from "@material-ui/icons/Notifications";
+import Badge from "@mui/material/Badge";
+import IconButton from "@mui/material/IconButton";
+import Notifications from "@mui/icons-material/Notifications";
 import { UserMenu } from "../../../components/UserMenu";
 import { SearchBar } from "../SearchBar";
 import { NotifyModal } from "./NotifyModal";

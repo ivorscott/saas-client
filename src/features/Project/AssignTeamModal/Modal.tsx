@@ -1,14 +1,15 @@
 import React, { useState } from "react";
-import Button from "@material-ui/core/Button";
-import Dialog from "@material-ui/core/Dialog";
-import DialogContentText from "@material-ui/core/DialogContentText";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import TextField from "@material-ui/core/TextField";
-import FormControl from "@material-ui/core/FormControl";
-import MenuItem from "@material-ui/core/MenuItem";
-import Select from "@material-ui/core/Select";
+import Button from "@mui/material/Button";
+import Dialog from "@mui/material/Dialog";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
+import TextField from "@mui/material/TextField";
+import FormControl from "@mui/material/FormControl";
+import MenuItem from "@mui/material/MenuItem";
+import Select from "@mui/material/Select";
 import { useTeams } from "../../../hooks/teams";
 import styled from "styled-components";
+import {SelectChangeEvent} from "@mui/material";
 
 interface Props {
   open: boolean;
@@ -26,7 +27,7 @@ export const Modal = ({ open, onClose, onSubmit }: Props) => {
   };
 
   const handleExistingTeamChange = (
-    event: React.ChangeEvent<{ value: string }>
+      event: SelectChangeEvent
   ) => {
     event.preventDefault();
     const teamId = event.target.value;
@@ -81,7 +82,7 @@ export const Modal = ({ open, onClose, onSubmit }: Props) => {
 const TeamsSelector = ({
   onChange,
 }: {
-  onChange: (event: React.ChangeEvent<{ value: string }>) => void;
+  onChange: (event: SelectChangeEvent, child: React.ReactNode) => void;
 }) => {
   const teams = useTeams();
   if (!teams.data || teams.data.length === 0) {

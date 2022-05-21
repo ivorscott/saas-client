@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Add } from "@material-ui/icons";
+import Add from "@mui/icons-material/Add";
 import { useParams } from "react-router-dom";
 import {
   useCreateTeam,

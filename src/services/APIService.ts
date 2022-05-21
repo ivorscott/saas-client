@@ -1,4 +1,6 @@
-import { client as authClient } from "./AuthService";
+// TODO: Replace Auth0 with AWS Cognito - Use AWS Amplify
+
+// import { client as authClient } from "./AuthService";
 import { env } from "../features/App/env";
 
 class APIService {
@@ -39,7 +41,8 @@ class APIService {
 
   async request(method: string, path: string, data?: any) {
     const url = `${this.baseUrl}${path}`;
-    const accessToken = await authClient.getTokenSilently();
+    const accessToken = ""
+    // const accessToken = await authClient.getTokenSilently();
     const options = {
       method,
       body: JSON.stringify(data),

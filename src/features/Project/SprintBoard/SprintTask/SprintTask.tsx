@@ -1,6 +1,5 @@
 import React from "react";
 import { Task, UserDict } from "../../types";
-import { CSSProperties } from "@material-ui/styles";
 import {
   Draggable,
   DraggingStyle,
@@ -109,7 +108,7 @@ const AssignedTo = styled.div`
 const getItemStyle = (
   isDragging: boolean,
   draggableStyle: DraggingStyle | NotDraggingStyle | undefined
-): CSSProperties => ({
+): React.CSSProperties => ({
   userSelect: "none",
   minHeight: "var(--p96)",
   padding: "var(--p8)",

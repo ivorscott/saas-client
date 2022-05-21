@@ -1,5 +1,5 @@
 import React from "react";
-import Paper from "@material-ui/core/Paper";
+import Paper from "@mui/material/Paper";
 import { Droppable } from "react-beautiful-dnd";
 import { SprintTask } from "../SprintTask";
 import { Column, Task, TaskDict, UserDict } from "../../types";

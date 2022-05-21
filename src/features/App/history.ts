@@ -1,2 +1,2 @@
-import { createBrowserHistory } from "archived-client/src/features/App/history";
+import { createBrowserHistory } from "history";
 export const history = createBrowserHistory();
