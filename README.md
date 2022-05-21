@@ -2,7 +2,9 @@
 
 Frontend for application users.
 
-_Proof of Concept._
+This project is a part of "SaaS app in 30 days" - _Proof of Concept_
+
+![](docs/demo.png)
 
 ## Usage
 
