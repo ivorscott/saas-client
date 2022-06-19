@@ -37,6 +37,7 @@ const Page = styled.div`
 const PageContent = styled.div`
   overflow-x: scroll;
   min-height: 80vh;
+  height: 100vh;
   padding: var(--p32) 5% var(--p96);
 
   @media (max-width: 1400px) {

@@ -4,6 +4,7 @@ import { Project } from "../../Project/types";
 import styled from "styled-components";
 import { useTeam, useTeamMemberships } from "../../../hooks/teams";
 import { Memberships } from "../../Project/types";
+import {Avatar} from "../../../components/Avatar";
 
 interface Props {
   project: Project;
@@ -33,19 +34,24 @@ export const Card = ({ project, seq }: Props) => {
 };
 
 function renderMembers(maxSize: number, memberships: Memberships[]) {
+  const badgeColor = (index: number) => (index % 9) + 1;
+
   return (
     <Avatars>
       <ul>
-        {memberships.map((member, idx) => {
-          if (idx + 1 > maxSize) {
-            return;
-          }
-          return (
-            <li key={member.id + idx}>
-              <img src={member.picture} />
-            </li>
-          );
-        })}
+        {memberships && (
+            <StyledMembers>
+              {memberships.map((membership, index) => (
+                  <Avatar
+                      key={membership.id}
+                      alt="user avatar"
+                      size="sm"
+                      badgeColor={`badge${badgeColor(index)}`}
+                      membership={membership}
+                  />
+              ))}
+            </StyledMembers>
+        )}
         {memberships.length > maxSize && (
           <li className="hidden-avatars">{memberships.length - maxSize}+</li>
         )}
@@ -111,6 +117,13 @@ const CardBody = styled.div`
   box-sizing: border-box;
 `;
 
+const StyledMembers = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+`;
+
 const Avatars = styled.div`
   display: flex;
   ul {
@@ -119,7 +132,6 @@ const Avatars = styled.div`
     margin: 0;
     display: flex;
     direction: rtl;
-    margin-left: 10px;
   }
   li {
     width: 36px;

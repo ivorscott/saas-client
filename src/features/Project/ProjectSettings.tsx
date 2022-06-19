@@ -136,6 +136,8 @@ export const ProjectSettings = ({
     }
   };
 
+  const badgeColor = (index: number) => (index % 9) + 1;
+
   if (open) {
     return (
       <PanelForm
@@ -203,11 +205,12 @@ export const ProjectSettings = ({
 
           {memberships && (
             <StyledMembers>
-              {memberships.map((membership) => (
+              {memberships.map((membership, index) => (
                 <Avatar
                   key={membership.id}
                   alt="user avatar"
                   size="lg"
+                  badgeColor={`badge${badgeColor(index)}`}
                   membership={membership}
                 />
               ))}

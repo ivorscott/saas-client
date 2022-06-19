@@ -1,13 +1,10 @@
-// TODO: Replace Auth0 with AWS Cognito - Use AWS Amplify
-
-// import { client as authClient } from "./AuthService";
-import { env } from "../features/App/env";
+import { Auth } from 'aws-amplify';
 
 class APIService {
   public baseUrl: string;
 
   constructor() {
-    this.baseUrl = env.BACKEND;
+    this.baseUrl = process.env.REACT_APP_BACKEND || "http://localhost/api";
   }
 
   post(path: string, data: any) {
@@ -41,8 +38,8 @@ class APIService {
 
   async request(method: string, path: string, data?: any) {
     const url = `${this.baseUrl}${path}`;
-    const accessToken = ""
-    // const accessToken = await authClient.getTokenSilently();
+    const session = await Auth.currentSession()
+    const accessToken = session.getIdToken().getJwtToken()
     const options = {
       method,
       body: JSON.stringify(data),
@@ -53,11 +50,10 @@ class APIService {
     };
 
     return fetch(url, options).then(async (res) => {
-      const type = res.headers.get("content-type");
       if (!res.ok) {
         throw new Error(`(${res.status}) ${res.statusText}`);
       }
-      return type && type.includes("application/json") && res.json();
+      return res.json();
     });
   }
 }

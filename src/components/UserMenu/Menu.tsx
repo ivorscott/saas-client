@@ -12,7 +12,7 @@ import {
   ListItemAvatar,
 } from "@mui/material";
 import { MenuLink } from "../MenuLink";
-import { User } from "../../services/AuthService/types";
+import { User } from "../../services/types";
 import { Link } from "react-router-dom";
 import ImageViewer from "../ImageViewer";
 import styled from "styled-components";
@@ -93,8 +93,9 @@ const MenuBody = ({
 );
 
 const StyledPopper = styled(Popper)`
-  position: relative;
-  z-index: 3;
+  position: absolute;
+  left: -20px !important;
+  z-index: 1051;
   width: var(--p192);
   a,
   li {
@@ -102,3 +103,4 @@ const StyledPopper = styled(Popper)`
     color: var(--gray8);
   }
 `;
+

@@ -32,16 +32,19 @@ export const ProjectTeam = (props: Props) => {
     return null;
   }
 
+  const badgeColor = (index: number) => (index % 9) + 1;
+
   return (
     <Container>
       <StyledAdd onClick={toggleModalOpen} />
       {memberships && memberships.length > 0 && (
         <StyledMembers>
-          {memberships.map((membership) => (
+          {memberships.map((membership, index) => (
             <Avatar
               key={membership.id}
               alt="user avatar"
               size="sm"
+              badgeColor={`badge${badgeColor(index)}`}
               membership={membership}
             />
           ))}
@@ -68,10 +71,10 @@ const TeamModals = (props: {
   const [mutateInvite] = useCreateInvite();
 
   const handleTeam = async (team: string) => {
-    const v4 = new RegExp(
+    const uuidV4 = new RegExp(
       /^[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i
     );
-    if (team.match(v4)) {
+    if (team.match(uuidV4)) {
       mutateExistingTeam({ teamId: team, projectId: params.id });
     } else {
       mutateNewTeam({ teamName: team, projectId: params.id });

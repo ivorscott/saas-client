@@ -1,0 +1,20 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-saasclient-dev-191408-authRole",
+      "UnauthRoleArn": "arn:aws:iam::554897346438:role/amplify-saasclient-dev-191408-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::554897346438:role/amplify-saasclient-dev-191408-authRole",
+      "Region": "eu-central-1",
+      "DeploymentBucketName": "amplify-saasclient-dev-191408-deployment",
+      "UnauthRoleName": "amplify-saasclient-dev-191408-unauthRole",
+      "StackName": "amplify-saasclient-dev-191408",
+      "StackId": "arn:aws:cloudformation:eu-central-1:554897346438:stack/amplify-saasclient-dev-191408/bc5e8b40-ed97-11ec-9917-0ace94dad20e",
+      "AmplifyAppId": "d2nym8x4ttplvq"
+    },
+    "categories": {
+      "auth": {
+        "saasclient5950db47": {}
+      }
+    }
+  }
+}

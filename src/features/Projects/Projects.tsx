@@ -40,4 +40,5 @@ export const Projects = () => {
 const Header = styled.header`
   display: flex;
   justify-content: space-between;
+  
 `;

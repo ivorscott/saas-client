@@ -2,11 +2,12 @@ import React, { useRef, useState, useEffect } from "react";
 import { Menu } from "./Menu";
 import Button from "@mui/material/Button";
 import { useQuery } from "react-query";
-import { UserPayload } from "../../services/AuthService/types";
-import { client as authClient } from "../../services/AuthService";
+import { UserPayload } from "../../services/types";
+import { client as authClient } from "../../services";
 import { client as api } from "../../services/APIService";
 import ImageViewer from "../ImageViewer";
 import styled from "styled-components";
+import { Auth } from 'aws-amplify';
 
 export const UserMenu = () => {
   const [isOpen, setOpen] = useState(false);
@@ -28,7 +29,11 @@ export const UserMenu = () => {
   };
 
   const handleLogOut = async () => {
-    // authClient.logout();
+      try {
+        await Auth.signOut();
+      } catch (error) {
+        console.log('error signing out: ', error);
+      }
   };
 
   const handleClose = (event: React.MouseEvent<EventTarget>) => {

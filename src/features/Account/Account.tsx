@@ -4,7 +4,7 @@ import IconButton from "@mui/material/IconButton";
 import PhotoCameraIcon from "@mui/icons-material/PhotoCamera";
 import ImageViewer from "../../components/ImageViewer";
 import { useQuery } from "react-query";
-import { UserPayload } from "../../services/AuthService/types";
+import { UserPayload } from "../../services/types";
 import { client } from "../../services/APIService";
 import styled from "styled-components";
 
