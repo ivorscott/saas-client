@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect } from "react";
 import { Menu } from "./Menu";
 import Button from "@mui/material/Button";
 import { useQuery } from "react-query";
-import { UserPayload } from "../../services/types";
+import { UserPayload } from "../../hooks/types";
 import { client as api } from "../../services/APIService";
 import ImageViewer from "../ImageViewer";
 import styled from "styled-components";

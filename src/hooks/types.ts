@@ -11,6 +11,13 @@ export interface User {
   createdAt: string;
 }
 
+export interface NewUser {
+  email: string;
+  firstName: string;
+  lastName: string;
+  company: string;
+}
+
 export type UserPayload = User & {
   error?: string;
 };

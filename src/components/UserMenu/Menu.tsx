@@ -13,7 +13,7 @@ import {
   Divider,
 } from "@mui/material";
 import { MenuLink } from "../MenuLink";
-import { User } from "../../services/types";
+import { User } from "../../hooks/types";
 import { Link } from "react-router-dom";
 import ImageViewer from "../ImageViewer";
 import styled from "styled-components";
