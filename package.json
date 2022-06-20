@@ -23,6 +23,7 @@
     "konva": "^8.0.2",
     "md5": "^2.3.0",
     "piexifjs": "^1.0.6",
+    "rc-table": "^7.24.2",
     "react": "^18.1.0",
     "react-beautiful-dnd": "^13.1.0",
     "react-dom": "^18.1.0",

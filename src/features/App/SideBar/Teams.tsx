@@ -3,7 +3,6 @@ import styled from "styled-components";
 import { useProjects } from "../../../hooks/project";
 import { useTeams } from "../../../hooks/teams";
 import { TeamProjects } from "./Projects";
-import { getTeamInitials } from "../helpers";
 import { Team } from "../../Project/types";
 
 export const Teams = () => {
@@ -14,16 +13,18 @@ export const Teams = () => {
     return null;
   }
 
+  const badgeColor = (index: number) => (index % 9) + 4;
+
   return (
     <div>
       <Title>Teams</Title>
       <StyledTeams>
-        {data.map((team: Team) => (
+        {data.map((team: Team, index) => (
           <li key={team.id}>
             <TeamRow>
               <aside>
                 <div className="team">
-                  <Icon>{getTeamInitials(team.name)}</Icon>
+                  <Icon className={`badge${badgeColor(index)}`}></Icon>
                   <span>{team.name}</span>
                 </div>
               </aside>
@@ -81,7 +82,6 @@ const TeamRow = styled.div`
 const Icon = styled.div`
   height: var(--p24);
   width: var(--p24);
-  background: var(--gray1);
   border-radius: var(--p4);
   margin-right: var(--p8);
   text-transform: uppercase;

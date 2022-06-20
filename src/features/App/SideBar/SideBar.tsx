@@ -50,8 +50,8 @@ const Container = styled.div`
 `;
 
 const Logo = styled.img`
-  height: var(--p32);
-  margin-top: var(--p4);
+  height: var(--p48);
+  margin-top: var(--p2);
   margin-bottom: var(--p32);
 `;
 

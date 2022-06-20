@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 import {
   useCreateTeam,
   useExistingTeam,
-  useTeam,
+  // useTeam,
   useTeamMemberships,
 } from "../../hooks/teams";
 import { useCreateInvite } from "../../hooks/invites";

@@ -192,6 +192,7 @@ body {
 h1 {
   font-size: var(--p24);
   font-family: ProximaNova-Bold;
+  color: var(--gray7);
 }
 
 h2 {
@@ -203,4 +204,8 @@ h2 {
 h3 {
   font-size: var(--p16);
   font-family: ProximaNova-Semibold;
+}
+
+table {
+  border-spacing: 0;
 }
