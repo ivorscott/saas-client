@@ -3,7 +3,6 @@ import { Menu } from "./Menu";
 import Button from "@mui/material/Button";
 import { useQuery } from "react-query";
 import { UserPayload } from "../../services/types";
-import { client as authClient } from "../../services";
 import { client as api } from "../../services/APIService";
 import ImageViewer from "../ImageViewer";
 import styled from "styled-components";
@@ -18,8 +17,6 @@ export const UserMenu = () => {
     async () => {
       const user = await api.get("/users/me");
       const roles: string[] = []
-      // const authResult = await authClient.getAuthDetails();
-      // const roles = authResult.claims["https://client.devpie.io/claims/roles"];
       return { ...user, roles };
     }
   );
@@ -55,7 +52,7 @@ export const UserMenu = () => {
 
   const prevOpen = useRef(isOpen);
   useEffect(() => {
-    if (prevOpen.current === true && isOpen === false) {
+    if (prevOpen.current && !isOpen) {
       anchorRef.current!.focus();
     }
     prevOpen.current = isOpen;

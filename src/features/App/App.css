@@ -94,7 +94,9 @@
   --p48: 3rem;
   --p32: 2rem;
   --p24: 1.5rem;
+  --p18: 1.125rem;
   --p16: 1rem;
+  --p14: 0.875rem;
   --p12: 0.75rem;
   --p8: 0.5rem;
   --p4: 0.25rem;
@@ -193,7 +195,8 @@ h1 {
 }
 
 h2 {
-  font-size: var(--p18);
+  font-size: var(--p14);
+  color: var(--gray7);
   font-family: ProximaNova-Bold;
 }
 

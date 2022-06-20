@@ -10,6 +10,7 @@ import {
   ClickAwayListener,
   ListItemText,
   ListItemAvatar,
+  Divider,
 } from "@mui/material";
 import { MenuLink } from "../MenuLink";
 import { User } from "../../services/types";
@@ -50,11 +51,14 @@ export const Menu: React.FC<Props> = ({
           <ClickAwayListener onClickAway={()=>onClose}>
             <div>
               <MenuBody user={user} onClose={onClose} />
+              <Divider/>
               <MenuList autoFocusItem={isOpen} onKeyDown={onKeyDown}>
+                <MenuItem component={PlanSection} />
                 <MenuLink to="/manage/account" onClick={onClose}>
-                  My Account
+                  <MenuH2>Account Management</MenuH2>
                 </MenuLink>
-                <MenuItem onClick={onLogOut}>Logout</MenuItem>
+                <Divider/>
+                <MenuItem onClick={onLogOut}><MenuH2 className="logout">Sign Out</MenuH2></MenuItem>
               </MenuList>
             </div>
           </ClickAwayListener>
@@ -63,6 +67,17 @@ export const Menu: React.FC<Props> = ({
     )}
   </StyledPopper>
 );
+
+const PlanSection = () => (
+    <Plan>
+      <MenuH2 className="slim">Basic Plan</MenuH2>
+      <div>
+        <Seats>0 of 3 seats available</Seats>
+        <Upgrade to={"#"}>Upgrade</Upgrade>
+      </div>
+    </Plan>
+);
+
 
 const MenuBody = ({
   user,
@@ -84,8 +99,8 @@ const MenuBody = ({
           )}
         </ListItemAvatar>
         <ListItemText
-          primary={<p>{`${user?.firstName} ${user?.lastName || ""}`}</p>}
-          secondary={<span>{user?.email}</span>}
+          primary={<MenuH1>Company Name</MenuH1>}
+          secondary={<Email>{user?.email}</Email>}
         />
       </Link>
     </ListItem>
@@ -103,4 +118,39 @@ const StyledPopper = styled(Popper)`
     color: var(--gray8);
   }
 `;
+const Plan = styled.div`
+  padding: 0 var(--p16);
+`
+const MenuH1 = styled.h1`
+    font-size: var(--p16);
+    margin-bottom: 4px;
+`
+const MenuH2 = styled.h2`
+    font-size: var(--p14);
+    font-family: ProximaNova-Semibold;
+    margin-top: 6px;
+    
+    &.slim {
+        margin: 0 0 4px 0;
+    }
+    
+    &.logout {
+      margin: 6px 2px 0 0;
+    }
+`
+
+const Seats = styled.p`
+  color: var(--gray4);
+  font-size: var(--p12);
+  margin: 0;
+`
+const Upgrade = styled(Link)`
+  color: var(--blue6) !important;
+  font-size: var(--p12);
+`
+const Email = styled.span`
+  font-family: ProximaNova-Regular;
+  font-size: var(--p14);
+  color: var(--gray7);    
+`
 
