@@ -16,11 +16,11 @@ export const SelectedProject = () => {
 
   if (selected.isError) {
     history.push("/manage/projects");
-    return null
+    return null;
   }
 
   if (!selected.data) {
-    return null
+    return null;
   } else {
     return <ProjectComponent project={selected.data} />;
   }
@@ -104,7 +104,6 @@ const ProjectHeader = styled.header`
   display: flex;
   justify-content: space-between;
   height: var(--p96);
-  margin: 0 var(--p8);
   position: relative;
   .name {
     text-transform: capitalize;

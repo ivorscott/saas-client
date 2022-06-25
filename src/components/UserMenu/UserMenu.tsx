@@ -6,7 +6,7 @@ import { UserPayload } from "../../hooks/types";
 import { client as api } from "../../services/APIService";
 import ImageViewer from "../ImageViewer";
 import styled from "styled-components";
-import { Auth } from 'aws-amplify';
+import { Auth } from "aws-amplify";
 
 export const UserMenu = () => {
   const [isOpen, setOpen] = useState(false);
@@ -16,8 +16,10 @@ export const UserMenu = () => {
     "auth",
     async () => {
       const user = await api.get("/users/me");
-      const roles: string[] = []
-      return { ...user, roles };
+      const roles: string[] = [];
+      const session = await Auth.currentSession();
+      const { payload } = session.getIdToken();
+      return { ...user, roles, company: payload["custom:company-name"] };
     }
   );
 
@@ -26,11 +28,11 @@ export const UserMenu = () => {
   };
 
   const handleLogOut = async () => {
-      try {
-        await Auth.signOut();
-      } catch (error) {
-        console.log('error signing out: ', error);
-      }
+    try {
+      await Auth.signOut();
+    } catch (error) {
+      console.log("error signing out: ", error);
+    }
   };
 
   const handleClose = (event: React.MouseEvent<EventTarget>) => {

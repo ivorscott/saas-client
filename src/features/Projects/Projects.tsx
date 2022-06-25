@@ -21,9 +21,7 @@ export const Projects = () => {
     <Grid container={true} spacing={10}>
       <Grid item={true} xs={12}>
         <Header>
-          <div>
-            <h1>Projects</h1>
-          </div>
+          <h1>Projects</h1>
           <Fab onClick={toggleModal} color="primary" aria-label="Add">
             <Add />
           </Fab>
@@ -40,5 +38,4 @@ export const Projects = () => {
 const Header = styled.header`
   display: flex;
   justify-content: space-between;
-  
 `;

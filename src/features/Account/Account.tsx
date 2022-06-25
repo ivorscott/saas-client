@@ -1,15 +1,49 @@
-import React, { useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import Table from "rc-table";
-import { useCreateUser } from "../../hooks/users";
-import { NewUser } from "../../hooks/types";
+import { useCreateUser, useUsers } from "../../hooks/users";
+import { User, NewUser } from "../../hooks/types";
 import styled from "styled-components";
 import { MoreOptions } from "../../components/MoreOptions";
 import Button from "@mui/material/Button";
 import { Modal } from "./Modal";
+import { UseQueryResult } from "react-query";
+import { Auth } from "aws-amplify";
 
 interface Actions {}
 
 interface Props extends Actions {}
+
+interface TableUser {
+  user: {
+    firstName: string;
+    lastName: string;
+  };
+  email: string;
+  createdAt: string;
+}
+
+type UserQuery = UseQueryResult<User[], Error>;
+
+const useTableUsers = (query: UserQuery): TableUser[] => {
+  const mapUsers = (query: UserQuery): TableUser[] => {
+    if (query.isLoading) {
+      return [];
+    }
+    if (query.isError) {
+      return [];
+    }
+    if (!query.data) {
+      return [];
+    }
+    return query.data.map(({ email, firstName, lastName, createdAt }) => ({
+      email,
+      createdAt,
+      user: { firstName, lastName },
+      role: "",
+    }));
+  };
+  return useMemo<TableUser[]>(() => mapUsers(query), [query]);
+};
 
 export const Component = ({}: Props) => {
   const columns = [
@@ -17,59 +51,44 @@ export const Component = ({}: Props) => {
       title: "User",
       dataIndex: "user",
       key: "user",
-      width: 200,
-      render: (value: any, _: any, index: number) => (
+      width: 250,
+      render: (
+        value: { firstName: string; lastName: string; role: string },
+        _: any,
+        index: number
+      ) => (
         <StyledCell>
           <StyledImage />
           <StyledUserTitle>
-            <StyledName>{value}</StyledName>
-            <StyledSubtitle>Subtitle</StyledSubtitle>
+            <StyledName>
+              {value.firstName} {value.lastName}
+            </StyledName>
+            {value.role && <StyledSubtitle>{value.role}</StyledSubtitle>}
           </StyledUserTitle>
         </StyledCell>
       ),
     },
     {
-      title: "Status",
-      dataIndex: "status",
-      key: "status",
-      width: 100,
+      title: "Email",
+      dataIndex: "email",
+      key: "email",
+      width: 250,
+      render: (value: any) => <StyledCell>{value}</StyledCell>,
+    },
+    {
+      title: "Created At",
+      dataIndex: "createdAt",
+      key: "createdAt",
+      width: 250,
       render: (value: any) => (
-        <StyledCell alignment="left-align">
-          <StyledStatusIndicator className="active" />
-          <p>{value}</p>
-        </StyledCell>
-      ),
-    },
-    {
-      title: "Location",
-      dataIndex: "location",
-      key: "location",
-      width: 200,
-      render: (value: any) => <StyledCell>{value}</StyledCell>,
-    },
-    {
-      title: "Phone",
-      dataIndex: "phone",
-      key: "phone",
-      width: 200,
-      render: (value: any) => <StyledCell>{value}</StyledCell>,
-    },
-    {
-      title: "Contact",
-      dataIndex: "contact",
-      key: "contact",
-      width: 200,
-      render: () => (
-        <StyledCell>
-          <StyledButton variant={"contained"}>Contact</StyledButton>
-        </StyledCell>
+        <StyledCell>{new Date(value).toLocaleDateString("en-US")}</StyledCell>
       ),
     },
     {
       title: "Actions",
       dataIndex: "actions",
       key: "actions",
-      width: 100,
+      width: 250,
       render: () => (
         <StyledCell>
           <a href="#">
@@ -80,37 +99,27 @@ export const Component = ({}: Props) => {
     },
   ];
 
-  const data = [
-    {
-      user: "Daniel Bradford",
-      status: "Available",
-      location: "United States",
-      phone: "+1 222 222 2222",
-      key: "1",
-    },
-    {
-      user: "Adam Smith",
-      status: "Available",
-      location: "United States",
-      phone: "+1 333 333 3333",
-      key: "2",
-    },
-    {
-      user: "Laura Mills",
-      status: "Unavailable",
-      location: "United States",
-      phone: "+1 444 444 4444",
-      key: "3",
-    },
-  ];
-
   const [isOpen, setOpen] = useState(false);
+  const [userInfo, setUserInfo] = useState<{ company: string }>();
 
   const [createUser] = useCreateUser();
+  const result = useUsers();
+  const data = useTableUsers(result);
+
+  useEffect(() => {
+    const fn = async () => {
+      const session = await Auth.currentSession();
+      const data = session.getIdToken().payload;
+      const company = data["custom:company-name"];
+      setUserInfo({ company });
+    };
+    fn();
+  }, []);
 
   const toggleModal = () => {
     setOpen(!isOpen);
   };
+
   const handleNewUser = (newUser: NewUser) => {
     createUser(newUser);
     toggleModal();
@@ -119,7 +128,13 @@ export const Component = ({}: Props) => {
   return (
     <div>
       <StyledHeader>
-        <h1>Manage Account</h1>
+        <header>
+          <h1>Manage Account</h1>
+          <h2>
+            Company: <span>{userInfo?.company}</span>{" "}
+          </h2>
+        </header>
+
         <div>
           <StyledUpgradeButton onClick={toggleModal} variant={"contained"}>
             Add User
@@ -151,21 +166,27 @@ export const Cell = ({ alignment, children }: any) => {
   );
 };
 
-const StyledHeader = styled.header`
+const StyledHeader = styled.div`
   display: flex;
   max-width: 62.5rem;
   justify-content: space-between;
-  div {
+
+  header {
     display: flex;
-    align-self: end;
+    flex-direction: column;
+    h2 {
+      margin-top: var(--p8);
+      span {
+        font-family: ProximaNova-Regular;
+      }
+    }
   }
 `;
-
 const StyledTable = styled(Table)`
   margin: var(--p48) 0;
   th {
     font-family: ProximaNova-Extrabold;
-    font-size: var(--p12);
+    font-size: var(--p14);
     color: var(--gray7);
   }
 `;

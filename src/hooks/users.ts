@@ -1,6 +1,6 @@
-import { useMutation } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import { client as api } from "../services/APIService";
-import { NewUser } from "./types";
+import { NewUser, User } from "./types";
 import { Auth } from "aws-amplify";
 
 export function useCreateUser() {
@@ -13,4 +13,8 @@ export function useCreateUser() {
     return api.post(`/users`, user);
   });
   return [mutate];
+}
+
+export function useUsers() {
+  return useQuery<User[], Error>("users", async () => await api.get("/users"));
 }

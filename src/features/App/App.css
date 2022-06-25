@@ -196,7 +196,7 @@ h1 {
 }
 
 h2 {
-  font-size: var(--p14);
+  font-size: var(--p18);
   color: var(--gray7);
   font-family: ProximaNova-Bold;
 }
@@ -204,6 +204,11 @@ h2 {
 h3 {
   font-size: var(--p16);
   font-family: ProximaNova-Semibold;
+}
+header h1,
+header h2,
+header h3 {
+  margin: 0;
 }
 
 table {

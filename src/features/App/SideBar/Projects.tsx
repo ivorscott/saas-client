@@ -64,14 +64,13 @@ function makeProjectTeamMap(projects?: Project[]): TeamToProjectsMap {
 
 const StyledTeamProject = styled.div`
   padding: var(--p4) 0 var(--p4) var(--p32);
-  font-size: 14px;
   margin: var(--p4) 0;
   a {
     display: flex;
     align-items: center;
     text-decoration: none;
     font-family: ProximaNova-Light;
-    font-size: var(--p12);
+    font-size: var(--p16);
     color: var(--gray4);
 
     &:hover {

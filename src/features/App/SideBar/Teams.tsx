@@ -49,11 +49,11 @@ const StyledTeams = styled.ul`
 
 const Title = styled.h3`
   color: var(--gray3);
-  font-family: ProximaNova-Light;
-  font-size: 14px;
+  font-family: ProximaNova-Regular;
+  font-size: var(--p18);
   font-weight: normal;
   padding: 0 var(--p24);
-  margin-top: var(--p32);
+  margin: 0;
 `;
 
 const TeamRow = styled.div`
@@ -74,7 +74,7 @@ const TeamRow = styled.div`
   span {
     font-family: ProximaNova-Light;
     text-transform: capitalize;
-    font-size: var(--p12);
+    font-size: var(--p16);
     color: var(--gray7);
   }
 `;

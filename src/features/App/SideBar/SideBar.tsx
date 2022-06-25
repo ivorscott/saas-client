@@ -28,11 +28,10 @@ export const SideBar = () => {
 const StyledSideBar = styled.div`
   background: var(--white1);
   width: var(--p256);
-  font-size: 18px;
+  font-size: var(--p18);
   position: relative;
   ul {
     list-style: none;
-    padding-bottom: var(--p24);
   }
   @media (max-width: 1400px) {
     display: none;
@@ -42,7 +41,7 @@ const PrimaryNav = styled.ul`
   list-style: none;
   padding: 0;
   li {
-    padding: var(--p8) var(--p24);
+    padding: var(--p12) var(--p24);
   }
 `;
 const Container = styled.div`
@@ -56,7 +55,6 @@ const Logo = styled.img`
 `;
 
 const StyledLink = styled(Link)`
-  font-size: var(--p16);
   text-decoration: none;
   cursor: pointer;
   color: var(--gray3);

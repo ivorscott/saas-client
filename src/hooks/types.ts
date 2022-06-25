@@ -7,6 +7,7 @@ export interface User {
   picture: string;
   locale: string;
   roles?: string[];
+  company?: string;
   updatedAt: string;
   createdAt: string;
 }
