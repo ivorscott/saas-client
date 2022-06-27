@@ -27,6 +27,8 @@ interface Actions {
 interface Props extends Actions {
   user: User | undefined;
   isOpen: boolean;
+  seatsAvailable: number;
+  maxSeats: number;
   anchorRef: RefObject<HTMLButtonElement>;
 }
 
@@ -34,6 +36,8 @@ export const Menu: React.FC<Props> = ({
   user,
   isOpen,
   anchorRef,
+  seatsAvailable,
+  maxSeats,
   onClose,
   onLogOut,
   onKeyDown,
@@ -57,7 +61,9 @@ export const Menu: React.FC<Props> = ({
                   <div>
                     <MenuH2 className="slim">Basic Plan</MenuH2>
                     <div>
-                      <Seats>0 of 3 seats available</Seats>
+                      <Seats>
+                        {seatsAvailable} of {maxSeats} seats available
+                      </Seats>
                       <Upgrade to={"#"}>Upgrade</Upgrade>
                     </div>
                   </div>

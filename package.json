@@ -6,7 +6,7 @@
     "@aws-amplify/ui-react": "^2.20.0",
     "@emotion/react": "^11.9.0",
     "@emotion/styled": "^11.8.1",
-    "@mui/icons-material": "^5.8.0",
+    "@mui/icons-material": "^5.8.4",
     "@mui/material": "^5.8.0",
     "@reduxjs/toolkit": "^1.5.1",
     "@testing-library/jest-dom": "^5.16.4",
@@ -58,7 +58,7 @@
     "@types/ua-parser-js": "^0.7.33"
   },
   "scripts": {
-    "start": "HTTPS=true SSL_CRT_FILE=./devpie.local.pem SSL_KEY_FILE=./devpie.local-key.pem react-scripts start",
+    "start": "HTTPS=true SSL_CRT_FILE=./devpie.local.pem SSL_KEY_FILE=./devpie.local-key.pem PUBLIC_URL=https://devpie.local:3000 react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

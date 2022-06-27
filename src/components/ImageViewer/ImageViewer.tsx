@@ -86,9 +86,7 @@ export default class ImageViewer extends React.Component<
     return this.fetchImage(url)
       .then(this.processImageBuffer)
       .then(this.createObjectURL)
-      .catch((e) => {
-        console.error(e);
-      });
+      .catch(() => {});
   }
 
   render() {

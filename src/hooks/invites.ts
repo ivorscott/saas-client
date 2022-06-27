@@ -34,9 +34,9 @@ export function useInviteDecision() {
         accepted,
       }),
     {
-      onSuccess: () => {
-        queryClient.invalidateQueries("invites");
-        queryClient.invalidateQueries("projects");
+      onSuccess: async () => {
+        await queryClient.invalidateQueries("invites");
+        await queryClient.invalidateQueries("projects");
       },
     }
   );

@@ -3,20 +3,26 @@ import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import { TextField } from "@mui/material";
+import { Alert, TextField } from "@mui/material";
 import styled from "styled-components";
 import { NewUser } from "../../../hooks/types";
+import { useCreateUser, useSeatsAvailable } from "../../../hooks/users";
 
-interface Props {
-  open: boolean;
-  onClose: () => void;
-  onSubmit: (newUser: NewUser) => void;
-}
+export const Modal = () => {
+  const [open, setOpen] = useState(false);
 
-export const Modal = ({ open, onClose, onSubmit }: Props) => {
+  const toggleOpen = () => {
+    resetForm();
+    setOpen(!open);
+  };
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
+  const [error, setError] = useState<Error>();
+  const seatsResult = useSeatsAvailable();
+  const seatsAvailable = !!seatsResult.seatsAvailable;
+
+  const mutation = useCreateUser();
 
   const handleFirstNameChange = (
     event: React.ChangeEvent<HTMLInputElement>
@@ -35,70 +41,119 @@ export const Modal = ({ open, onClose, onSubmit }: Props) => {
     setEmail(email);
   };
 
-  const handleSubmit = () => {
+  const resetForm = () => {
+    setEmail("");
+    setLastName("");
+    setFirstName("");
+    setError(undefined);
+  };
+
+  const handleSubmit = (e: React.SyntheticEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+
     const newUser = {
       email,
       firstName,
       lastName,
     } as NewUser;
-    onSubmit && onSubmit(newUser);
+
+    mutation.mutate(newUser);
+    if (mutation.isError) {
+      setError(mutation.error);
+      return;
+    }
+    if (!mutation.isLoading || !mutation.isError) {
+      resetForm();
+    }
   };
 
   return (
-    <StyledDialog
-      data-test="component-user-modal"
-      open={open}
-      classes={{ paper: "modal" }}
-      onClose={onClose}
-      aria-labelledby="responsive-dialog-title"
-    >
-      <DialogContainer>
-        <StyledDialogTitle id="responsive-dialog-title">
-          Add User
-        </StyledDialogTitle>
-        <DialogContentText>Invite user to account.</DialogContentText>
+    <>
+      <StyledUpgradeButton
+        onClick={toggleOpen}
+        disabled={!seatsAvailable}
+        variant={"contained"}
+      >
+        Add User
+      </StyledUpgradeButton>
+      <StyledDialog
+        data-test="component-user-modal"
+        open={open}
+        classes={{ paper: "modal" }}
+        onClose={toggleOpen}
+        aria-labelledby="responsive-dialog-title"
+      >
+        <DialogContainer>
+          <StyledDialogTitle id="responsive-dialog-title">
+            Add User
+          </StyledDialogTitle>
 
-        <DialogContent>
-          <Field
-            fullWidth={true}
-            onChange={handleFirstNameChange}
-            value={firstName}
-            margin={"normal"}
-            placeholder="First name"
-          />
-          <Field
-            fullWidth={true}
-            onChange={handleLastNameChange}
-            value={lastName}
-            margin={"normal"}
-            placeholder="Last name"
-          />
-          <Field
-            fullWidth={true}
-            onChange={handleEmailChange}
-            value={email}
-            margin={"normal"}
-            placeholder="Enter an email"
-          />
-        </DialogContent>
+          {error && (
+            <Alert className="error" severity="error">
+              {error.message}
+            </Alert>
+          )}
 
-        <StyledDialogActions>
-          <Button
-            className="opt-out"
-            variant="contained"
-            onClick={onClose}
-            color="secondary"
-          >
-            Cancel
-          </Button>
-          <Button variant="contained" onClick={handleSubmit} color="primary">
-            Create
-          </Button>
-        </StyledDialogActions>
-      </DialogContainer>
-    </StyledDialog>
+          <DialogContentText>Invite user to account.</DialogContentText>
+
+          <DialogContent>
+            <Field
+              fullWidth={true}
+              onChange={handleFirstNameChange}
+              name="firstName"
+              value={firstName}
+              margin={"normal"}
+              placeholder="First name"
+            />
+            <Field
+              fullWidth={true}
+              onChange={handleLastNameChange}
+              name="lastName"
+              value={lastName}
+              margin={"normal"}
+              placeholder="Last name"
+            />
+            <Field
+              fullWidth={true}
+              onChange={handleEmailChange}
+              name="email"
+              value={email}
+              margin={"normal"}
+              placeholder="Enter an email"
+            />
+          </DialogContent>
+
+          <StyledDialogActions>
+            <Button
+              className="opt-out"
+              variant="contained"
+              onClick={toggleOpen}
+              color="secondary"
+            >
+              Cancel
+            </Button>
+            <Button variant="contained" onClick={handleSubmit} color="primary">
+              Create
+            </Button>
+          </StyledDialogActions>
+        </DialogContainer>
+      </StyledDialog>
+    </>
   );
 };
+
+const StyledUpgradeButton = styled(Button)`
+  color: var(--white1);
+  background: var(--blue6);
+  padding: var(--p8) var(--p16);
+  text-transform: capitalize;
+  font-family: ProximaNova-Semibold;
+
+  &:hover {
+    background: var(--blue7);
+  }
+`;
 
 const StyledDialog = styled(Dialog)`
   .modal {
@@ -107,10 +162,17 @@ const StyledDialog = styled(Dialog)`
     position: fixed;
     top: 15%;
   }
+  .error {
+    margin-bottom: var(--p16);
+
+    & ::first-letter {
+      text-transform: capitalize;
+    }
+  }
 `;
 
 const DialogContainer = styled.div`
-  width: calc(var(--p384) - var(--p32) - var(--p32));
+  width: calc(var(--p512) - var(--p32) - var(--p32));
   padding: var(--p32);
 `;
 

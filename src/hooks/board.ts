@@ -1,4 +1,4 @@
-import { client } from "../services/APIService";
+import { client as api } from "../services/APIService";
 import {
   Task,
   AddTask,
@@ -10,12 +10,12 @@ import { useMutation, useQuery, useQueryClient } from "react-query";
 
 export function useColumns(projectId: string) {
   return useQuery<Column[], Error>(["project", projectId, "columns"], () => {
-    return client.get(`/projects/${projectId}/columns`);
+    return api.get(`/projects/${projectId}/columns`);
   });
 }
 export function useTasks(projectId: string) {
   return useQuery<Task[], Error>(["project", projectId, "tasks"], () => {
-    return client.get(`/projects/${projectId}/tasks`);
+    return api.get(`/projects/${projectId}/tasks`);
   });
 }
 
@@ -24,13 +24,13 @@ export function useAddTask() {
 
   const { mutate } = useMutation<Task, Error, AddTask>(
     ({ projectId, columnId, task }) =>
-      client.post(`/projects/${projectId}/columns/${columnId}/tasks`, {
+      api.post(`/projects/${projectId}/columns/${columnId}/tasks`, {
         title: task,
       }),
     {
-      onSuccess: (_, { projectId }) => {
-        queryClient.invalidateQueries(["project", projectId, "tasks"]);
-        queryClient.invalidateQueries(["project", projectId, "columns"]);
+      onSuccess: async (_, { projectId }) => {
+        await queryClient.invalidateQueries(["project", projectId, "tasks"]);
+        await queryClient.invalidateQueries(["project", projectId, "columns"]);
       },
     }
   );
@@ -42,7 +42,7 @@ export function useUpdateTask() {
 
   const { mutate } = useMutation<Task, Error, Task>(
     (task) =>
-      client.patch(`/projects/tasks/${task.id}`, {
+      api.patch(`/projects/tasks/${task.id}`, {
         title: task.title,
         content: task.content,
         assignedTo: task.assignedTo,
@@ -66,7 +66,7 @@ export function useDeleteTask() {
 
   const { mutate } = useMutation<Task, Error, DeleteTask>(
     ({ columnId, taskId }) =>
-      client.delete(`/projects/columns/${columnId}/tasks/${taskId}`),
+      api.delete(`/projects/columns/${columnId}/tasks/${taskId}`),
     {
       onSuccess: (_, variables) => {
         queryClient.setQueryData<Task[]>(
@@ -109,7 +109,7 @@ export function useDeleteTask() {
 export function useMoveTask() {
   const { mutate } = useMutation<Task, Error, MoveTask>(
     ({ to, from, taskId, taskIds }) =>
-      client.patch(`/projects/tasks/${taskId}/move`, {
+      api.patch(`/projects/tasks/${taskId}/move`, {
         to,
         from,
         taskIds,

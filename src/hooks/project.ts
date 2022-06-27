@@ -64,12 +64,12 @@ export function useDeleteProject() {
   const { mutate } = useMutation<null, Error, string>(
     (id) => api.delete(`/projects/${id}`),
     {
-      onSuccess: (_, projectId) => {
-        queryClient.invalidateQueries(["project", projectId], {
+      onSuccess: async (_, projectId) => {
+        await queryClient.invalidateQueries(["project", projectId], {
           refetchActive: false,
           refetchInactive: false,
         });
-        queryClient.invalidateQueries("projects");
+        await queryClient.invalidateQueries("projects");
       },
     }
   );

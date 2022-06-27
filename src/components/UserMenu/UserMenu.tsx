@@ -1,38 +1,30 @@
-import React, { useRef, useState, useEffect } from "react";
-import { Menu } from "./Menu";
+import React, { useRef } from "react";
 import Button from "@mui/material/Button";
-import { useQuery } from "react-query";
-import { UserPayload } from "../../hooks/types";
-import { client as api } from "../../services/APIService";
 import ImageViewer from "../ImageViewer";
 import styled from "styled-components";
 import { Auth } from "aws-amplify";
+import { useSeatsAvailable, useUser } from "../../hooks/users";
+import {
+  Divider,
+  List,
+  ListItemAvatar,
+  ListItemButton,
+  ListItemText,
+  Menu,
+  MenuItem,
+  MenuList,
+} from "@mui/material";
+import { MenuLink } from "../MenuLink";
+import { User } from "../../hooks/types";
+import { Link } from "react-router-dom";
 
 export const UserMenu = () => {
-  const [isOpen, setOpen] = useState(false);
+  const seatsResult = useSeatsAvailable();
   const anchorRef = useRef<HTMLButtonElement>(null);
-
-  const { data: user } = useQuery<UserPayload, UserPayload["error"]>(
-    "auth",
-    async () => {
-      const user = await api.get("/users/me");
-      const roles: string[] = [];
-      const session = await Auth.currentSession();
-      const { payload } = session.getIdToken();
-      return { ...user, roles, company: payload["custom:company-name"] };
-    }
-  );
-
-  const handleToggle = () => {
-    setOpen((prevOpen) => !prevOpen);
-  };
+  const user = useUser();
 
   const handleLogOut = async () => {
-    try {
-      await Auth.signOut();
-    } catch (error) {
-      console.log("error signing out: ", error);
-    }
+    await Auth.signOut();
   };
 
   const handleClose = (event: React.MouseEvent<EventTarget>) => {
@@ -42,31 +34,61 @@ export const UserMenu = () => {
     ) {
       return;
     }
-    setOpen(false);
   };
 
   const handleListKeyDown = (event: React.KeyboardEvent) => {
     if (event.key === "Tab") {
       event.preventDefault();
-      setOpen(false);
     }
   };
 
-  const prevOpen = useRef(isOpen);
-  useEffect(() => {
-    if (prevOpen.current && !isOpen) {
-      anchorRef.current!.focus();
-    }
-    prevOpen.current = isOpen;
-  }, [isOpen]);
+  return (
+    <BasicMenu
+      user={user}
+      seatsAvailable={seatsResult.seatsAvailable}
+      maxSeats={seatsResult.maxSeats}
+      onClose={handleClose}
+      onLogOut={handleLogOut}
+      onKeyDown={handleListKeyDown}
+    />
+  );
+};
+
+interface Actions {
+  onClose: (event: React.MouseEvent<EventTarget>) => void;
+  onLogOut: () => void;
+  onKeyDown: (event: React.KeyboardEvent) => void;
+}
+
+interface Props extends Actions {
+  user: User | undefined;
+  seatsAvailable: number;
+  maxSeats: number;
+}
+export function BasicMenu({
+  user,
+  seatsAvailable,
+  maxSeats,
+  onClose,
+  onLogOut,
+}: Props) {
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   return (
-    <>
+    <div>
       <StyledButton
-        ref={anchorRef}
-        aria-controls={isOpen ? "menu-list-grow" : undefined}
+        id="basic-button"
+        aria-controls={open ? "basic-menu" : undefined}
         aria-haspopup="true"
-        onClick={handleToggle}
+        aria-expanded={open ? "true" : undefined}
+        onClick={handleClick}
       >
         <aside>
           {user?.picture && (
@@ -75,17 +97,76 @@ export const UserMenu = () => {
         </aside>
         <span>{user?.firstName}</span>
       </StyledButton>
-      <Menu
-        anchorRef={anchorRef}
-        user={user}
-        isOpen={isOpen}
+      <StyledMenu
+        id="basic-menu"
+        anchorEl={anchorEl}
+        open={open}
         onClose={handleClose}
-        onLogOut={handleLogOut}
-        onKeyDown={handleListKeyDown}
-      />
-    </>
+        MenuListProps={{
+          "aria-labelledby": "basic-button",
+        }}
+      >
+        <List component="nav">
+          <ListItemButton aria-label="Profile preview" alignItems="flex-start">
+            <Link to="/manage/account" onClick={onClose}>
+              <ListItemAvatar>
+                {user?.picture && (
+                  <ImageViewer
+                    size="md"
+                    alt="current user"
+                    url={user?.picture}
+                  />
+                )}
+              </ListItemAvatar>
+              <ListItemText
+                primary={<MenuH1>{user?.company}</MenuH1>}
+                secondary={<Email>{user?.email}</Email>}
+              />
+            </Link>
+          </ListItemButton>
+        </List>
+        <Divider />
+        <MenuList>
+          <MenuItem>
+            <div>
+              <MenuH2 className="slim">Basic Plan</MenuH2>
+              <div>
+                <Seats>
+                  {seatsAvailable} of {maxSeats} seats available
+                </Seats>
+                <Upgrade to={"#"}>Upgrade to Premium</Upgrade>
+              </div>
+            </div>
+          </MenuItem>
+          <MenuLink to="/manage/account" onClick={onClose}>
+            <MenuH2>Manage Account</MenuH2>
+          </MenuLink>
+          <Divider />
+          <MenuItem onClick={onLogOut}>
+            <MenuH2 className="logout">Sign Out</MenuH2>
+          </MenuItem>
+        </MenuList>
+      </StyledMenu>
+    </div>
   );
-};
+}
+
+const StyledMenu = styled(Menu)`
+  position: absolute;
+  left: -20px !important;
+  z-index: 1051;
+  a,
+  li {
+    text-decoration: none;
+    color: var(--gray8);
+  }
+  .MuiMenu-paper {
+    width: var(--p256);
+  }
+  .MuiList-root {
+    padding: 0;
+  }
+`;
 
 const StyledButton = styled(Button)`
   height: var(--p32);
@@ -100,4 +181,33 @@ const StyledButton = styled(Button)`
     font-size: var(--p16);
     font-family: ProximaNova-Semibold;
   }
+`;
+
+const MenuH1 = styled.h1`
+  font-size: var(--p16);
+  margin-bottom: 4px;
+`;
+const MenuH2 = styled.h2`
+  font-size: var(--p14);
+  font-family: ProximaNova-Semibold;
+  margin-top: 6px;
+
+  &.slim {
+    margin: 0 0 4px 0;
+  }
+`;
+
+const Seats = styled.p`
+  color: var(--gray4);
+  font-size: var(--p12);
+  margin: 0;
+`;
+const Upgrade = styled(Link)`
+  color: var(--blue6) !important;
+  font-size: var(--p12);
+`;
+const Email = styled.span`
+  font-family: ProximaNova-Regular;
+  font-size: var(--p14);
+  color: var(--gray7);
 `;

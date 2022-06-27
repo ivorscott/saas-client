@@ -1,4 +1,4 @@
-import { Auth } from 'aws-amplify';
+import { Auth } from "aws-amplify";
 
 class APIService {
   public baseUrl: string;
@@ -38,8 +38,8 @@ class APIService {
 
   async request(method: string, path: string, data?: any) {
     const url = `${this.baseUrl}${path}`;
-    const session = await Auth.currentSession()
-    const accessToken = session.getIdToken().getJwtToken()
+    const session = await Auth.currentSession();
+    const accessToken = session.getIdToken().getJwtToken();
     const options = {
       method,
       body: JSON.stringify(data),
@@ -49,12 +49,21 @@ class APIService {
       },
     };
 
-    return fetch(url, options).then(async (res) => {
-      if (!res.ok) {
-        throw new Error(`(${res.status}) ${res.statusText}`);
-      }
-      return res.json();
-    });
+    try {
+      return fetch(url, options).then(async (res) => {
+        const json = await res.json();
+        if (!res.ok) {
+          let error = json?.error;
+          if (res.status >= 500) {
+            error = "Something went wrong. Please try again later.";
+          }
+          throw new Error(error);
+        }
+        return json;
+      });
+    } catch (err) {
+      return err;
+    }
   }
 }
 

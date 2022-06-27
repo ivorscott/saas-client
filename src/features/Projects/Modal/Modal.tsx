@@ -36,26 +36,19 @@ export const Modal = ({ open, onClose, onSubmit }: Props) => {
         <StyledDialogTitle id="responsive-dialog-title">
           New Project
         </StyledDialogTitle>
-        <DialogContentText>
-          A project represents a product deliverable.
-        </DialogContentText>
+        <DialogContentText>A project represents a product.</DialogContentText>
 
         <DialogContent>
           <Field
             fullWidth={true}
             onChange={handleChange}
             value={name}
-            placeholder="Enter a name"
+            placeholder="Project name"
           />
         </DialogContent>
 
         <StyledDialogActions>
-          <Button
-            className="opt-out"
-            variant="contained"
-            onClick={onClose}
-            color="secondary"
-          >
+          <Button className="opt-out" onClick={onClose}>
             Cancel
           </Button>
           <Button variant="contained" onClick={handleSubmit} color="primary">
@@ -73,6 +66,9 @@ const StyledDialog = styled(Dialog)`
     max-height: none;
     position: fixed;
     top: 15%;
+  }
+  .MuiDialogContentText-root {
+    margin-top: 0;
   }
 `;
 
