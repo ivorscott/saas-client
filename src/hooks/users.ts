@@ -19,6 +19,7 @@ export function useUser() {
       const data = await api.get("/users/me");
       const session = await Auth.currentSession();
       const { payload } = session.getIdToken();
+      console.log(JSON.parse(payload["custom:tenant-connections"]));
       return {
         ...data,
         company: payload["custom:company-name"],
@@ -52,8 +53,8 @@ export function useDeleteUser() {
   const queryClient = useQueryClient();
 
   return useMutation<void, Error, DeleteUserInput>(
-    async ({ userId, email }) => {
-      return api.delete(`/users/${userId}?email=${email}`);
+    async ({ userId }) => {
+      return api.delete(`/users/${userId}`);
     },
     {
       onSuccess: async (_, userId) => {

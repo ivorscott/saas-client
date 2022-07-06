@@ -18,7 +18,7 @@ interface Props {
   children: any;
 }
 
-export function DeleteDialog({ userId, email, ...props }: Props) {
+export function DeleteDialog({ userId, ...props }: Props) {
   const [open, setOpen] = React.useState(false);
   const [error, setError] = React.useState<Error>();
   const mutation = useDeleteUser();
@@ -31,7 +31,7 @@ export function DeleteDialog({ userId, email, ...props }: Props) {
   };
 
   const handleSubmit = async () => {
-    await mutation.mutateAsync({ userId, email });
+    await mutation.mutateAsync({ userId });
     if (mutation.isError) {
       setError(mutation.error);
       return;

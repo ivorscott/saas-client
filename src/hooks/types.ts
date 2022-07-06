@@ -28,7 +28,6 @@ export interface NewUser {
 }
 
 export interface DeleteUserInput {
-  email: string;
   userId: string;
 }
 
