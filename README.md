@@ -1,6 +1,6 @@
 # SaaS-Client
 
-This project is a part of "AWS SaaS app in 30 days" - _Proof of Concept_
+Multi-tenant SaaS app built on AWS
 
 ![](docs/img/demo.png)
 
