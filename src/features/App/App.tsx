@@ -3,7 +3,7 @@ import Copyright from "@mui/icons-material/Copyright";
 import { TopBar } from "./TopBar/TopBar";
 import { SideBar } from "./SideBar";
 import { ReactQueryDevtools } from "react-query/devtools";
-import Routes from "./Routes";
+import AppRoutes from "./Routes";
 import styled from "styled-components";
 import "./App.css";
 
@@ -15,7 +15,7 @@ export const DevPie = () => {
         <Page>
           <TopBar />
           <PageContent>
-            <Routes />
+            <AppRoutes />
           </PageContent>
         </Page>
       </App>

@@ -1,9 +1,8 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
-import { Router } from "react-router-dom";
+import { BrowserRouter } from "react-router-dom";
 import { StyledEngineProvider } from "@mui/styled-engine";
 import { theme } from "./features/App/theme";
-import { history } from "./features/App/history";
 import { DevPie } from "./features/App/App";
 import { ThemeProvider } from "@mui/material/styles";
 import { QueryClient, QueryClientProvider } from "react-query";
@@ -25,13 +24,13 @@ const root = createRoot(container!);
 
 const App = withAuthenticator(() => (
   <QueryClientProvider client={queryClient}>
-    <Router history={history}>
+    <BrowserRouter>
       <ThemeProvider theme={theme}>
         <StyledEngineProvider injectFirst>
           <DevPie />
         </StyledEngineProvider>
       </ThemeProvider>
-    </Router>
+    </BrowserRouter>
   </QueryClientProvider>
 ));
 

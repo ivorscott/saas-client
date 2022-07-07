@@ -1,21 +1,21 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { history } from "../App/history";
+import { useNavigate, useParams } from "react-router-dom";
 import { SprintBoard } from "./SprintBoard";
 import { ProjectTeam } from "./ProjectTeam";
-import { Memberships, Params, Project, Team } from "./types";
+import { Memberships, Project, Team } from "./types";
 import { ProjectSettings } from "./ProjectSettings";
 import { useProject } from "../../hooks/project";
 import { useTeam, useTeamMemberships } from "../../hooks/teams";
-import styled from "styled-components";
 import { MoreOptions } from "../../components/MoreOptions";
+import styled from "styled-components";
 
 export const SelectedProject = () => {
-  const params: Params = useParams();
-  const selected = useProject(params.id);
+  const { id } = useParams();
+  const selected = useProject(id);
+  const navigate = useNavigate();
 
   if (selected.isError) {
-    history.push("/manage/projects");
+    navigate("/manage/projects");
     return null;
   }
 
@@ -76,7 +76,7 @@ const Settings = (props: { project: Project }) => {
 
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
-  }, [window]);
+  }, []);
 
   let classes = ["controls"];
   if (scrolled) {

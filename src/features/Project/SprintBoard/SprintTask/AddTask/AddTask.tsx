@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import Button from "@mui/material/Button";
 import TextareaAutosize from "@mui/material/TextareaAutosize";
-import { Params, Project } from "../../../types";
+import { Project } from "../../../types";
 import { AxiosError } from "axios";
 import { useQuery } from "react-query";
 import { client as api } from "../../../../../services/APIService";
-import { useParams } from "react-router";
+import { useParams } from "react-router-dom";
 import styled from "styled-components";
 
 interface AddTaskProps {
@@ -64,10 +64,10 @@ export const AddTask = ({
   toggleCreating,
   onAddTask,
 }: AddTaskProps) => {
-  const params: Params = useParams();
+  const { id } = useParams();
   const { data: selected } = useQuery<Project, AxiosError>(
-    ["project", params.id],
-    async () => await api.get(`/projects/${params.id}`)
+    ["project", id],
+    async () => await api.get(`/projects/${id}`)
   );
 
   const [task, setTask] = useState("");

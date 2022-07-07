@@ -1,7 +1,7 @@
 import { useQuery, useQueryClient, useMutation } from "react-query";
 import { Memberships, Team } from "../features/Project/types";
 import { client as api } from "../services/APIService";
-import { history } from "../features/App/history";
+import { useNavigate } from "react-router-dom";
 
 export function useTeamMemberships(teamId?: string) {
   return useQuery<Memberships[], Error>(["memberships", teamId], async () => {
@@ -32,7 +32,7 @@ export function useCreateTeam() {
   const { mutate } = useMutation<
     Team,
     Error,
-    { teamName: string; projectId: string }
+    { teamName: string; projectId: string | undefined }
   >(
     ({ teamName, projectId }) =>
       api.post(`/users/teams`, {
@@ -53,7 +53,7 @@ export function useExistingTeam() {
   const { mutate } = useMutation<
     void,
     Error,
-    { teamId: string; projectId: string }
+    { teamId: string; projectId: string | undefined }
   >(
     ({ teamId, projectId }) =>
       api.post(`/users/teams/${teamId}/project/${projectId}`, {}),
@@ -69,6 +69,7 @@ export function useExistingTeam() {
 
 export function useLeaveTeam() {
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
   const { mutate } = useMutation<void, Error, string>(
     (teamId) => api.post(`/users/teams/${teamId}/leave`, {}),
     {
@@ -77,7 +78,7 @@ export function useLeaveTeam() {
         queryClient.invalidateQueries(["team", teamId]);
 
         setTimeout(() => {
-          history.push("/manage/projects");
+          navigate("/manage/projects");
         }, 2000);
       },
     }

@@ -1,9 +1,9 @@
 import { useQuery, useQueryClient, useMutation } from "react-query";
 import { client as api } from "../services/APIService";
 import { Project } from "../features/Project/types";
-import { history } from "../features/App/history";
+import { useNavigate } from "react-router-dom";
 
-export function useProject(projectId: string) {
+export function useProject(projectId: string | undefined) {
   return useQuery<Project, Error>(
     ["project", projectId],
     async () => await api.get(`/projects/${projectId}`)
@@ -19,13 +19,13 @@ export function useProjects() {
 
 export function useCreateProject() {
   const queryClient = useQueryClient();
-
+  const navigate = useNavigate();
   const { mutate } = useMutation<Project, Error, string>(
     (name) => api.post("/projects", { name }),
     {
       onSuccess: (data, variable) => {
         queryClient.setQueryData(["projects", { name: variable }], data);
-        history.push(`/manage/projects/${data.id}`);
+        navigate(`/manage/projects/${data.id}`);
       },
     }
   );

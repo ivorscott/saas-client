@@ -65,7 +65,7 @@ const TeamModals = (props: {
   isOpen: boolean;
   onClose: () => void;
 }) => {
-  const params: { id: string } = useParams();
+  const { id } = useParams();
   const [mutateNewTeam] = useCreateTeam();
   const [mutateExistingTeam] = useExistingTeam();
   const [mutateInvite] = useCreateInvite();
@@ -75,9 +75,9 @@ const TeamModals = (props: {
       /^[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i
     );
     if (team.match(uuidV4)) {
-      mutateExistingTeam({ teamId: team, projectId: params.id });
+      mutateExistingTeam({ teamId: team, projectId: id });
     } else {
-      mutateNewTeam({ teamName: team, projectId: params.id });
+      mutateNewTeam({ teamName: team, projectId: id });
     }
     props.onClose();
   };

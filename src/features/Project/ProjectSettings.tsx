@@ -7,7 +7,7 @@ import { useDeleteProject, useUpdateProject } from "../../hooks/project";
 import { useLeaveTeam } from "../../hooks/teams";
 import { PanelForm, PanelSection, PanelField } from "../../components/Panel";
 import { Avatar } from "../../components/Avatar";
-import { history } from "../App/history";
+import { useNavigate } from "react-router-dom";
 
 interface Actions {
   onClose: () => void;
@@ -42,7 +42,7 @@ export const ProjectSettings = ({
   const [updateProject] = useUpdateProject();
   const [deleteProject] = useDeleteProject();
   const [leaveTeam] = useLeaveTeam();
-
+  const navigate = useNavigate();
   const toggleEditing = () => {
     setEditing(!isEditing);
   };
@@ -113,7 +113,7 @@ export const ProjectSettings = ({
 
   const handleDelete = () => {
     deleteProject(project.id);
-    setTimeout(() => history.push("/manage/projects"), 2000);
+    setTimeout(() => navigate("/manage/projects"), 2000);
   };
 
   const handleSubmit = () => {

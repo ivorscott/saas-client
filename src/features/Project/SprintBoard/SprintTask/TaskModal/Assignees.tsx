@@ -1,6 +1,11 @@
-import {Select, MenuItem, FormControl, SelectChangeEvent} from "@mui/material";
+import {
+  Select,
+  MenuItem,
+  FormControl,
+  SelectChangeEvent,
+} from "@mui/material";
 import React from "react";
-import { useParams } from "react-router";
+import { useParams } from "react-router-dom";
 import { useProject } from "../../../../../hooks/project";
 import { useTeamMemberships } from "../../../../../hooks/teams";
 import { Task } from "../../../types";
@@ -16,10 +21,10 @@ export const SelectAssignees = ({
   formValues: Task;
   isEditing: boolean;
   toggleEditing: () => void;
-  onChange: (event: SelectChangeEvent<string>, child: React.ReactNode) => void;
+  onChange: (event: SelectChangeEvent, child: React.ReactNode) => void;
 }) => {
-  const params: { id: string } = useParams();
-  const { data: project } = useProject(params.id);
+  const { id } = useParams();
+  const { data: project } = useProject(id);
   const { data, isError } = useTeamMemberships(project?.teamId);
   const users = makeUserDict(data);
 
