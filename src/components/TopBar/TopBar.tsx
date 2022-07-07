@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import Badge from "@mui/material/Badge";
 import IconButton from "@mui/material/IconButton";
 import Notifications from "@mui/icons-material/Notifications";
-import { UserMenu } from "../../../components/UserMenu";
+import { UserMenu } from "../UserMenu";
 import { SearchBar } from "../SearchBar";
 import { NotifyModal } from "./NotifyModal";
-import { useInvites } from "../../../hooks/invites";
+import { useInvites } from "../../hooks/invites";
 import styled from "styled-components";
 
 export const TopBar = () => {

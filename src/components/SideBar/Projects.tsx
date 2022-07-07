@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { Project } from "../../Project/types";
+import { Project } from "../../features/Project/types";
 
 interface LinkData {
   id: string;

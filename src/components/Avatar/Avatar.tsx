@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { getUserInitials } from "../../features/App/helpers";
+import { getUserInitials } from "../../helpers";
 import { Memberships } from "../../features/Project/types";
 import ImageViewer, { ImageViewerProps } from "../ImageViewer";
 
@@ -20,7 +20,7 @@ export const Avatar = ({
   ...props
 }: Props) => {
   if (!membership) {
-    return null
+    return null;
   }
 
   return membership.picture ? (
