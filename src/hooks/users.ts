@@ -19,14 +19,13 @@ export function useUser() {
       const data = await api.get("/users/me");
       const session = await Auth.currentSession();
       const { payload } = session.getIdToken();
-      console.log(JSON.parse(payload["custom:tenant-connections"]));
       return {
         ...data,
         company: payload["custom:company-name"],
         username: payload["cognito:username"],
-        tenantID: payload["custom:tenant-id"],
         emailVerified: payload["email_verified"],
         accountOwner: !!payload["custom:account-owner"],
+        connections: JSON.parse(payload["custom:tenant-connections"]),
       };
     }
   );

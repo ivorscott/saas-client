@@ -6,6 +6,7 @@ import { Modal as AddUser } from "./Modal";
 import { Auth } from "aws-amplify";
 import { components } from "./TableRow";
 import { columns } from "./TableColumns";
+import { Layout } from "../../Layout";
 
 export const Account = () => {
   const [userInfo, setUserInfo] = useState<{ company: string }>();
@@ -25,7 +26,7 @@ export const Account = () => {
   }, []);
 
   return (
-    <div>
+    <Layout>
       <StyledHeader>
         <header>
           <h1>Manage Account</h1>
@@ -47,7 +48,7 @@ export const Account = () => {
         tableLayout="auto"
         emptyText={"No users"}
       />
-    </div>
+    </Layout>
   );
 };
 

@@ -8,6 +8,7 @@ import { useProject } from "../../hooks/project";
 import { useTeam, useTeamMemberships } from "../../hooks/teams";
 import { MoreOptions } from "../../components/MoreOptions";
 import styled from "styled-components";
+import { Layout } from "../../Layout";
 
 export const SelectedProject = () => {
   const { id } = useParams();
@@ -22,7 +23,11 @@ export const SelectedProject = () => {
   if (!selected.data) {
     return null;
   } else {
-    return <ProjectComponent project={selected.data} />;
+    return (
+      <Layout>
+        <ProjectComponent project={selected.data} />
+      </Layout>
+    );
   }
 };
 

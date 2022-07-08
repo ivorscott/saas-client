@@ -4,7 +4,7 @@ import { Project } from "../../Project/types";
 import styled from "styled-components";
 import { useTeam, useTeamMemberships } from "../../../hooks/teams";
 import { Memberships } from "../../Project/types";
-import {Avatar} from "../../../components/Avatar";
+import { Avatar } from "../../../components/Avatar";
 
 interface Props {
   project: Project;
@@ -18,7 +18,7 @@ export const Card = ({ project, seq }: Props) => {
   const color = (seq % 9) + 1;
   return (
     <StyledCard className="shade2">
-      <Link key={project.id} to={`/manage/projects/${project.id}`}>
+      <Link key={project.id} to={project.id}>
         <div className={`color-tip badge${color}`} />
         <CardHeader>
           <CardTitle>{project.name}</CardTitle>
@@ -40,17 +40,17 @@ function renderMembers(maxSize: number, memberships: Memberships[]) {
     <Avatars>
       <ul>
         {memberships && (
-            <StyledMembers>
-              {memberships.map((membership, index) => (
-                  <Avatar
-                      key={membership.id}
-                      alt="user avatar"
-                      size="sm"
-                      badgeColor={`badge${badgeColor(index)}`}
-                      membership={membership}
-                  />
-              ))}
-            </StyledMembers>
+          <StyledMembers>
+            {memberships.map((membership, index) => (
+              <Avatar
+                key={membership.id}
+                alt="user avatar"
+                size="sm"
+                badgeColor={`badge${badgeColor(index)}`}
+                membership={membership}
+              />
+            ))}
+          </StyledMembers>
         )}
         {memberships.length > maxSize && (
           <li className="hidden-avatars">{memberships.length - maxSize}+</li>
