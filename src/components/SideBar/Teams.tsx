@@ -1,9 +1,9 @@
 import React from "react";
 import styled from "styled-components";
-import { useProjects } from "../../../hooks/project";
-import { useTeams } from "../../../hooks/teams";
+import { useProjects } from "../../hooks/project";
+import { useTeams } from "../../hooks/teams";
 import { TeamProjects } from "./Projects";
-import { Team } from "../../Project/types";
+import { Team } from "../../features/Project/types";
 
 export const Teams = () => {
   const projects = useProjects();

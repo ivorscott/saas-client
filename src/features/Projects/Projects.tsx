@@ -6,6 +6,7 @@ import { List } from "./List";
 import { Modal } from "./Modal";
 import { useCreateProject, useProjects } from "../../hooks/project";
 import styled from "styled-components";
+import { Layout } from "../../Layout";
 
 export const Projects = () => {
   const [isOpen, setOpen] = useState(false);
@@ -18,20 +19,26 @@ export const Projects = () => {
   };
 
   return (
-    <Grid container={true} spacing={10}>
-      <Grid item={true} xs={12}>
-        <Header>
-          <h1>Projects</h1>
-          <Fab onClick={toggleModal} color="primary" aria-label="Add">
-            <Add />
-          </Fab>
-        </Header>
-        <List isLoading={projects.isLoading} projects={projects.data} />
+    <Layout>
+      <Grid container={true} spacing={10}>
         <Grid item={true} xs={12}>
-          <Modal open={isOpen} onClose={toggleModal} onSubmit={createProject} />
+          <Header>
+            <h1>Projects</h1>
+            <Fab onClick={toggleModal} color="primary" aria-label="Add">
+              <Add />
+            </Fab>
+          </Header>
+          <List isLoading={projects.isLoading} projects={projects.data} />
+          <Grid item={true} xs={12}>
+            <Modal
+              open={isOpen}
+              onClose={toggleModal}
+              onSubmit={createProject}
+            />
+          </Grid>
         </Grid>
       </Grid>
-    </Grid>
+    </Layout>
   );
 };
 

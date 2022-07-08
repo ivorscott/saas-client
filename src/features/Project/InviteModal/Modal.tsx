@@ -6,8 +6,7 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import Close from "@mui/icons-material/Close";
 import TextField from "@mui/material/TextField";
-import { Params } from "../types";
-import { useParams } from "react-router";
+import { useParams } from "react-router-dom";
 import { placeholder } from "../../../components/ImageViewer/placeholder";
 import { useProject } from "../../../hooks/project";
 import { useTeam } from "../../../hooks/teams";
@@ -28,10 +27,10 @@ const defaultImage =
   "https://devpie-client-local.s3.eu-central-1.amazonaws.com/public/default.png";
 
 export const Modal = ({ open, onClose, onSubmit }: Props) => {
-  const params: Params = useParams();
+  const { id } = useParams();
   const [emailList, setEmailList] = useState<string[]>([]);
   const [prettyList, setPrettyEmailList] = useState<PrettyEmail[]>([]);
-  const { data: project } = useProject(params.id);
+  const { data: project } = useProject(id);
   const { data: team } = useTeam(project?.teamId);
 
   useEffect(() => {
@@ -53,7 +52,7 @@ export const Modal = ({ open, onClose, onSubmit }: Props) => {
         }
       }
     });
-  }, [emailList]);
+  }, [emailList, prettyList]);
 
   const keyPress = (event: React.KeyboardEvent) => {
     const target = event.target as HTMLInputElement;
@@ -83,7 +82,7 @@ export const Modal = ({ open, onClose, onSubmit }: Props) => {
         {prettyList.map((item) => (
           <li key={item.email}>
             <aside>
-              <img src={item.image} />
+              <img alt="profile" src={item.image} />
               <span>{item.email}</span>
             </aside>
             <Close

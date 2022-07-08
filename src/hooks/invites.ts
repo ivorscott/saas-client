@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "react-query";
-import { Invite } from "../features/App/TopBar/types";
+import { Invite } from "../components/TopBar/types";
 import { client as api } from "../services/APIService";
 
 export function useCreateInvite() {

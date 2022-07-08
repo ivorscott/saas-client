@@ -1,33 +1,25 @@
 import React from "react";
+import { SideBar } from "./components/SideBar";
+import { TopBar } from "./components/TopBar/TopBar";
 import Copyright from "@mui/icons-material/Copyright";
-import { TopBar } from "./TopBar/TopBar";
-import { SideBar } from "./SideBar";
-import { ReactQueryDevtools } from "react-query/devtools";
-import Routes from "./Routes";
 import styled from "styled-components";
-import "./App.css";
 
-export const DevPie = () => {
-  return (
-    <>
-      <App data-theme="light">
-        <SideBar />
-        <Page>
-          <TopBar />
-          <PageContent>
-            <Routes />
-          </PageContent>
-        </Page>
-      </App>
-      <Footer>
-        <Copyright /> <CopyrightText>Powered by DevPie</CopyrightText>
-      </Footer>
-      <ReactQueryDevtools position="bottom-right" />
-    </>
-  );
-};
+export const Layout = (props: React.PropsWithChildren) => (
+  <>
+    <Container>
+      <SideBar />
+      <Page>
+        <TopBar />
+        <PageContent>{props.children}</PageContent>
+      </Page>
+    </Container>
+    <Footer>
+      <Copyright /> <CopyrightText>Powered by DevPie</CopyrightText>
+    </Footer>
+  </>
+);
 
-const App = styled.div`
+const Container = styled.div`
   display: flex;
 `;
 const Page = styled.div`

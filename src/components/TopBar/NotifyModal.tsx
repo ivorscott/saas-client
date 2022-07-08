@@ -9,7 +9,7 @@ import Close from "@mui/icons-material/Close";
 import Button from "@mui/material/Button";
 import { Invite } from "./types";
 import styled from "styled-components";
-import { useInviteDecision } from "../../../hooks/invites";
+import { useInviteDecision } from "../../hooks/invites";
 dayjs.extend(relativeTime);
 
 interface Props {

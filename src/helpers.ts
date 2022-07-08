@@ -10,3 +10,12 @@ export function getTeamInitials(teamName: string) {
     return teamName.substring(0, 2);
   }
 }
+
+export const formatPath = (company: string | undefined): string => {
+  if (!company) {
+    return "";
+  }
+  const re = /[^a-zA-Z0-9]+/g;
+
+  return company.replaceAll(re, "").toLowerCase();
+};

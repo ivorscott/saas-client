@@ -23,9 +23,9 @@ export function useUser() {
         ...data,
         company: payload["custom:company-name"],
         username: payload["cognito:username"],
-        tenantID: payload["custom:tenant-id"],
         emailVerified: payload["email_verified"],
         accountOwner: !!payload["custom:account-owner"],
+        connections: JSON.parse(payload["custom:tenant-connections"]),
       };
     }
   );
@@ -52,8 +52,8 @@ export function useDeleteUser() {
   const queryClient = useQueryClient();
 
   return useMutation<void, Error, DeleteUserInput>(
-    async ({ userId, email }) => {
-      return api.delete(`/users/${userId}?email=${email}`);
+    async ({ userId }) => {
+      return api.delete(`/users/${userId}`);
     },
     {
       onSuccess: async (_, userId) => {

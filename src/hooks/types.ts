@@ -14,10 +14,22 @@ export interface User {
 }
 
 export type CurrentUser = User & {
-  tenantID: string;
+  tenantId: string;
   company: string;
   accountOwner: boolean;
+  connections: ConnectionMap;
   username: string;
+};
+
+interface ConnectionMap {
+  [index: string]: Connection;
+}
+
+type Connection = {
+  id: string;
+  path: string;
+  plan: string;
+  companyName: string;
 };
 
 export interface NewUser {
@@ -28,7 +40,6 @@ export interface NewUser {
 }
 
 export interface DeleteUserInput {
-  email: string;
   userId: string;
 }
 

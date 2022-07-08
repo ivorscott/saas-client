@@ -17,6 +17,7 @@ import {
 import { MenuLink } from "../MenuLink";
 import { User } from "../../hooks/types";
 import { Link } from "react-router-dom";
+import { formatPath } from "../../helpers";
 
 export const UserMenu = () => {
   const seatsResult = useSeatsAvailable();
@@ -81,6 +82,8 @@ export function BasicMenu({
     setAnchorEl(null);
   };
 
+  const defaultTenantPath = formatPath(user?.company);
+
   return (
     <div>
       <StyledButton
@@ -107,9 +110,12 @@ export function BasicMenu({
         }}
       >
         <List component="nav">
-          <ListItemButton aria-label="Profile preview" alignItems="flex-start">
-            <Link to="/manage/account" onClick={onClose}>
-              <ListItemAvatar>
+          <Link to="/me" onClick={onClose}>
+            <ListItemButton
+              aria-label="Profile preview"
+              alignItems="flex-start"
+            >
+              <StyledListItemAvatar>
                 {user?.picture && (
                   <ImageViewer
                     size="md"
@@ -117,13 +123,15 @@ export function BasicMenu({
                     url={user?.picture}
                   />
                 )}
-              </ListItemAvatar>
+              </StyledListItemAvatar>
               <ListItemText
-                primary={<MenuH1>{user?.company}</MenuH1>}
+                primary={
+                  <MenuH1>{`${user?.firstName} ${user?.lastName}`}</MenuH1>
+                }
                 secondary={<Email>{user?.email}</Email>}
               />
-            </Link>
-          </ListItemButton>
+            </ListItemButton>
+          </Link>
         </List>
         <Divider />
         <MenuList>
@@ -138,7 +146,7 @@ export function BasicMenu({
               </div>
             </div>
           </MenuItem>
-          <MenuLink to="/manage/account" onClick={onClose}>
+          <MenuLink to={`/${defaultTenantPath}/account`} onClick={onClose}>
             <MenuH2>Manage Account</MenuH2>
           </MenuLink>
           <Divider />
@@ -181,6 +189,16 @@ const StyledButton = styled(Button)`
     font-size: var(--p16);
     font-family: ProximaNova-Semibold;
   }
+`;
+
+const StyledListItemAvatar = styled(ListItemAvatar)`
+    background: var(--gray3);
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+    margin: var(--p14);
+    margin-left: 0;
+}
 `;
 
 const MenuH1 = styled.h1`

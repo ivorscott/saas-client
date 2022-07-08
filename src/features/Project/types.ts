@@ -10,10 +10,6 @@ export interface TaskDict {
   [index: string]: Task;
 }
 
-export interface Params {
-  id: string;
-}
-
 export interface Project {
   id: string;
   name: string;
