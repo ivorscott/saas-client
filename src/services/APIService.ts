@@ -36,6 +36,10 @@ class APIService {
     };
   }
 
+  getBasePath() {
+    return window.location.pathname.split("/")[1];
+  }
+
   async request(method: string, path: string, data?: any) {
     const url = `${this.baseUrl}${path}`;
     const session = await Auth.currentSession();
@@ -45,6 +49,7 @@ class APIService {
       body: JSON.stringify(data),
       headers: {
         ...this.headers,
+        BasePath: this.getBasePath(),
         Authorization: `Bearer ${accessToken}`,
       },
     };
