@@ -46,8 +46,8 @@ const TenantPath = () => {
   const { tenantPath } = useParams();
   const defaultTenantPath = formatPath(user?.company);
 
-  if (user && tenantPath) {
-    const activeTenant = user.connections[tenantPath];
+  if (user) {
+    const activeTenant = user.connections[tenantPath!];
     if (!activeTenant) {
       return <Navigate to={`../${defaultTenantPath}/projects`} replace />;
     }
@@ -64,6 +64,7 @@ const AppRoutes = () => (
         <Route path="projects" element={<Projects />} />
         <Route path="projects/:id" element={<SelectedProject />} />
       </Route>
+      <Route path="/" element={<TenantPath />} />
       <Route path="me" element={<Profile />} />
       <Route path="*" element={<NoMatch />} />
     </Routes>
