@@ -17,7 +17,7 @@ import { StyledEngineProvider } from "@mui/styled-engine";
 import "@aws-amplify/ui-react/styles.css";
 import "./index.css";
 
-import { withAuthenticator } from "@aws-amplify/ui-react";
+import { View, Image, withAuthenticator } from "@aws-amplify/ui-react";
 import Amplify from "aws-amplify";
 import awsconfig from "./aws-exports";
 import { useUser } from "./hooks/users";
@@ -71,17 +71,30 @@ const AppRoutes = () => (
   </React.Suspense>
 );
 
-const App = withAuthenticator(() => (
-  <QueryClientProvider client={queryClient}>
-    <BrowserRouter>
-      <ThemeProvider theme={theme}>
-        <StyledEngineProvider injectFirst>
-          <AppRoutes />
-          <ReactQueryDevtools position="bottom-right" />
-        </StyledEngineProvider>
-      </ThemeProvider>
-    </BrowserRouter>
-  </QueryClientProvider>
-));
+const components = {
+  Header() {
+    return (
+      <View textAlign="center">
+        <Image width={200} alt="Amplify logo" src="/logo.png" />
+      </View>
+    );
+  },
+};
+
+const App = withAuthenticator(
+  () => (
+    <QueryClientProvider client={queryClient}>
+      <BrowserRouter>
+        <ThemeProvider theme={theme}>
+          <StyledEngineProvider injectFirst>
+            <AppRoutes />
+            <ReactQueryDevtools position="bottom-right" />
+          </StyledEngineProvider>
+        </ThemeProvider>
+      </BrowserRouter>
+    </QueryClientProvider>
+  ),
+  { hideSignUp: true, components }
+);
 
 root.render(<App />);
