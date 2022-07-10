@@ -6,7 +6,7 @@ import Paper from "@mui/material/Paper";
 import Popper from "@mui/material/Popper";
 import MenuItem from "@mui/material/MenuItem";
 import MenuList from "@mui/material/MenuList";
-import styled from "styled-components";
+import { styled } from "@mui/material/styles";
 
 export default function MenuListComposition() {
   const [open, setOpen] = React.useState(false);
@@ -39,7 +39,7 @@ export default function MenuListComposition() {
   // return focus to the button when we transitioned from !open -> open
   const prevOpen = React.useRef(open);
   React.useEffect(() => {
-    if (prevOpen.current === true && open === false) {
+    if (prevOpen.current && !open) {
       anchorRef.current!.focus();
     }
 
@@ -100,7 +100,7 @@ export default function MenuListComposition() {
   );
 }
 
-const PaperRoot = styled.div`
+const PaperRoot = styled("div")`
   display: flex;
 `;
 

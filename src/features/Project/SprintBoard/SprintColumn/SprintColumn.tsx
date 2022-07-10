@@ -4,7 +4,7 @@ import { Droppable } from "react-beautiful-dnd";
 import { SprintTask } from "../SprintTask";
 import { Column, Task, TaskDict, UserDict } from "../../types";
 import { ColumnHeader } from "./Header";
-import styled from "styled-components";
+import { styled } from "@mui/material/styles";
 
 interface Actions {
   onAddTask: (task: string) => void;
@@ -62,7 +62,7 @@ export const SprintColumn = ({
               <DroppableRegion
                 ref={innerRef}
                 {...droppableProps}
-                {...isDraggingOver}
+                draggable={isDraggingOver}
               >
                 {Object.keys(taskDict).length > 0 && renderTasks()}
                 {placeholder}
@@ -105,6 +105,6 @@ const StyledColumn = styled(Paper)`
   }
 `;
 
-const DroppableRegion = styled.div`
+const DroppableRegion = styled("div")`
   min-height: 100%;
 `;

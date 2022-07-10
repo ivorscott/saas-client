@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { Teams } from "./Teams";
-import styled from "styled-components";
+import { styled } from "@mui/material/styles";
 
 export const SideBar = () => {
   return (
@@ -25,7 +25,7 @@ export const SideBar = () => {
   );
 };
 
-const StyledSideBar = styled.div`
+const StyledSideBar = styled("div")`
   background: var(--white1);
   height: calc(100vh + 48px);
   width: var(--p256);
@@ -38,18 +38,18 @@ const StyledSideBar = styled.div`
     display: none;
   }
 `;
-const PrimaryNav = styled.ul`
+const PrimaryNav = styled("ul")`
   list-style: none;
   padding: 0;
   li {
     padding: var(--p12) var(--p24);
   }
 `;
-const Container = styled.div`
+const Container = styled("div")`
   padding: var(--p16) var(--p24);
 `;
 
-const Logo = styled.img`
+const Logo = styled("img")`
   height: var(--p48);
   margin-top: var(--p2);
   margin-bottom: var(--p32);

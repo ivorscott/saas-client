@@ -1,7 +1,7 @@
 import React, { useRef } from "react";
 import Button from "@mui/material/Button";
 import ImageViewer from "../ImageViewer";
-import styled from "styled-components";
+import { styled } from "@mui/material/styles";
 import { Auth } from "aws-amplify";
 import { useSeatsAvailable, useUser } from "../../hooks/users";
 import {
@@ -201,11 +201,11 @@ const StyledListItemAvatar = styled(ListItemAvatar)`
 }
 `;
 
-const MenuH1 = styled.h1`
+const MenuH1 = styled("h1")`
   font-size: var(--p16);
   margin-bottom: 4px;
 `;
-const MenuH2 = styled.h2`
+const MenuH2 = styled("h2")`
   font-size: var(--p14);
   font-family: ProximaNova-Semibold;
   margin-top: 6px;
@@ -215,7 +215,7 @@ const MenuH2 = styled.h2`
   }
 `;
 
-const Seats = styled.p`
+const Seats = styled("p")`
   color: var(--gray4);
   font-size: var(--p12);
   margin: 0;
@@ -224,7 +224,7 @@ const Upgrade = styled(Link)`
   color: var(--blue6) !important;
   font-size: var(--p12);
 `;
-const Email = styled.span`
+const Email = styled("span")`
   font-family: ProximaNova-Regular;
   font-size: var(--p14);
   color: var(--gray7);

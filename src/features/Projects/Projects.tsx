@@ -5,7 +5,7 @@ import Add from "@mui/icons-material/Add";
 import { List } from "./List";
 import { Modal } from "./Modal";
 import { useCreateProject, useProjects } from "../../hooks/project";
-import styled from "styled-components";
+import { styled } from "@mui/material/styles";
 import { Layout } from "../../Layout";
 
 export const Projects = () => {
@@ -42,7 +42,7 @@ export const Projects = () => {
   );
 };
 
-const Header = styled.header`
+const Header = styled("header")`
   display: flex;
   justify-content: space-between;
 `;

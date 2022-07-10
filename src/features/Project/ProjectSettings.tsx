@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Switch from "@mui/material/Switch";
 import { Memberships, Project, Team } from "./types";
-import styled from "styled-components";
+import { styled } from "@mui/material/styles";
 import { MembersTable } from "./MembersTable";
 import { useDeleteProject, useUpdateProject } from "../../hooks/project";
 import { useLeaveTeam } from "../../hooks/teams";
@@ -183,7 +183,7 @@ export const ProjectSettings = ({
             <Switch
               onChange={handleActiveStateChange}
               checked={formValues.project.active}
-              disabled={isEditing ? false : true}
+              disabled={!isEditing}
               name="active"
               inputProps={{ "aria-label": "primary checkbox" }}
             />
@@ -193,7 +193,7 @@ export const ProjectSettings = ({
             <Switch
               onChange={handlePublicStateChange}
               checked={formValues.project.public}
-              disabled={isEditing ? false : true}
+              disabled={!isEditing}
               color="secondary"
               name="public"
               inputProps={{ "aria-label": "primary checkbox" }}
@@ -234,14 +234,14 @@ export const ProjectSettings = ({
   return null;
 };
 
-const StyledMembers = styled.div`
+const StyledMembers = styled("div")`
   width: 100%;
   display: flex;
   justify-content: space-evenly;
   align-items: center;
 `;
 
-const TeamControls = styled.div`
+const TeamControls = styled("div")`
   display: flex;
   justify-content: space-between;
   align-items: center;

@@ -10,7 +10,7 @@ import {
 import { useCreateInvite } from "../../hooks/invites";
 import { AssignTeamModal } from "./AssignTeamModal";
 import { InviteModal } from "./InviteModal";
-import styled from "styled-components";
+import { styled } from "@mui/material/styles";
 import { Project } from "./types";
 import { Avatar } from "../../components/Avatar";
 
@@ -108,7 +108,7 @@ const TeamModals = (props: {
   );
 };
 
-const Container = styled.div`
+const Container = styled("div")`
   display: flex;
   align-items: center;
   margin-top: var(--p32);
@@ -121,7 +121,7 @@ const StyledAdd = styled(Add)`
   cursor: pointer;
 `;
 
-const StyledMembers = styled.div`
+const StyledMembers = styled("div")`
   width: 100%;
   display: flex;
   justify-content: flex-end;

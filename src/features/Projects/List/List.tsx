@@ -1,7 +1,7 @@
 import React from "react";
 import { CircularProgress, Grid } from "@mui/material";
 import { Card } from "../Card";
-import styled from "styled-components";
+import { styled } from "@mui/material/styles";
 import { Project } from "../../Project/types";
 
 interface Props {
@@ -38,7 +38,7 @@ export const List = ({ isLoading, projects }: Props) => {
   }
 };
 
-const ListContainer = styled.div`
+const ListContainer = styled("div")`
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-start;

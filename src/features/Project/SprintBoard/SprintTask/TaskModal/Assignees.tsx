@@ -9,7 +9,7 @@ import { useParams } from "react-router-dom";
 import { useProject } from "../../../../../hooks/project";
 import { useTeamMemberships } from "../../../../../hooks/teams";
 import { Task } from "../../../types";
-import styled from "styled-components";
+import { styled } from "@mui/material/styles";
 import { makeUserDict } from "../../helpers";
 
 export const SelectAssignees = ({

@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { Project } from "../../Project/types";
-import styled from "styled-components";
+import { styled } from "@mui/material/styles";
 import { useTeam, useTeamMemberships } from "../../../hooks/teams";
 import { Memberships } from "../../Project/types";
 import { Avatar } from "../../../components/Avatar";
@@ -71,7 +71,7 @@ function renderMembers(maxSize: number, memberships: Memberships[]) {
   );
 }
 
-const StyledCard = styled.div`
+const StyledCard = styled("div")`
   width: var(--p256);
   height: var(--p192);
   margin: 0 var(--p16) var(--p16) 0;
@@ -110,14 +110,14 @@ const StyledCard = styled.div`
   }
 `;
 
-const CardHeader = styled.div`
+const CardHeader = styled("div")`
   width: 100%;
   min-height: 82px;
   padding: var(--p16);
   box-sizing: border-box;
   border-bottom: 1px solid var(--gray1);
 `;
-const CardBody = styled.div`
+const CardBody = styled("div")`
   display: flex;
   flex-direction: column;
   flex: 1;
@@ -128,14 +128,14 @@ const CardBody = styled.div`
   box-sizing: border-box;
 `;
 
-const StyledMembers = styled.div`
+const StyledMembers = styled("div")`
   width: 100%;
   display: flex;
   justify-content: space-evenly;
   align-items: center;
 `;
 
-const Avatars = styled.div`
+const Avatars = styled("div")`
   display: flex;
   ul {
     list-style: none;
@@ -172,19 +172,19 @@ const Avatars = styled.div`
   }
 `;
 
-const CardTitle = styled.h2`
+const CardTitle = styled("h2")`
   font-family: ProximaNova-Bold;
   font-size: var(--p16);
   margin-top: 0;
 `;
 
-const CardSubtitle = styled.p`
+const CardSubtitle = styled("p")`
   font-family: ProximaNova-Regular;
   font-size: var(--p12);
   margin: 0;
 `;
 
-const CardText = styled.p`
+const CardText = styled("p")`
   font-family: ProximaNova-Regular;
   font-size: var(--p12);
   white-space: nowrap;

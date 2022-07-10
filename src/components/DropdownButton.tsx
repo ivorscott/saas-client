@@ -5,7 +5,7 @@ import Paper from "@mui/material/Paper";
 import Popper from "@mui/material/Popper";
 import MenuItem from "@mui/material/MenuItem";
 import MenuList from "@mui/material/MenuList";
-import styled from "styled-components";
+import { styled } from "@mui/material/styles";
 import { MoreOptions } from "./MoreOptions";
 
 export function DropdownButton({ onDelete }: { onDelete: () => void }) {
@@ -66,7 +66,7 @@ export function DropdownButton({ onDelete }: { onDelete: () => void }) {
           transition
           disablePortal
         >
-          {({ TransitionProps, placement }:any) => (
+          {({ TransitionProps, placement }: any) => (
             <Grow
               {...TransitionProps}
               style={{
@@ -75,7 +75,7 @@ export function DropdownButton({ onDelete }: { onDelete: () => void }) {
               }}
             >
               <Paper>
-                <ClickAwayListener onClickAway={()=>handleClose}>
+                <ClickAwayListener onClickAway={() => handleClose}>
                   <MenuList
                     autoFocusItem={open}
                     id="menu-list-grow"
@@ -93,7 +93,7 @@ export function DropdownButton({ onDelete }: { onDelete: () => void }) {
   );
 }
 
-const StyledDropdown = styled.div`
+const StyledDropdown = styled("div")`
   display: "flex";
   .paper {
     margin-right: var(--p8);

@@ -1,11 +1,11 @@
 import React from "react";
-import styled from "styled-components";
+import { styled } from "@mui/material/styles";
 
 export const Layout = (props: React.PropsWithChildren) => (
   <PageContent>{props.children}</PageContent>
 );
 
-const PageContent = styled.div`
+const PageContent = styled("div")`
   overflow-x: scroll;
   min-height: 80vh;
   height: 100vh;

@@ -1,7 +1,7 @@
+import React from "react";
+import { styled } from "@mui/material/styles";
 import { TextField, IconButton } from "@mui/material";
 import Close from "@mui/icons-material/Close";
-import React from "react";
-import styled from "styled-components";
 import { DropdownButton } from "./DropdownButton";
 
 interface Actions {
@@ -51,7 +51,7 @@ export const PanelForm = (props: Props) => {
   );
 };
 
-export const PanelSection = styled.section`
+export const PanelSection = styled("section")`
   color: var(--gray10);
   margin-bottom: var(--p16);
   h3 {
@@ -96,7 +96,7 @@ export const PanelField = styled(TextField)`
   }
 `;
 
-const Panel = styled.div`
+const Panel = styled("div")`
   width: var(--p512);
   height: 70vh;
   position: fixed;
@@ -116,7 +116,7 @@ const Panel = styled.div`
   }
 `;
 
-const StyleSettings = styled.div`
+const StyleSettings = styled("div")`
   display: flex;
   flex: 1;
   align-items: flex-end;
@@ -137,7 +137,7 @@ const StyledIconButton = styled(IconButton)`
   margin-left: var(--p4);
 `;
 
-const PanelButton = styled.button`
+const PanelButton = styled("button")`
   background: var(--gray1);
   color: var(--gray7);
   padding: var(--p4) var(--p12);

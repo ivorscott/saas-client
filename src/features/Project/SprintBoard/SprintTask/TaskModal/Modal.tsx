@@ -1,16 +1,16 @@
 import React, { useState } from "react";
 import { Task } from "../../../types";
 import {
+  PanelField,
   PanelForm,
   PanelSection,
-  PanelField,
 } from "../../../../../components/Panel";
 import TextareaAutosize from "@mui/material/TextareaAutosize";
-import styled from "styled-components";
+import { styled } from "@mui/material/styles";
 import dayjs from "dayjs";
 import { SelectAssignees } from "./Assignees";
 import { useDeleteTask, useUpdateTask } from "../../../../../hooks/board";
-import {SelectChangeEvent} from "@mui/material";
+import { SelectChangeEvent } from "@mui/material";
 
 export const TaskModal = ({
   data,
@@ -33,18 +33,17 @@ export const TaskModal = ({
   };
 
   const handleAssigneeChange = (
-    event: SelectChangeEvent<string>, child: React.ReactNode
+    event: SelectChangeEvent<string>,
+    child: React.ReactNode
   ) => {
     const assignedTo = event.target.value;
-    const updates = formValues;
-    setFormValues({ ...updates, assignedTo });
+    setFormValues({ ...formValues, assignedTo });
     setChangedState(initialState.assignedTo !== assignedTo);
   };
 
   const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const title = event.target.value;
-    const updates = formValues;
-    setFormValues({ ...updates, title });
+    setFormValues({ ...formValues, title });
     setChangedState(initialState.title !== title);
   };
 
@@ -52,8 +51,7 @@ export const TaskModal = ({
     event: React.ChangeEvent<HTMLTextAreaElement>
   ) => {
     const content = event.target.value;
-    const updates = formValues;
-    setFormValues({ ...updates, content });
+    setFormValues({ ...formValues, content });
     setChangedState(initialState.content !== content);
   };
 
@@ -173,13 +171,13 @@ export const TaskModal = ({
   return null;
 };
 
-const Title = styled.div`
+const Title = styled("div")`
   font-family: ProximaNova-Bold;
   font-size: var(--p16);
   margin: var(--p16) 0 var(--p24);
 `;
 
-const TaskKey = styled.div`
+const TaskKey = styled("div")`
   font-family: ProximaNovaA-Bold;
   font-size: var(--p16);
   color: var(--blue8);
@@ -187,13 +185,13 @@ const TaskKey = styled.div`
   margin-top: var(--p24);
 `;
 
-const Description = styled.div`
+const Description = styled("div")`
   .content {
     min-height: var(--p48);
   }
 `;
 
-const AttachmentRegion = styled.div`
+const AttachmentRegion = styled("div")`
   display: flex;
   justify-content: center;
   cursor: pointer;
@@ -222,7 +220,7 @@ const StyleTextArea = styled(TextareaAutosize)`
   }
 `;
 
-const StyledAssignedTo = styled.div`
+const StyledAssignedTo = styled("div")`
   display: flex;
   align-items: center;
   h3 {

@@ -1,7 +1,7 @@
 import React from "react";
+import { styled } from "@mui/material/styles";
 import IconButton from "@mui/material/IconButton";
 import MoreHoriz from "@mui/icons-material/MoreHoriz";
-import styled from "styled-components";
 
 export const MoreOptions = ({
   aref,

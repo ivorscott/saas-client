@@ -1,6 +1,6 @@
 import Add from "@mui/icons-material/Add";
 import React, { useState } from "react";
-import styled from "styled-components";
+import { styled } from "@mui/material/styles";
 import { AddTask } from "../SprintTask";
 import { Column } from "../../types";
 
@@ -40,7 +40,7 @@ export const ColumnHeader = ({
   );
 };
 
-const Header = styled.header`
+const Header = styled("header")`
   .title {
     display: flex;
     justify-content: space-between;

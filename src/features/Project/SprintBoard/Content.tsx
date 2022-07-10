@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { DropResult, DragDropContext } from "react-beautiful-dnd";
-import styled from "styled-components";
+import { styled } from "@mui/material/styles";
 import { SprintColumn } from "./SprintColumn";
 import { Task, TaskDict, ColumnDict, Project } from "../types";
 import { TaskModal } from "./SprintTask/TaskModal";
@@ -76,7 +76,7 @@ export const BoardContent = ({
   );
 };
 
-const StyledBoard = styled.div`
+const StyledBoard = styled("div")`
   display: flex;
   flex: 1;
   flex-direction: row;

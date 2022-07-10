@@ -8,8 +8,8 @@ import FormControl from "@mui/material/FormControl";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import { useTeams } from "../../../hooks/teams";
-import styled from "styled-components";
-import {SelectChangeEvent} from "@mui/material";
+import { styled } from "@mui/material/styles";
+import { SelectChangeEvent } from "@mui/material";
 
 interface Props {
   open: boolean;
@@ -26,9 +26,7 @@ export const Modal = ({ open, onClose, onSubmit }: Props) => {
     setTeam(team);
   };
 
-  const handleExistingTeamChange = (
-      event: SelectChangeEvent
-  ) => {
+  const handleExistingTeamChange = (event: SelectChangeEvent) => {
     event.preventDefault();
     const teamId = event.target.value;
     setTeam(teamId);
@@ -123,12 +121,12 @@ const StyledFormControl = styled(FormControl)`
   }
 `;
 
-const DialogContainer = styled.div`
+const DialogContainer = styled("div")`
   width: calc(var(--p384) - var(--p32) - var(--p32));
   padding: var(--p32);
 `;
 
-const DialogContent = styled.div`
+const DialogContent = styled("div")`
   min-height: var(--p64);
 `;
 
@@ -160,7 +158,7 @@ const Field = styled(TextField)`
   }
 `;
 
-const StyledDialogActions = styled.div`
+const StyledDialogActions = styled("div")`
   display: flex;
   justify-content: space-between;
   padding-top: var(--p32);

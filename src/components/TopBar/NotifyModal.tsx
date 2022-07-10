@@ -8,8 +8,9 @@ import Check from "@mui/icons-material/Check";
 import Close from "@mui/icons-material/Close";
 import Button from "@mui/material/Button";
 import { Invite } from "./types";
-import styled from "styled-components";
+import { styled } from "@mui/material/styles";
 import { useInviteDecision } from "../../hooks/invites";
+
 dayjs.extend(relativeTime);
 
 interface Props {
@@ -120,7 +121,7 @@ export const NotifyModal = ({ invites, open }: Props) => {
   return null;
 };
 
-const NotifyContainer = styled.div`
+const NotifyContainer = styled("div")`
   position: absolute;
   top: var(--p64);
   right: var(--p16);
@@ -132,18 +133,18 @@ const NotifyContainer = styled.div`
   border-radius: var(--p8);
 `;
 
-const Title = styled.div`
+const Title = styled("div")`
   font-family: ProximaNova-Bold;
   font-size: var(--p24);
   margin: 0 0 var(--p16);
 `;
 
-const Header = styled.div`
+const Header = styled("div")`
   display: flex;
   align-items: center;
 `;
 
-const StyleSettings = styled.div`
+const StyleSettings = styled("div")`
   display: flex;
   flex: 1;
   justify-content: flex-end;
@@ -152,7 +153,7 @@ const StyleSettings = styled.div`
   cursor: pointer;
 `;
 
-const Section = styled.section`
+const Section = styled("section")`
   margin-bottom: var(--p16);
   h3 {
     font-family: ProximaNova-Semibold;
@@ -187,7 +188,7 @@ const StyledStar = styled(Star)`
   border-radius: 50px;
 `;
 
-const InviteList = styled.ul`
+const InviteList = styled("ul")`
   list-style: none;
   padding: 0;
   header {
@@ -232,20 +233,20 @@ const InviteList = styled.ul`
   }
 `;
 
-const TimeAgo = styled.div`
+const TimeAgo = styled("div")`
   font-family: ProximaNova-Bold;
   font-size: var(--p14);
   color: var(--blue8);
   margin-top: var(--p16);
 `;
 
-const UnreadIndicator = styled.div`
+const UnreadIndicator = styled("div")`
   padding: var(--p6);
   border-radius: 50px;
   background: var(--blue6);
 `;
 
-const Decision = styled.div`
+const Decision = styled("div")`
   display: flex;
   align-items: center;
   &.check {

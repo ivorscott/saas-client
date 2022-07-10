@@ -6,7 +6,7 @@ import { UserMenu } from "../UserMenu";
 import { SearchBar } from "../SearchBar";
 import { NotifyModal } from "./NotifyModal";
 import { useInvites } from "../../hooks/invites";
-import styled from "styled-components";
+import { styled } from "@mui/material/styles";
 
 export const TopBar = () => {
   const [isNotificationsOpen, setNotificationsOpen] = useState(false);
@@ -43,7 +43,7 @@ export const TopBar = () => {
   );
 };
 
-const Bar = styled.div`
+const Bar = styled("div")`
   display: flex;
   justify-content: space-between;
   align-items: center;

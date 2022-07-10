@@ -10,7 +10,7 @@ import { useParams } from "react-router-dom";
 import { placeholder } from "../../../components/ImageViewer/placeholder";
 import { useProject } from "../../../hooks/project";
 import { useTeam } from "../../../hooks/teams";
-import styled from "styled-components";
+import { styled } from "@mui/material/styles";
 
 interface Props {
   open: boolean;
@@ -139,12 +139,12 @@ const StyleDialog = styled(Dialog)`
     top: 15%;
   }
 `;
-const DialogContainer = styled.div`
+const DialogContainer = styled("div")`
   width: var(--p384);
   padding: var(--p32);
 `;
 
-const DialogContent = styled.div`
+const DialogContent = styled("div")`
   min-height: var(--p128);
 `;
 
@@ -176,7 +176,7 @@ const Field = styled(TextField)`
   }
 `;
 
-const StyledDialogActions = styled.div`
+const StyledDialogActions = styled("div")`
   display: flex;
   justify-content: space-between;
   padding-top: var(--p32);
@@ -197,7 +197,7 @@ const StyledDialogActions = styled.div`
   }
 `;
 
-const PrettyList = styled.ul`
+const PrettyList = styled("ul")`
   list-style: none;
   padding: var(--p24) 0 0;
   li {

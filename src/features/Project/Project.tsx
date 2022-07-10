@@ -7,7 +7,7 @@ import { ProjectSettings } from "./ProjectSettings";
 import { useProject } from "../../hooks/project";
 import { useTeam, useTeamMemberships } from "../../hooks/teams";
 import { MoreOptions } from "../../components/MoreOptions";
-import styled from "styled-components";
+import { styled } from "@mui/material/styles";
 import { Layout } from "../../Layout";
 
 export const SelectedProject = () => {
@@ -105,7 +105,7 @@ const Settings = (props: { project: Project }) => {
   );
 };
 
-const ProjectHeader = styled.header`
+const ProjectHeader = styled("header")`
   display: flex;
   justify-content: space-between;
   position: relative;

@@ -1,9 +1,9 @@
 import React from "react";
-import styled from "styled-components";
+import { styled } from "@mui/material/styles";
 
 export const SearchBar = () => <StyledSearchBar placeholder="Search" />;
 
-const StyledSearchBar = styled.input`
+const StyledSearchBar = styled("input")`
   height: var(--p32);
   width: calc(var(--p384) - var(--p16) - var(--p16));
   padding: 0 var(--p16);

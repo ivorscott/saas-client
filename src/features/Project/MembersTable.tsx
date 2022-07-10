@@ -7,7 +7,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { Memberships } from "./types";
-import styled from "styled-components";
+import { styled } from "@mui/material/styles";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 dayjs.extend(relativeTime);
@@ -57,12 +57,12 @@ const StyledTableHead = styled(TableHead)`
   }
   background: var(--gray1);
 `;
-const StyledHeadCell = styled.div`
+const StyledHeadCell = styled("div")`
   font-family: ProximaNova-Medium;
   text-transform: capitalize;
 `;
 
-const StyledRole = styled.div`
+const StyledRole = styled("div")`
   font-size: var(--p12);
   text-transform: lowercase;
 `;

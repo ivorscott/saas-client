@@ -2,7 +2,7 @@ import React from "react";
 import { AvatarEditor } from "./AvatarEditor";
 import { Modal } from "../../../components/Modal";
 import ImageViewer from "../../../components/ImageViewer";
-import styled from "styled-components";
+import { styled } from "@mui/material/styles";
 
 interface Actions {
   onToggle: () => void;
@@ -86,13 +86,13 @@ export class AvatarModal extends React.Component<Props, State> {
   }
 }
 
-const EditorWindow = styled.div`
+const EditorWindow = styled("div")`
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 `;
 
-const Preview = styled.div`
+const Preview = styled("div")`
   padding-top: var(--p24);
 `;

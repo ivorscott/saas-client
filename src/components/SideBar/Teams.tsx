@@ -1,5 +1,5 @@
 import React from "react";
-import styled from "styled-components";
+import { styled } from "@mui/material/styles";
 import { useProjects } from "../../hooks/project";
 import { useTeams } from "../../hooks/teams";
 import { TeamProjects } from "./Projects";
@@ -40,14 +40,14 @@ export const Teams = () => {
   );
 };
 
-const StyledTeams = styled.ul`
+const StyledTeams = styled("ul")`
   padding: 0;
   li {
     padding: var(--p8) var(--p24);
   }
 `;
 
-const Title = styled.h3`
+const Title = styled("h3")`
   color: var(--gray3);
   font-family: ProximaNova-Regular;
   font-size: var(--p18);
@@ -56,7 +56,7 @@ const Title = styled.h3`
   margin: 0;
 `;
 
-const TeamRow = styled.div`
+const TeamRow = styled("div")`
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -79,7 +79,7 @@ const TeamRow = styled.div`
   }
 `;
 
-const Icon = styled.div`
+const Icon = styled("div")`
   height: var(--p24);
   width: var(--p24);
   border-radius: var(--p4);

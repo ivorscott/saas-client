@@ -5,7 +5,7 @@ import {
   DraggingStyle,
   NotDraggingStyle,
 } from "react-beautiful-dnd";
-import styled from "styled-components";
+import { styled } from "@mui/material/styles";
 import { Avatar } from "../../../../components/Avatar";
 
 export const SprintTask = ({
@@ -55,17 +55,17 @@ export const SprintTask = ({
   );
 };
 
-const TaskKey = styled.div`
+const TaskKey = styled("div")`
   font-family: ProximaNovaA-Bold;
   font-size: var(--p16);
   color: var(--blue8);
   text-transform: uppercase;
 `;
-const TaskTitle = styled.div`
+const TaskTitle = styled("div")`
   font-family: ProximaNova-Medium;
   color: var(--gray6);
 `;
-const TaskHeader = styled.div`
+const TaskHeader = styled("div")`
   display: flex;
   align-items: center;
   min-height: 40px;
@@ -76,12 +76,12 @@ const TaskHeader = styled.div`
     right: 0;
   }
 `;
-const TaskMeta = styled.div`
+const TaskMeta = styled("div")`
   display: flex;
   align-items: center;
   margin-left: var(--p8);
 `;
-const StoryPoints = styled.div`
+const StoryPoints = styled("div")`
   font-family: ProximaNova-Medium;
   height: var(--p32);
   width: var(--p32);
@@ -93,7 +93,7 @@ const StoryPoints = styled.div`
   border-radius: 50px;
   margin: var(--p4) 0 var(--p4) var(--p4);
 `;
-const AssignedTo = styled.div`
+const AssignedTo = styled("div")`
   font-family: ProximaNova-Semibold;
 
   display: flex;

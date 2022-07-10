@@ -1,6 +1,6 @@
 import { DeleteDialog } from "./DeleteDialog";
 import React from "react";
-import styled from "styled-components";
+import { styled } from "@mui/material/styles";
 
 export const columns = [
   {
@@ -67,7 +67,7 @@ export const Cell = ({ alignment, children }: any) => {
   );
 };
 
-const HighlightRed = styled.span`
+const HighlightRed = styled("span")`
   font-family: ProximaNova-Extrabold;
   color: var(--red5);
 `;
@@ -78,7 +78,7 @@ const StyledCell = styled(Cell)`
   align-content: center;
 `;
 
-const StyledImage = styled.aside`
+const StyledImage = styled("aside")`
   border-radius: 50%;
   height: var(--p32);
   width: var(--p32);
@@ -86,16 +86,16 @@ const StyledImage = styled.aside`
   margin: 0 var(--p8);
 `;
 
-const StyledUserTitle = styled.div`
+const StyledUserTitle = styled("div")`
   display: flex;
   flex-direction: column;
 `;
 
-const StyledName = styled.span`
+const StyledName = styled("span")`
   font-family: ProximaNova-Bold;
   font-size: var(--p14);
 `;
-const StyledSubtitle = styled.span`
+const StyledSubtitle = styled("span")`
   font-family: ProximaNova-Medium;
   font-size: var(--p12);
   color: var(--gray4);

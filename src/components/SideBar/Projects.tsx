@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import styled from "styled-components";
+import { styled } from "@mui/material/styles";
 import { Project } from "../../features/Project/types";
 
 interface LinkData {
@@ -62,7 +62,7 @@ function makeProjectTeamMap(projects?: Project[]): TeamToProjectsMap {
   }, {});
 }
 
-const StyledTeamProject = styled.div`
+const StyledTeamProject = styled("div")`
   padding: var(--p4) 0 var(--p4) var(--p32);
   margin: var(--p4) 0;
   a {

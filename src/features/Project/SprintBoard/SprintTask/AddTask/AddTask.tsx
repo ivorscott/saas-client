@@ -6,7 +6,7 @@ import { AxiosError } from "axios";
 import { useQuery } from "react-query";
 import { client as api } from "../../../../../services/APIService";
 import { useParams } from "react-router-dom";
-import styled from "styled-components";
+import { styled } from "@mui/material/styles";
 
 interface AddTaskProps {
   isCreating: boolean;
@@ -122,7 +122,7 @@ const StyleTextArea = styled(TextareaAutosize)`
   }
 `;
 
-const Controls = styled.div`
+const Controls = styled("div")`
   display: flex;
   justify-content: space-between;
   align-items: center;

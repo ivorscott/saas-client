@@ -1,5 +1,5 @@
 import React from "react";
-import styled from "styled-components";
+import { styled } from "@mui/material/styles";
 import { getUserInitials } from "../../helpers";
 import { Memberships } from "../../features/Project/types";
 import ImageViewer, { ImageViewerProps } from "../ImageViewer";
@@ -40,7 +40,7 @@ const StyledAvatars = styled(ImageViewer)`
   cursor: pointer;
 `;
 
-const StyledPlaceholders = styled.div`
+const StyledPlaceholders = styled("div")`
   color: var(--gray7);
   display: flex;
   justify-content: center;

@@ -2,7 +2,7 @@ import React from "react";
 import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
 import IconButton from "@mui/material/IconButton";
-import styled from "styled-components";
+import { styled } from "@mui/material/styles";
 import Close from "@mui/icons-material/Close";
 
 export interface Props {
@@ -33,11 +33,11 @@ export const Modal = (props: Props) => {
   );
 };
 
-const Container = styled.div`
+const Container = styled("div")`
   width: var(--p384);
 `;
 
-const Header = styled.header`
+const Header = styled("header")`
   display: flex;
   justify-content: space-between;
   align-items: center;

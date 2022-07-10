@@ -1,6 +1,6 @@
-import styled from "styled-components";
+import { styled } from "@mui/material/styles";
 
-const StyledRow = styled.tr`
+const StyledRow = styled("tr")`
   .left-align {
     display: flex;
     justify-content: flex-start;

@@ -7,4 +7,3 @@ const sortBy = (key: string) => {
 };
 
 export { sortBy };
-// fruits.concat().sort(sortBy("name"));

@@ -12,7 +12,7 @@ import {
 } from "react-router-dom";
 
 import { theme } from "./theme";
-import { ThemeProvider } from "@mui/material/styles";
+import { styled, ThemeProvider } from "@mui/material/styles";
 import { StyledEngineProvider } from "@mui/styled-engine";
 import "@aws-amplify/ui-react/styles.css";
 import "./index.css";
@@ -25,7 +25,6 @@ import { formatPath } from "./helpers";
 import { Loader } from "./components/Loader";
 import { SideBar } from "./components/SideBar";
 import Copyright from "@mui/icons-material/Copyright";
-import styled from "styled-components";
 import { TopBar } from "./components/TopBar/TopBar";
 
 Amplify.configure({
@@ -115,14 +114,14 @@ const App = withAuthenticator(
 
 root.render(<App />);
 
-const Container = styled.div`
+const Container = styled("div")`
   display: flex;
 `;
-const Page = styled.div`
+const Page = styled("div")`
   background: var(--white2);
   width: 100%;
 `;
-const Footer = styled.div`
+const Footer = styled("div")`
   position: fixed;
   bottom: 0;
   width: 100%;
@@ -135,6 +134,6 @@ const Footer = styled.div`
   align-items: center;
   color: var(--white1);
 `;
-const CopyrightText = styled.div`
+const CopyrightText = styled("div")`
   padding-left: var(--p16);
 `;

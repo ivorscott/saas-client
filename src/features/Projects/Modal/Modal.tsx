@@ -4,7 +4,7 @@ import Dialog from "@mui/material/Dialog";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import { TextField } from "@mui/material";
-import styled from "styled-components";
+import { styled } from "@mui/material/styles";
 
 interface Props {
   open: boolean;
@@ -72,12 +72,12 @@ const StyledDialog = styled(Dialog)`
   }
 `;
 
-const DialogContainer = styled.div`
+const DialogContainer = styled("div")`
   width: calc(var(--p384) - var(--p32) - var(--p32));
   padding: var(--p32);
 `;
 
-const DialogContent = styled.div`
+const DialogContent = styled("div")`
   min-height: var(--p96);
 `;
 
@@ -109,7 +109,7 @@ const Field = styled(TextField)`
   }
 `;
 
-const StyledDialogActions = styled.div`
+const StyledDialogActions = styled("div")`
   display: flex;
   justify-content: space-between;
   padding-top: var(--p32);

@@ -6,7 +6,7 @@ import {
   convertRotationToDegrees,
 } from "./ImageUtils";
 import "./animate.css";
-import styled from "styled-components";
+import { styled } from "@mui/material/styles";
 
 export interface ImageViewerProps {
   alt: string;
@@ -102,7 +102,7 @@ export default class ImageViewer extends React.Component<
   }
 }
 
-const StyledImage = styled.img`
+const StyledImage = styled("img")`
   border-radius: 50%;
   margin: 0 var(--p4);
   &.xl {

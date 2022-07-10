@@ -1,6 +1,6 @@
 import React from "react";
 import { CircularProgress } from "@mui/material";
-import styled from "styled-components";
+import { styled } from "@mui/material/styles";
 
 export const Loader = () => (
   <Container>
@@ -8,7 +8,7 @@ export const Loader = () => (
   </Container>
 );
 
-const Container = styled.div`
+const Container = styled("div")`
   text-align: center;
   margin-top: 50vh;
 `;

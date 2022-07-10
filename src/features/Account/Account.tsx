@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Table from "rc-table";
 import { useTableUsers, useUsers } from "../../hooks/users";
-import styled from "styled-components";
+import { styled } from "@mui/material/styles";
 import { Modal as AddUser } from "./Modal";
 import { Auth } from "aws-amplify";
 import { components } from "./TableRow";
@@ -52,7 +52,7 @@ export const Account = () => {
   );
 };
 
-const StyledHeader = styled.div`
+const StyledHeader = styled("div")`
   display: flex;
   max-width: 62.5rem;
   justify-content: space-between;
