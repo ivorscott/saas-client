@@ -108,7 +108,6 @@ const Settings = (props: { project: Project }) => {
 const ProjectHeader = styled.header`
   display: flex;
   justify-content: space-between;
-  height: var(--p96);
   position: relative;
   .name {
     text-transform: capitalize;

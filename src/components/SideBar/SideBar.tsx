@@ -8,14 +8,14 @@ export const SideBar = () => {
     <StyledSideBar className="shade1">
       <Container>
         <div>
-          <Link to="/manage/projects">
+          <Link to="/projects">
             <Logo alt="logo" src="/logo.png" />
           </Link>
         </div>
       </Container>
       <PrimaryNav>
         <li>
-          <StyledLink to="/manage/projects">
+          <StyledLink to="/projects">
             <div>Projects</div>
           </StyledLink>
         </li>
@@ -27,6 +27,7 @@ export const SideBar = () => {
 
 const StyledSideBar = styled.div`
   background: var(--white1);
+  height: calc(100vh + 48px);
   width: var(--p256);
   font-size: var(--p18);
   position: relative;

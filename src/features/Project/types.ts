@@ -16,6 +16,7 @@ export interface Project {
   prefix: string;
   description: string;
   teamId?: string;
+  tenantId: string;
   userId: string;
   active: boolean;
   public: boolean;

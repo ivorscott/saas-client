@@ -5,6 +5,8 @@ import styled from "styled-components";
 import { useTeam, useTeamMemberships } from "../../../hooks/teams";
 import { Memberships } from "../../Project/types";
 import { Avatar } from "../../../components/Avatar";
+import { useTenantMap } from "../../../hooks/users";
+import { Loader } from "../../../components/Loader";
 
 interface Props {
   project: Project;
@@ -14,11 +16,20 @@ interface Props {
 export const Card = ({ project, seq }: Props) => {
   const { data: memberships } = useTeamMemberships(project.teamId);
   const { data: team } = useTeam(project.teamId);
+  const { isLoading, isError, data } = useTenantMap();
 
   const color = (seq % 9) + 1;
+
+  if (isLoading || isError || data === undefined) {
+    return <Loader />;
+  }
+
   return (
     <StyledCard className="shade2">
-      <Link key={project.id} to={project.id}>
+      <Link
+        key={project.id}
+        to={`/${data[project.tenantId]}/projects/${project.id}`}
+      >
         <div className={`color-tip badge${color}`} />
         <CardHeader>
           <CardTitle>{project.name}</CardTitle>

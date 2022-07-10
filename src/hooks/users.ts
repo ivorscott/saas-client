@@ -19,6 +19,7 @@ export function useUser() {
       const data = await api.get("/users/me");
       const session = await Auth.currentSession();
       const { payload } = session.getIdToken();
+
       return {
         ...data,
         company: payload["custom:company-name"],
@@ -35,6 +36,25 @@ export function useUser() {
   }
 
   return data;
+}
+
+interface TMap {
+  [index: string]: string;
+}
+
+export function useTenantMap() {
+  return useQuery<TMap, Error>("tmap", async () => {
+    const session = await Auth.currentSession();
+    const { payload } = session.getIdToken();
+    const data = JSON.parse(payload["custom:tenant-connections"]);
+    return Object.keys(data).reduce((acc: TMap, key) => {
+      const obj = data[key];
+      return {
+        ...acc,
+        [obj.id]: obj.path,
+      };
+    }, {});
+  });
 }
 
 export function useCreateUser() {

@@ -25,8 +25,10 @@ export const BoardContent = ({
   onDragEnd,
   onAddTask,
 }: Props) => {
-  const [selectedTask, setSelectedTask] =
-    useState<{ columnId: string; task: Task }>();
+  const [selectedTask, setSelectedTask] = useState<{
+    columnId: string;
+    task: Task;
+  }>();
   const [isOpen, setOpen] = useState(false);
   const { data } = useTeamMemberships(project?.teamId);
   const users = makeUserDict(data);
@@ -81,7 +83,6 @@ const StyledBoard = styled.div`
   justify-content: space-between;
   height: 100vh;
   max-width: 100%;
-  margin-top: var(--p8);
 
   @media (min-width: 1400px) {
     overflow-x: scroll;

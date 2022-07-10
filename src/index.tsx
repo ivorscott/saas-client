@@ -23,6 +23,10 @@ import awsconfig from "./aws-exports";
 import { useUser } from "./hooks/users";
 import { formatPath } from "./helpers";
 import { Loader } from "./components/Loader";
+import { SideBar } from "./components/SideBar";
+import Copyright from "@mui/icons-material/Copyright";
+import styled from "styled-components";
+import { TopBar } from "./components/TopBar/TopBar";
 
 Amplify.configure({
   ...awsconfig,
@@ -65,6 +69,7 @@ const AppRoutes = () => (
         <Route path="projects/:id" element={<SelectedProject />} />
       </Route>
       <Route path="/" element={<TenantPath />} />
+      <Route path="/projects" element={<Projects />} />
       <Route path="me" element={<Profile />} />
       <Route path="*" element={<NoMatch />} />
     </Routes>
@@ -87,7 +92,18 @@ const App = withAuthenticator(
       <BrowserRouter>
         <ThemeProvider theme={theme}>
           <StyledEngineProvider injectFirst>
-            <AppRoutes />
+            <>
+              <Container>
+                <SideBar />
+                <Page>
+                  <TopBar />
+                  <AppRoutes />
+                </Page>
+              </Container>
+              <Footer>
+                <Copyright /> <CopyrightText>Powered by DevPie</CopyrightText>
+              </Footer>
+            </>
             <ReactQueryDevtools position="bottom-right" />
           </StyledEngineProvider>
         </ThemeProvider>
@@ -98,3 +114,27 @@ const App = withAuthenticator(
 );
 
 root.render(<App />);
+
+const Container = styled.div`
+  display: flex;
+`;
+const Page = styled.div`
+  background: var(--white2);
+  width: 100%;
+`;
+const Footer = styled.div`
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  z-index: 2;
+  padding: var(--p16);
+  height: var(--p24);
+  background: var(--blue6);
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  color: var(--white1);
+`;
+const CopyrightText = styled.div`
+  padding-left: var(--p16);
+`;
