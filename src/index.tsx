@@ -12,8 +12,11 @@ import {
 } from "react-router-dom";
 
 import { theme } from "./theme";
-import { styled, ThemeProvider } from "@mui/material/styles";
-import { StyledEngineProvider } from "@mui/styled-engine";
+import {
+  styled,
+  StyledEngineProvider,
+  ThemeProvider,
+} from "@mui/material/styles";
 import "@aws-amplify/ui-react/styles.css";
 import "./index.css";
 
