@@ -3,6 +3,7 @@ import { CircularProgress, Grid } from "@mui/material";
 import { Card } from "../Card";
 import { styled } from "@mui/material/styles";
 import { Project } from "../../Project/types";
+import { orderBy } from "../helpers";
 
 interface Props {
   isLoading: boolean;
@@ -11,7 +12,7 @@ interface Props {
 
 const renderProjectCards = (projects: Project[]) => {
   const seq = projects.map((_, idx) => idx);
-  return projects.map((project: Project, index: number) => (
+  return orderBy(projects, "name").map((project: Project, index: number) => (
     <Card key={project.id} project={project} seq={seq[index]} />
   ));
 };
