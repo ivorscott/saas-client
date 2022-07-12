@@ -1,14 +1,14 @@
 import {
-  Select,
-  MenuItem,
   FormControl,
+  MenuItem,
+  Select,
   SelectChangeEvent,
 } from "@mui/material";
-import React from "react";
 import { styled } from "@mui/material/styles";
-import { makeUserDict } from "../../helpers";
-import { useUsers } from "../../../../../hooks/users";
-import { Task } from "../../../../../types";
+import { makeUserDict } from "helpers/helpers";
+import { useUsers } from "hooks/users";
+import React from "react";
+import { Task } from "types/board";
 
 export const SelectAssignees = ({
   formValues,

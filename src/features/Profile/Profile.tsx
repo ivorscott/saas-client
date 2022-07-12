@@ -1,5 +1,5 @@
+import { Layout } from "components/Layout";
 import React from "react";
-import { Layout } from "../../Layout";
 
 class Profile extends React.Component {
   render() {

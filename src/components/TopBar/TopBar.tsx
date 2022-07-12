@@ -1,12 +1,13 @@
-import React, { useState } from "react";
+import Notifications from "@mui/icons-material/Notifications";
 import Badge from "@mui/material/Badge";
 import IconButton from "@mui/material/IconButton";
-import Notifications from "@mui/icons-material/Notifications";
-import { UserMenu } from "../UserMenu";
-import { SearchBar } from "../SearchBar";
-import { NotifyModal } from "./NotifyModal";
-import { useInvites } from "../../hooks/invites";
 import { styled } from "@mui/material/styles";
+import { useInvites } from "hooks/invites";
+import React, { useState } from "react";
+
+import { SearchBar } from "../SearchBar";
+import { UserMenu } from "../UserMenu";
+import { NotifyModal } from "./NotifyModal";
 
 export const TopBar = () => {
   const [isNotificationsOpen, setNotificationsOpen] = useState(false);

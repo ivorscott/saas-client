@@ -1,7 +1,23 @@
+import "@aws-amplify/ui-react/styles.css";
+import "./index.css";
+
+import { Image, View, withAuthenticator } from "@aws-amplify/ui-react";
+import Copyright from "@mui/icons-material/Copyright";
+import {
+  styled,
+  StyledEngineProvider,
+  ThemeProvider,
+} from "@mui/material/styles";
+import Amplify from "aws-amplify";
+import { Loader } from "components/Loader";
+import { SideBar } from "components/SideBar";
+import { TopBar } from "components/TopBar/TopBar";
+import { formatPath } from "helpers/helpers";
+import { useUser } from "hooks/users";
 import React, { lazy } from "react";
 import { createRoot } from "react-dom/client";
-import { ReactQueryDevtools } from "react-query/devtools";
 import { QueryClient, QueryClientProvider } from "react-query";
+import { ReactQueryDevtools } from "react-query/devtools";
 import {
   BrowserRouter,
   Navigate,
@@ -10,26 +26,10 @@ import {
   Routes,
   useParams,
 } from "react-router-dom";
+import { PinnedProvider } from "services/PinnedProvider";
 
-import { theme } from "./theme";
-import {
-  styled,
-  StyledEngineProvider,
-  ThemeProvider,
-} from "@mui/material/styles";
-import "@aws-amplify/ui-react/styles.css";
-import "./index.css";
-
-import { View, Image, withAuthenticator } from "@aws-amplify/ui-react";
-import Amplify from "aws-amplify";
 import awsconfig from "./aws-exports";
-import { useUser } from "./hooks/users";
-import { formatPath } from "./helpers";
-import { Loader } from "./components/Loader";
-import { SideBar } from "./components/SideBar";
-import Copyright from "@mui/icons-material/Copyright";
-import { TopBar } from "./components/TopBar/TopBar";
-import { PinnedProvider } from "./services/PinnedProvider";
+import { theme } from "./theme";
 
 Amplify.configure({
   ...awsconfig,
@@ -37,11 +37,11 @@ Amplify.configure({
   userPoolWebClientId: process.env.REACT_APP_USER_POOL_CLIENT_ID,
 });
 
-const Account = lazy(() => import("./features/Account"));
-const NoMatch = lazy(() => import("./features/NoMatch"));
-const Profile = lazy(() => import("./features/Profile"));
-const Projects = lazy(() => import("./features/Projects"));
-const SelectedProject = lazy(() => import("./features/Project"));
+const Account = lazy(() => import("features/Account"));
+const NoMatch = lazy(() => import("features/NoMatch"));
+const Profile = lazy(() => import("features/Profile"));
+const Projects = lazy(() => import("features/Projects"));
+const SelectedProject = lazy(() => import("features/Project"));
 
 const queryClient = new QueryClient();
 

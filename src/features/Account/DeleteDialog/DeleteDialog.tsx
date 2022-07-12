@@ -1,14 +1,14 @@
-import * as React from "react";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { styled } from "@mui/material";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import { styled } from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Delete";
 import IconButton from "@mui/material/IconButton";
-import { useDeleteUser } from "../../../hooks/users";
+import { useDeleteUser } from "hooks/users";
+import * as React from "react";
 
 interface Props {
   title: string;

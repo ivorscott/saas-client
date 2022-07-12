@@ -1,17 +1,16 @@
+import { Auth } from "aws-amplify";
 import { useMemo } from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
-import { client as api } from "../services/APIService";
-import { Auth } from "aws-amplify";
+import { client as api } from "services/APIService";
+import { SeatsAvailable, TMap } from "types/tenant";
 import {
-  NewUser,
-  SeatsAvailable,
-  User,
-  DeleteUserInput,
   CurrentUser,
-  UserQuery,
+  DeleteUserInput,
+  NewUser,
   TableUser,
-  TMap,
-} from "../types";
+  User,
+  UserQuery,
+} from "types/user";
 
 export function useUser() {
   const { isLoading, isError, data } = useQuery<CurrentUser, Error>(

@@ -1,7 +1,7 @@
-import { useQuery, useQueryClient, useMutation } from "react-query";
-import { client as api } from "../services/APIService";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
-import { Project } from "../types";
+import { client as api } from "services/APIService";
+import { Project } from "types/project";
 
 export function useProject(projectId: string | undefined) {
   return useQuery<Project, Error>(
@@ -51,7 +51,7 @@ export function useUpdateProject() {
         ...rest,
       }),
     {
-      onSuccess: (data, variables) => {
+      onSuccess: (data) => {
         queryClient.setQueryData(["project", data.id], data);
       },
     }

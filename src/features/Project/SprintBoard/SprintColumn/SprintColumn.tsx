@@ -1,10 +1,12 @@
-import React from "react";
 import Paper from "@mui/material/Paper";
+import { styled } from "@mui/material/styles";
+import React from "react";
 import { Droppable } from "react-beautiful-dnd";
+import { Column, Task, TaskDict } from "types/board";
+import { UserDict } from "types/user";
+
 import { SprintTask } from "../SprintTask";
 import { ColumnHeader } from "./Header";
-import { styled } from "@mui/material/styles";
-import { Column, Task, TaskDict, UserDict } from "../../../../types";
 
 interface Actions {
   onAddTask: (task: string) => void;

@@ -1,6 +1,6 @@
-import { client as api } from "../services/APIService";
 import { useMutation, useQuery, useQueryClient } from "react-query";
-import { Task, AddTask, DeleteTask, MoveTask, Column } from "../types";
+import { client as api } from "services/APIService";
+import { AddTask, Column, DeleteTask, MoveTask, Task } from "types/board";
 
 export function useColumns(projectId: string) {
   return useQuery<Column[], Error>(["project", projectId, "columns"], () => {
@@ -73,7 +73,7 @@ export function useDeleteTask() {
         queryClient.setQueryData(
           ["project", variables.projectId, "columns"],
           (prev) => {
-            let state = prev as Column[];
+            const state = prev as Column[];
 
             const column = (state || []).find((item) => {
               return item.columnName === variables.columnId;

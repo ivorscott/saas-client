@@ -1,14 +1,15 @@
+import { styled } from "@mui/material/styles";
+import { Layout } from "components/Layout";
+import { MoreOptions } from "components/MoreOptions";
+import { useProject } from "hooks/project";
+import { useUsers } from "hooks/users";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { SprintBoard } from "./SprintBoard";
-import { ProjectUsers } from "./ProjectUsers";
-import { Project } from "../../types";
+import { Project } from "types/project";
+
 import { ProjectSettings } from "./ProjectSettings";
-import { useProject } from "../../hooks/project";
-import { MoreOptions } from "../../components/MoreOptions";
-import { styled } from "@mui/material/styles";
-import { Layout } from "../../Layout";
-import { useUsers } from "../../hooks/users";
+import { ProjectUsers } from "./ProjectUsers";
+import { SprintBoard } from "./SprintBoard";
 
 export const SelectedProject = () => {
   const { id } = useParams();
@@ -72,7 +73,7 @@ const Settings = (props: { project: Project }) => {
     window.addEventListener("scroll", handleScroll);
   }, []);
 
-  let classes = ["controls"];
+  const classes = ["controls"];
   if (scrolled) {
     classes.push("scrolled");
   }

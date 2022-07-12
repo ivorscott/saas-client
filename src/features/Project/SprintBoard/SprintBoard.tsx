@@ -1,14 +1,11 @@
+import { makeColumnsDict, makeTasksDict } from "helpers/helpers";
+import { useAddTask, useColumns, useMoveTask, useTasks } from "hooks/board";
 import React, { useEffect, useState } from "react";
 import { DropResult } from "react-beautiful-dnd";
-import { makeColumnsDict, makeTasksDict } from "./helpers";
+import { Board } from "types/board";
+import { Project } from "types/project";
+
 import { BoardContent } from "./Content";
-import {
-  useAddTask,
-  useMoveTask,
-  useColumns,
-  useTasks,
-} from "../../../hooks/board";
-import { Project, Board } from "../../../types";
 
 export const SprintBoard = ({ project }: { project: Project }) => {
   const rawColumns = useColumns(project.id);
@@ -18,8 +15,8 @@ export const SprintBoard = ({ project }: { project: Project }) => {
     return null;
   }
 
-  let columns = makeColumnsDict(rawColumns.data);
-  let tasks = makeTasksDict(rawTasks.data);
+  const columns = makeColumnsDict(rawColumns.data);
+  const tasks = makeTasksDict(rawTasks.data);
 
   return <BoardManager project={project} initialBoard={{ columns, tasks }} />;
 };
@@ -42,7 +39,7 @@ const BoardManager = ({
   const { columns, tasks } = board;
 
   const handleAddTask = async (task: string) => {
-    const columnKey: string = "column-1";
+    const columnKey = "column-1";
     const column = columns[columnKey];
 
     await addTask({

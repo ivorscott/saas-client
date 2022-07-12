@@ -1,6 +1,7 @@
-import { DeleteDialog } from "./DeleteDialog";
-import React from "react";
 import { styled } from "@mui/material/styles";
+import React from "react";
+
+import { DeleteDialog } from "./DeleteDialog";
 
 export const columns = [
   {

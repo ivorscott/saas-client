@@ -1,19 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "react-query";
-import { Invite } from "../components/TopBar/types";
-import { client as api } from "../services/APIService";
-
-export function useCreateInvite() {
-  const { mutate } = useMutation<
-    Invite,
-    Error,
-    { teamId: string; emailList: string[] }
-  >(({ teamId, emailList }) =>
-    api.post(`/users/teams/${teamId}/invites`, {
-      emailList,
-    })
-  );
-  return [mutate];
-}
+import { Invite } from "types/invite";
+import { client as api } from "services/APIService";
 
 export function useInvites() {
   return useQuery<Invite[], Error>(

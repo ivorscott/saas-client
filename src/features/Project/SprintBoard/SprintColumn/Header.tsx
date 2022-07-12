@@ -1,8 +1,9 @@
 import Add from "@mui/icons-material/Add";
-import React, { useState } from "react";
 import { styled } from "@mui/material/styles";
+import React, { useState } from "react";
+import { Column } from "types/board";
+
 import { AddTask } from "../SprintTask";
-import { Column } from "../../../../types";
 
 export const ColumnHeader = ({
   column,

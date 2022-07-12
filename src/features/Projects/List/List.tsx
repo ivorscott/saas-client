@@ -2,9 +2,9 @@ import React from "react";
 import { CircularProgress, Grid } from "@mui/material";
 import { Card } from "../Card";
 import { styled } from "@mui/material/styles";
-import { orderBy } from "../../../helpers";
-import { useProjects } from "../../../hooks/project";
-import { Project } from "../../../types";
+import { orderBy } from "helpers/helpers";
+import { useProjects } from "hooks/project";
+import { Project } from "types/project";
 
 const renderProjectCards = (projects: Project[]) => {
   return orderBy("name", projects).map((project: Project) => (

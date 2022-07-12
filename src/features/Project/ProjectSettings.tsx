@@ -1,12 +1,14 @@
-import React, { useState } from "react";
-import Switch from "@mui/material/Switch";
 import { styled } from "@mui/material/styles";
-import { UsersTable } from "./UsersTable";
-import { useDeleteProject, useUpdateProject } from "../../hooks/project";
-import { PanelForm, PanelSection, PanelField } from "../../components/Panel";
-import { Avatar } from "../../components/Avatar";
+import Switch from "@mui/material/Switch";
+import { Avatar } from "components/Avatar";
+import { PanelField, PanelForm, PanelSection } from "components/Panel";
+import { useDeleteProject, useUpdateProject } from "hooks/project";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { User, Project } from "../../types";
+import { Project } from "types/project";
+import { User } from "types/user";
+
+import { UsersTable } from "./UsersTable";
 
 interface Actions {
   onClose: () => void;

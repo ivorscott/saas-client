@@ -1,6 +1,6 @@
-import React from "react";
-import piexif from "piexifjs";
 import Konva from "konva/lib/Core";
+import piexif from "piexifjs";
+import React from "react";
 
 export class AvatarEditor extends React.Component {
   static defaultProps = {

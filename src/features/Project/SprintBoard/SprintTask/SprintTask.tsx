@@ -1,12 +1,13 @@
+import { styled } from "@mui/material/styles";
+import { Avatar } from "components/Avatar";
 import React from "react";
 import {
   Draggable,
   DraggingStyle,
   NotDraggingStyle,
 } from "react-beautiful-dnd";
-import { styled } from "@mui/material/styles";
-import { Avatar } from "../../../../components/Avatar";
-import { Task, UserDict } from "../../../../types";
+import { Task } from "types/board";
+import { UserDict } from "types/user";
 
 export const SprintTask = ({
   users,
@@ -23,7 +24,7 @@ export const SprintTask = ({
       <Draggable key={task.id} draggableId={task.id} index={index}>
         {({ innerRef, draggableProps, dragHandleProps }, { isDragging }) => (
           <div
-            ref={innerRef as any}
+            ref={innerRef}
             {...draggableProps}
             {...dragHandleProps}
             style={getItemStyle(isDragging, draggableProps.style)}

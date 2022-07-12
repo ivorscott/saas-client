@@ -7,16 +7,16 @@ class APIService {
     this.baseUrl = process.env.REACT_APP_BACKEND || "http://localhost/api";
   }
 
-  post(path: string, data: any) {
-    return this.request("POST", path, data);
+  post<T>(path: string, data: T) {
+    return this.request<T>("POST", path, data);
   }
 
-  put(path: string, data: any) {
-    return this.request("PUT", path, data);
+  put<T>(path: string, data: T) {
+    return this.request<T>("PUT", path, data);
   }
 
-  patch(path: string, data: any) {
-    return this.request("PATCH", path, data);
+  patch<T>(path: string, data: T) {
+    return this.request<T>("PATCH", path, data);
   }
 
   get(path: string) {
@@ -40,7 +40,7 @@ class APIService {
     return window.location.pathname.split("/")[1];
   }
 
-  async request(method: string, path: string, data?: any) {
+  async request<T>(method: string, path: string, data?: T) {
     const url = `${this.baseUrl}${path}`;
     const session = await Auth.currentSession();
     const accessToken = session.getIdToken().getJwtToken();

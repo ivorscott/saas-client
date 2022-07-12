@@ -1,6 +1,6 @@
-import React from "react";
 import { CircularProgress } from "@mui/material";
 import { styled } from "@mui/material/styles";
+import React from "react";
 
 export const Loader = () => (
   <Container>

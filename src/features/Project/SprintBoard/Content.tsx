@@ -1,11 +1,13 @@
-import React, { useState } from "react";
-import { DropResult, DragDropContext } from "react-beautiful-dnd";
 import { styled } from "@mui/material/styles";
+import { makeUserDict } from "helpers/helpers";
+import { useUsers } from "hooks/users";
+import React, { useState } from "react";
+import { DragDropContext, DropResult } from "react-beautiful-dnd";
+import { ColumnDict, Task, TaskDict } from "types/board";
+import { Project } from "types/project";
+
 import { SprintColumn } from "./SprintColumn";
 import { TaskModal } from "./SprintTask/TaskModal";
-import { makeUserDict } from "./helpers";
-import { Task, TaskDict, ColumnDict, Project } from "../../../types";
-import { useUsers } from "../../../hooks/users";
 
 interface BoardActions {
   onDragEnd: (result: DropResult) => void;

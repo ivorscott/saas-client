@@ -1,9 +1,3 @@
-import React, { useRef } from "react";
-import Button from "@mui/material/Button";
-import ImageViewer from "../ImageViewer";
-import { styled } from "@mui/material/styles";
-import { Auth } from "aws-amplify";
-import { useSeatsAvailable, useUser } from "../../hooks/users";
 import {
   Divider,
   List,
@@ -14,10 +8,17 @@ import {
   MenuItem,
   MenuList,
 } from "@mui/material";
-import { MenuLink } from "../MenuLink";
-import { User } from "../../types";
+import Button from "@mui/material/Button";
+import { styled } from "@mui/material/styles";
+import { Auth } from "aws-amplify";
+import { formatPath } from "helpers/helpers";
+import { useSeatsAvailable, useUser } from "hooks/users";
+import React, { useRef } from "react";
 import { Link } from "react-router-dom";
-import { formatPath } from "../../helpers";
+import { User } from "types/user";
+
+import ImageViewer from "../ImageViewer";
+import { MenuLink } from "../MenuLink";
 
 export const UserMenu = () => {
   const seatsResult = useSeatsAvailable();

@@ -1,12 +1,10 @@
-import React from "react";
-import { placeholder } from "./placeholder";
-import {
-  // isIOS,
-  getOrientation,
-  convertRotationToDegrees,
-} from "./ImageUtils";
 import "./animate.css";
+
 import { styled } from "@mui/material/styles";
+import React from "react";
+
+import { convertRotationToDegrees, getOrientation } from "./ImageUtils";
+import { placeholder } from "./placeholder";
 
 export interface ImageViewerProps {
   alt: string;
@@ -86,7 +84,7 @@ export default class ImageViewer extends React.Component<
     return this.fetchImage(url)
       .then(this.processImageBuffer)
       .then(this.createObjectURL)
-      .catch(() => {});
+      .catch();
   }
 
   render() {

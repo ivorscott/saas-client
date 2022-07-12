@@ -1,16 +1,13 @@
-import React, { useState } from "react";
-import {
-  PanelField,
-  PanelForm,
-  PanelSection,
-} from "../../../../../components/Panel";
-import TextareaAutosize from "@mui/material/TextareaAutosize";
-import { styled } from "@mui/material/styles";
-import dayjs from "dayjs";
-import { SelectAssignees } from "./Assignees";
-import { useDeleteTask, useUpdateTask } from "../../../../../hooks/board";
 import { SelectChangeEvent } from "@mui/material";
-import { Task } from "../../../../../types";
+import { styled } from "@mui/material/styles";
+import TextareaAutosize from "@mui/material/TextareaAutosize";
+import { PanelField, PanelForm, PanelSection } from "components/Panel";
+import dayjs from "dayjs";
+import { useDeleteTask, useUpdateTask } from "hooks/board";
+import React, { useState } from "react";
+import { Task } from "types/board";
+
+import { SelectAssignees } from "./Assignees";
 
 export const TaskModal = ({
   data,
@@ -52,9 +49,7 @@ export const TaskModal = ({
     setChangedState(initialState.content !== content);
   };
 
-  const handleNewCommentChange = (
-    event: React.ChangeEvent<HTMLTextAreaElement>
-  ) => {
+  const handleNewCommentChange = () => {
     // add new comment - then merge to comments list
   };
 

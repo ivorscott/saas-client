@@ -1,5 +1,5 @@
 import React, { PropsWithChildren, useState } from "react";
-import { PinnedProject } from "../helpers";
+import { PinnedProject } from "types/project";
 
 interface PinnedCtx {
   pinned: PinnedProject[];
@@ -9,7 +9,7 @@ interface PinnedCtx {
 const PinnedContext = React.createContext<PinnedCtx | undefined>(undefined);
 
 export function PinnedProvider({ children }: PropsWithChildren) {
-  let settings = localStorage.getItem("settings.pinned") || "[]";
+  const settings = localStorage.getItem("settings.pinned") || "[]";
   const totalPinned = JSON.parse(settings) as PinnedProject[];
 
   const [pinned, setPinned] = useState<PinnedProject[]>(totalPinned);

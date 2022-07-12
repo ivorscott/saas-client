@@ -1,12 +1,13 @@
-import React, { useEffect, useState } from "react";
-import Table from "rc-table";
-import { useTableUsers, useUsers } from "../../hooks/users";
 import { styled } from "@mui/material/styles";
-import { Modal as AddUser } from "./Modal";
 import { Auth } from "aws-amplify";
-import { components } from "./TableRow";
+import { Layout } from "components/Layout";
+import { useTableUsers, useUsers } from "hooks/users";
+import Table from "rc-table";
+import React, { useEffect, useState } from "react";
+
+import { Modal as AddUser } from "./Modal";
 import { columns } from "./TableColumns";
-import { Layout } from "../../Layout";
+import { components } from "./TableRow";
 
 export const Account = () => {
   const [userInfo, setUserInfo] = useState<{ company: string }>();

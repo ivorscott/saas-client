@@ -1,8 +1,9 @@
-import React from "react";
 import { styled } from "@mui/material/styles";
-import { getUserInitials } from "../../helpers";
+import { getUserInitials } from "helpers/helpers";
+import React from "react";
+import { User } from "types/user";
+
 import ImageViewer, { ImageViewerProps } from "../ImageViewer";
-import { User } from "../../types";
 
 interface Props {
   alt: ImageViewerProps["alt"];

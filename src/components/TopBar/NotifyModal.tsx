@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from "react";
-import dayjs from "dayjs";
-import relativeTime from "dayjs/plugin/relativeTime";
-import Star from "@mui/icons-material/Star";
-import MoreHoriz from "@mui/icons-material/MoreHoriz";
-import IconButton from "@mui/material/IconButton";
 import Check from "@mui/icons-material/Check";
 import Close from "@mui/icons-material/Close";
+import MoreHoriz from "@mui/icons-material/MoreHoriz";
+import Star from "@mui/icons-material/Star";
 import Button from "@mui/material/Button";
-import { Invite } from "./types";
+import IconButton from "@mui/material/IconButton";
 import { styled } from "@mui/material/styles";
-import { useInviteDecision } from "../../hooks/invites";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
+import { useInviteDecision } from "hooks/invites";
+import React, { useEffect, useState } from "react";
+import { Invite } from "types/invite";
 
 dayjs.extend(relativeTime);
 
@@ -71,7 +71,7 @@ export const NotifyModal = ({ invites, open }: Props) => {
                 </aside>
                 {renderUnreadIndicator(invite)}
               </header>
-              <p>{invite.teamName} wants you to join their team.</p>
+              <p> ____ wants you to join their organization.</p>
               <div className="decision">
                 {!invite.read ? (
                   <>

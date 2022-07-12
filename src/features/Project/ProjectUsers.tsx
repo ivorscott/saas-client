@@ -1,8 +1,8 @@
-import React, { useState } from "react";
 import Add from "@mui/icons-material/Add";
 import { styled } from "@mui/material/styles";
-import { Avatar } from "../../components/Avatar";
-import { useUsers } from "../../hooks/users";
+import { Avatar } from "components/Avatar";
+import { useUsers } from "hooks/users";
+import React, { useState } from "react";
 
 export const ProjectUsers = () => {
   const { data: users, isLoading, isError } = useUsers();

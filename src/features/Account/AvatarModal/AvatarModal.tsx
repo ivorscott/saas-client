@@ -1,8 +1,9 @@
-import React from "react";
-import { AvatarEditor } from "./AvatarEditor";
-import { Modal } from "../../../components/Modal";
-import ImageViewer from "../../../components/ImageViewer";
 import { styled } from "@mui/material/styles";
+import ImageViewer from "components/ImageViewer";
+import { Modal } from "components/Modal";
+import React from "react";
+
+import { AvatarEditor } from "./AvatarEditor";
 
 interface Actions {
   onToggle: () => void;

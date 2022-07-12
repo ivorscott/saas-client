@@ -1,9 +1,14 @@
+import { styled } from "@mui/material/styles";
+import {
+  assignColor,
+  findPinnedByPath,
+  getOrgs,
+  orderBy,
+} from "helpers/helpers";
+import { useTenantMap } from "hooks/users";
 import React from "react";
 import { Link } from "react-router-dom";
-import { styled } from "@mui/material/styles";
-import { useTenantMap } from "../../hooks/users";
-import { assignColor, findPinnedByPath, getOrgs, orderBy } from "../../helpers";
-import { usePinned } from "../../services/PinnedProvider";
+import { usePinned } from "services/PinnedProvider";
 
 const RenderOrganizations = () => {
   const { isLoading, isError, data: tmap } = useTenantMap();
