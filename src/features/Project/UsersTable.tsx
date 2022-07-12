@@ -6,17 +6,18 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import { Memberships } from "./types";
 import { styled } from "@mui/material/styles";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
+import { User } from "../../types";
+
 dayjs.extend(relativeTime);
 
 interface Props {
-  memberships: Memberships[];
+  users: User[];
 }
 
-export const MembersTable = ({ memberships }: Props) => {
+export const UsersTable = ({ users }: Props) => {
   return (
     <TableContainer component={Paper}>
       <Table>
@@ -28,20 +29,19 @@ export const MembersTable = ({ memberships }: Props) => {
           </TableRow>
         </StyledTableHead>
         <TableBody>
-          {memberships.map((m) => (
-            <StyledTableRow key={m.id}>
+          {users.map((user) => (
+            <StyledTableRow key={user.id}>
               <StyledTableCell component="th" scope="row">
                 <StyledHeadCell>
-                  <div>{m.firstName + " " + (m.lastName || "")}</div>
-                  <StyledRole>{m.role}</StyledRole>
+                  <div>{user.firstName + " " + (user.lastName || "")}</div>
                 </StyledHeadCell>
               </StyledTableCell>
               <StyledTableCell align="left">
-                <div>{m.email}</div>
+                <div>{user.email}</div>
               </StyledTableCell>
 
               <StyledTableCell align="left">
-                {dayjs().to(dayjs(m.createdAt))}
+                {dayjs().to(dayjs(user.createdAt))}
               </StyledTableCell>
             </StyledTableRow>
           ))}
@@ -60,11 +60,6 @@ const StyledTableHead = styled(TableHead)`
 const StyledHeadCell = styled("div")`
   font-family: ProximaNova-Medium;
   text-transform: capitalize;
-`;
-
-const StyledRole = styled("div")`
-  font-size: var(--p12);
-  text-transform: lowercase;
 `;
 
 const StyledTableRow = styled(TableRow)``;

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { DropResult } from "react-beautiful-dnd";
-import { Project, Board } from "../types";
 import { makeColumnsDict, makeTasksDict } from "./helpers";
 import { BoardContent } from "./Content";
 import {
@@ -9,6 +8,7 @@ import {
   useColumns,
   useTasks,
 } from "../../../hooks/board";
+import { Project, Board } from "../../../types";
 
 export const SprintBoard = ({ project }: { project: Project }) => {
   const rawColumns = useColumns(project.id);

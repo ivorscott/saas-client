@@ -1,10 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { Project } from "../../Project/types";
 import { styled } from "@mui/material/styles";
-import { useTeamMemberships } from "../../../hooks/teams";
-import { Memberships } from "../../Project/types";
-import { Avatar } from "../../../components/Avatar";
 import { useTenantMap } from "../../../hooks/users";
 import { Loader } from "../../../components/Loader";
 import PushPinIcon from "@mui/icons-material/PushPin";
@@ -17,6 +13,7 @@ import {
 } from "../../../helpers";
 import IconButton from "@mui/material/IconButton";
 import { usePinned } from "../../../services/PinnedProvider";
+import { Project } from "../../../types";
 
 interface Props {
   project: Project;
@@ -24,7 +21,6 @@ interface Props {
 
 export const Card = ({ project }: Props) => {
   const [pinState, setPinState] = useState(getPinState(project));
-  const { data: memberships } = useTeamMemberships(project.teamId);
   const { isLoading, isError, data: tmap } = useTenantMap();
   const { pinned, setPinned } = usePinned();
 
@@ -93,39 +89,11 @@ export const Card = ({ project }: Props) => {
         </CardHeader>
         <CardBody>
           <CardText>{project.description}</CardText>
-          {memberships && renderMembers(4, memberships)}
         </CardBody>
       </Link>
     </StyledCard>
   );
 };
-
-function renderMembers(maxSize: number, memberships: Memberships[]) {
-  const badgeColor = (index: number) => (index % 9) + 1;
-
-  return (
-    <Avatars>
-      <ul>
-        {memberships && (
-          <StyledMembers>
-            {memberships.map((membership, index) => (
-              <Avatar
-                key={membership.id}
-                alt="user avatar"
-                size="sm"
-                badgeColor={`badge${badgeColor(index)}`}
-                membership={membership}
-              />
-            ))}
-          </StyledMembers>
-        )}
-        {memberships.length > maxSize && (
-          <li className="hidden-avatars">{memberships.length - maxSize}+</li>
-        )}
-      </ul>
-    </Avatars>
-  );
-}
 
 const StyledCard = styled("div")`
   width: var(--p256);
@@ -186,50 +154,6 @@ const CardBody = styled("div")`
   width: 100%;
   padding: var(--p16);
   box-sizing: border-box;
-`;
-
-const StyledMembers = styled("div")`
-  width: 100%;
-  display: flex;
-  justify-content: space-evenly;
-  align-items: center;
-`;
-
-const Avatars = styled("div")`
-  display: flex;
-  ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    direction: rtl;
-  }
-  li {
-    width: 36px;
-    height: 36px;
-    margin-left: -12px;
-  }
-  .hidden-avatars {
-    font-family: ProximaNova-Bold;
-    width: 36px;
-    height: 36px;
-    position: relative;
-    left: -20px;
-    background: var(--secondary);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 50%;
-    border: 2px solid var(--white1);
-    margin-left: var(--p8);
-  }
-  img {
-    object-fit: cover;
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    border: 2px solid var(--white1);
-  }
 `;
 
 const CardTitle = styled("h2")`

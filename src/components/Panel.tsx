@@ -53,6 +53,7 @@ export const PanelForm = (props: Props) => {
 
 export const PanelSection = styled("section")`
   color: var(--gray10);
+  margin-top: var(--p16);
   margin-bottom: var(--p16);
   h3 {
     font-family: ProximaNova-Semibold;
@@ -126,25 +127,24 @@ const StyleSettings = styled("div")`
     display: flex;
     align-items: center;
     margin-right: var(--p8);
-    padding: var(--p4);
   }
 `;
 
 const StyledIconButton = styled(IconButton)`
   height: var(--p24);
-  padding: 0 var(--p8);
   border-radius: var(--p4);
-  margin-left: var(--p4);
 `;
 
 const PanelButton = styled("button")`
   background: var(--gray1);
   color: var(--gray7);
-  padding: var(--p4) var(--p12);
   border-radius: 4px;
   border-style: none;
-  margin: 0 var(--p4);
+  height: var(--p24);
 
+  & {
+    margin: 0 var(--p4);
+  }
   &:hover {
     background: var(--gray2);
     cursor: pointer;
@@ -152,7 +152,6 @@ const PanelButton = styled("button")`
   &.save {
     color: var(--white1);
     background: var(--green4);
-    padding: var(--p4) var(--p12);
     font-family: ProximaNova-Bold;
     border-radius: 4px;
     border-style: none;
@@ -161,7 +160,6 @@ const PanelButton = styled("button")`
     color: var(--white1);
     background: var(--primary);
     font-family: ProximaNova-Bold;
-    padding: var(--p4) var(--p12);
     border-radius: 4px;
     border-style: none;
     &:hover {

@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { SprintBoard } from "./SprintBoard";
-import { ProjectTeam } from "./ProjectTeam";
-import { Memberships, Project, Team } from "./types";
+import { ProjectUsers } from "./ProjectUsers";
+import { Project } from "../../types";
 import { ProjectSettings } from "./ProjectSettings";
 import { useProject } from "../../hooks/project";
-import { useTeam, useTeamMemberships } from "../../hooks/teams";
 import { MoreOptions } from "../../components/MoreOptions";
 import { styled } from "@mui/material/styles";
 import { Layout } from "../../Layout";
+import { useUsers } from "../../hooks/users";
 
 export const SelectedProject = () => {
   const { id } = useParams();
@@ -51,18 +51,7 @@ const ProjectComponent = ({ project }: { project: Project }) => {
 };
 
 const Settings = (props: { project: Project }) => {
-  let team: Team | undefined;
-  let memberships: Memberships[] | undefined;
-
-  const selectedTeam = useTeam(props.project.teamId);
-  if (selectedTeam.isSuccess) {
-    team = selectedTeam.data;
-  }
-
-  const members = useTeamMemberships(team?.id);
-  if (members.isSuccess) {
-    memberships = members.data;
-  }
+  const { data: users } = useUsers();
 
   const [isSettingsOpen, setSettingsOpen] = useState(false);
 
@@ -92,13 +81,12 @@ const Settings = (props: { project: Project }) => {
     <>
       <div className={classes.join(" ")}>
         <MoreOptions onClick={toggleSettings} />
-        <ProjectTeam project={props.project} />
+        <ProjectUsers />
       </div>
       <ProjectSettings
         open={isSettingsOpen}
-        team={team}
         project={props.project}
-        memberships={memberships}
+        users={users}
         onClose={toggleSettings}
       />
     </>

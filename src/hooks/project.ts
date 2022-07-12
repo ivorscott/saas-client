@@ -1,7 +1,7 @@
 import { useQuery, useQueryClient, useMutation } from "react-query";
 import { client as api } from "../services/APIService";
-import { Project } from "../features/Project/types";
 import { useNavigate } from "react-router-dom";
+import { Project } from "../types";
 
 export function useProject(projectId: string | undefined) {
   return useQuery<Project, Error>(

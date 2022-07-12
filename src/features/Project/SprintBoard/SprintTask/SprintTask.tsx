@@ -1,5 +1,4 @@
 import React from "react";
-import { Task, UserDict } from "../../types";
 import {
   Draggable,
   DraggingStyle,
@@ -7,6 +6,7 @@ import {
 } from "react-beautiful-dnd";
 import { styled } from "@mui/material/styles";
 import { Avatar } from "../../../../components/Avatar";
+import { Task, UserDict } from "../../../../types";
 
 export const SprintTask = ({
   users,
@@ -41,7 +41,7 @@ export const SprintTask = ({
                       alt="user avatar"
                       size="sm"
                       badgeColor={`badge${badgeColor}`}
-                      membership={users[task.assignedTo]}
+                      user={users[task.assignedTo]}
                     />
                   )}
                 </AssignedTo>

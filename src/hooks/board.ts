@@ -1,12 +1,6 @@
 import { client as api } from "../services/APIService";
-import {
-  Task,
-  AddTask,
-  DeleteTask,
-  MoveTask,
-  Column,
-} from "../features/Project/types";
 import { useMutation, useQuery, useQueryClient } from "react-query";
+import { Task, AddTask, DeleteTask, MoveTask, Column } from "../types";
 
 export function useColumns(projectId: string) {
   return useQuery<Column[], Error>(["project", projectId, "columns"], () => {

@@ -1,6 +1,5 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Teams } from "./Teams";
 import { styled } from "@mui/material/styles";
 import { useTenantMap } from "../../hooks/users";
 import { assignColor, findPinnedByPath, getOrgs, orderBy } from "../../helpers";
@@ -60,7 +59,6 @@ export const SideBar = () => {
         </li>
         <RenderOrganizations />
       </PrimaryNav>
-      <Teams />
     </StyledSideBar>
   );
 };

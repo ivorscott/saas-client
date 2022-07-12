@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { Task } from "../../../types";
 import {
   PanelField,
   PanelForm,
@@ -11,6 +10,7 @@ import dayjs from "dayjs";
 import { SelectAssignees } from "./Assignees";
 import { useDeleteTask, useUpdateTask } from "../../../../../hooks/board";
 import { SelectChangeEvent } from "@mui/material";
+import { Task } from "../../../../../types";
 
 export const TaskModal = ({
   data,
@@ -32,10 +32,7 @@ export const TaskModal = ({
     setEditing(!isEditing);
   };
 
-  const handleAssigneeChange = (
-    event: SelectChangeEvent<string>,
-    child: React.ReactNode
-  ) => {
+  const handleAssigneeChange = (event: SelectChangeEvent) => {
     const assignedTo = event.target.value;
     setFormValues({ ...formValues, assignedTo });
     setChangedState(initialState.assignedTo !== assignedTo);

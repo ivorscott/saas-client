@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import { DropResult, DragDropContext } from "react-beautiful-dnd";
 import { styled } from "@mui/material/styles";
 import { SprintColumn } from "./SprintColumn";
-import { Task, TaskDict, ColumnDict, Project } from "../types";
 import { TaskModal } from "./SprintTask/TaskModal";
-import { useTeamMemberships } from "../../../hooks/teams";
 import { makeUserDict } from "./helpers";
+import { Task, TaskDict, ColumnDict, Project } from "../../../types";
+import { useUsers } from "../../../hooks/users";
 
 interface BoardActions {
   onDragEnd: (result: DropResult) => void;
@@ -29,8 +29,9 @@ export const BoardContent = ({
     columnId: string;
     task: Task;
   }>();
+
   const [isOpen, setOpen] = useState(false);
-  const { data } = useTeamMemberships(project?.teamId);
+  const { data } = useUsers();
   const users = makeUserDict(data);
 
   const setupTaskModal = (columnId: string, task: Task) => {

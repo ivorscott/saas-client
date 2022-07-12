@@ -1,5 +1,7 @@
+import { useMemo } from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { client as api } from "../services/APIService";
+import { Auth } from "aws-amplify";
 import {
   NewUser,
   SeatsAvailable,
@@ -8,9 +10,8 @@ import {
   CurrentUser,
   UserQuery,
   TableUser,
-} from "./types";
-import { Auth } from "aws-amplify";
-import { useMemo } from "react";
+  TMap,
+} from "../types";
 
 export function useUser() {
   const { isLoading, isError, data } = useQuery<CurrentUser, Error>(
@@ -36,14 +37,6 @@ export function useUser() {
   }
 
   return data;
-}
-
-export interface TMap {
-  [index: string]: {
-    path: string;
-    company: string;
-    id: string;
-  };
 }
 
 export function useTenantMap() {

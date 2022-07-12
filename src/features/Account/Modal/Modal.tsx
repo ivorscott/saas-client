@@ -5,7 +5,7 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import { Alert, TextField } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import { NewUser } from "../../../hooks/types";
+import { NewUser } from "../../../types";
 import { useCreateUser, useSeatsAvailable } from "../../../hooks/users";
 
 export const Modal = () => {

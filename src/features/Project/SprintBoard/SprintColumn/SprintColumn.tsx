@@ -2,9 +2,9 @@ import React from "react";
 import Paper from "@mui/material/Paper";
 import { Droppable } from "react-beautiful-dnd";
 import { SprintTask } from "../SprintTask";
-import { Column, Task, TaskDict, UserDict } from "../../types";
 import { ColumnHeader } from "./Header";
 import { styled } from "@mui/material/styles";
+import { Column, Task, TaskDict, UserDict } from "../../../../types";
 
 interface Actions {
   onAddTask: (task: string) => void;

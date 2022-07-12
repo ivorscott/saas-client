@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import Button from "@mui/material/Button";
 import TextareaAutosize from "@mui/material/TextareaAutosize";
-import { Project } from "../../../types";
 import { AxiosError } from "axios";
 import { useQuery } from "react-query";
 import { client as api } from "../../../../../services/APIService";
 import { useParams } from "react-router-dom";
 import { styled } from "@mui/material/styles";
+import { Project } from "../../../../../types";
 
 interface AddTaskProps {
   isCreating: boolean;

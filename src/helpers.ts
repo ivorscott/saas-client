@@ -1,17 +1,7 @@
-import { Project } from "./features/Project/types";
-import { TMap } from "./hooks/users";
+import { TMap, Project } from "./types";
 
 export function getUserInitials(firstName: string, lastName: string) {
   return firstName.substring(0, 1) + (lastName || "").substring(0, 1);
-}
-
-export function getTeamInitials(teamName: string) {
-  if (teamName.includes(" ")) {
-    const names = teamName.split(" ");
-    return names[0].substring(0, 1) + names[1].substring(0, 1);
-  } else {
-    return teamName.substring(0, 2);
-  }
 }
 
 export const formatPath = (company: string | undefined): string => {
@@ -38,9 +28,9 @@ export const getOrgs = (data: TMap) => {
   })) as Organization[];
 };
 
-export function assignColor<T>(org: T, index: number) {
+export function assignColor<T>(obj: T, index: number) {
   return {
-    ...org,
+    ...obj,
     color: `badge${(index % 9) + 1}`,
   };
 }

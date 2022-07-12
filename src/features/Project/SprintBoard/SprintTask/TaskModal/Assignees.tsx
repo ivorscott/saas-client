@@ -5,12 +5,10 @@ import {
   SelectChangeEvent,
 } from "@mui/material";
 import React from "react";
-import { useParams } from "react-router-dom";
-import { useProject } from "../../../../../hooks/project";
-import { useTeamMemberships } from "../../../../../hooks/teams";
-import { Task } from "../../../types";
 import { styled } from "@mui/material/styles";
 import { makeUserDict } from "../../helpers";
+import { useUsers } from "../../../../../hooks/users";
+import { Task } from "../../../../../types";
 
 export const SelectAssignees = ({
   formValues,
@@ -23,9 +21,7 @@ export const SelectAssignees = ({
   toggleEditing: () => void;
   onChange: (event: SelectChangeEvent, child: React.ReactNode) => void;
 }) => {
-  const { id } = useParams();
-  const { data: project } = useProject(id);
-  const { data, isError } = useTeamMemberships(project?.teamId);
+  const { data, isError } = useUsers();
   const users = makeUserDict(data);
 
   if (!data || isError) {
@@ -52,9 +48,9 @@ export const SelectAssignees = ({
           <MenuItem value="">
             <em>Unassign</em>
           </MenuItem>
-          {data.map((member) => (
-            <MenuItem key={member.userId} value={member.userId}>
-              {member.firstName + " " + (member.lastName || "")}
+          {data.map((user) => (
+            <MenuItem key={user.id} value={user.id}>
+              {user.firstName + " " + (user.lastName || "")}
             </MenuItem>
           ))}
         </Select>

@@ -1,13 +1,12 @@
 import React, { useState } from "react";
 import Switch from "@mui/material/Switch";
-import { Memberships, Project, Team } from "./types";
 import { styled } from "@mui/material/styles";
-import { MembersTable } from "./MembersTable";
+import { UsersTable } from "./UsersTable";
 import { useDeleteProject, useUpdateProject } from "../../hooks/project";
-import { useLeaveTeam } from "../../hooks/teams";
 import { PanelForm, PanelSection, PanelField } from "../../components/Panel";
 import { Avatar } from "../../components/Avatar";
 import { useNavigate } from "react-router-dom";
+import { User, Project } from "../../types";
 
 interface Actions {
   onClose: () => void;
@@ -15,9 +14,8 @@ interface Actions {
 
 interface Props extends Actions {
   open: boolean;
-  team: Team | undefined;
   project: Project;
-  memberships: Memberships[] | undefined;
+  users: User[] | undefined;
 }
 
 interface FormValues {
@@ -25,13 +23,7 @@ interface FormValues {
   changed: boolean;
 }
 
-export const ProjectSettings = ({
-  team,
-  project,
-  memberships,
-  open,
-  onClose,
-}: Props) => {
+export const ProjectSettings = ({ project, users, open, onClose }: Props) => {
   const initialState = {
     project,
     changed: false,
@@ -41,8 +33,8 @@ export const ProjectSettings = ({
   const [formValues, setFormValues] = useState<FormValues>(initialState);
   const [updateProject] = useUpdateProject();
   const [deleteProject] = useDeleteProject();
-  const [leaveTeam] = useLeaveTeam();
   const navigate = useNavigate();
+
   const toggleEditing = () => {
     setEditing(!isEditing);
   };
@@ -107,7 +99,7 @@ export const ProjectSettings = ({
 
     setFormValues({
       project: { ...updates, public: publicState },
-      changed: initialState.project.active !== publicState,
+      changed: initialState.project.public !== publicState,
     });
   };
 
@@ -122,18 +114,11 @@ export const ProjectSettings = ({
       changed: false,
     });
 
-    const { prefix, userId, teamId, createdAt, updatedAt, ...updates } =
+    const { prefix, userId, createdAt, updatedAt, ...updates } =
       formValues.project;
 
     updateProject(updates);
     toggleEditing();
-  };
-
-  const handleLeaveTeam = () => {
-    const teamId = formValues.project.teamId;
-    if (teamId) {
-      leaveTeam(teamId);
-    }
   };
 
   const badgeColor = (index: number) => (index % 9) + 1;
@@ -178,81 +163,63 @@ export const ProjectSettings = ({
         </PanelSection>
         <PanelSection>
           <h3>State and Visibility</h3>
-          <div>
-            <span>Active</span>
-            <Switch
-              onChange={handleActiveStateChange}
-              checked={formValues.project.active}
-              disabled={!isEditing}
-              name="active"
-              inputProps={{ "aria-label": "primary checkbox" }}
-            />
-          </div>
-          <div>
-            <span>Public</span>
-            <Switch
-              onChange={handlePublicStateChange}
-              checked={formValues.project.public}
-              disabled={!isEditing}
-              color="secondary"
-              name="public"
-              inputProps={{ "aria-label": "primary checkbox" }}
-            />
-          </div>
+          <SwitchFields>
+            <div>
+              <span>Active</span>
+              <Switch
+                onChange={handleActiveStateChange}
+                checked={formValues.project.active}
+                disabled={!isEditing}
+                color="primary"
+                name="active"
+                inputProps={{ "aria-label": "primary checkbox" }}
+              />
+            </div>
+            <div>
+              <span>Public</span>
+              <Switch
+                onChange={handlePublicStateChange}
+                checked={formValues.project.public}
+                disabled={!isEditing}
+                color="primary"
+                name="public"
+                inputProps={{ "aria-label": "primary checkbox" }}
+              />
+            </div>
+          </SwitchFields>
         </PanelSection>
         <PanelSection>
-          {team && <h3>Team</h3>}
-
-          {memberships && (
-            <StyledMembers>
-              {memberships.map((membership, index) => (
+          {users && (
+            <StyledUsers>
+              {users.map((user, index) => (
                 <Avatar
-                  key={membership.id}
+                  key={user.id}
                   alt="user avatar"
                   size="lg"
                   badgeColor={`badge${badgeColor(index)}`}
-                  membership={membership}
+                  user={user}
                 />
               ))}
-            </StyledMembers>
-          )}
-
-          {team && (
-            <TeamControls>
-              <span className="developed-by">Developed By {team.name}</span>
-              <span className="leave" onClick={handleLeaveTeam}>
-                Leave team
-              </span>
-            </TeamControls>
+            </StyledUsers>
           )}
         </PanelSection>
 
-        {memberships && <MembersTable memberships={memberships} />}
+        {users && <UsersTable users={users} />}
       </PanelForm>
     );
   }
   return null;
 };
 
-const StyledMembers = styled("div")`
+const StyledUsers = styled("div")`
   width: 100%;
   display: flex;
   justify-content: space-evenly;
   align-items: center;
 `;
 
-const TeamControls = styled("div")`
+const SwitchFields = styled("div")`
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin: var(--p32) var(--p8) 0;
-  font-size: 14px;
-  .developed-by {
-    font-family: ProximaNova-Medium;
-    color: var(--gray6);
-  }
-  .leave {
-    color: var(--blue5);
-    cursor: pointer;
-  }
+  flex-direction: column;
+  padding: var(--p14);
 `;

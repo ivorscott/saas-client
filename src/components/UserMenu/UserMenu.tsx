@@ -15,7 +15,7 @@ import {
   MenuList,
 } from "@mui/material";
 import { MenuLink } from "../MenuLink";
-import { User } from "../../hooks/types";
+import { User } from "../../types";
 import { Link } from "react-router-dom";
 import { formatPath } from "../../helpers";
 

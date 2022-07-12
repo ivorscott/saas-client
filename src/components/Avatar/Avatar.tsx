@@ -1,36 +1,30 @@
 import React from "react";
 import { styled } from "@mui/material/styles";
 import { getUserInitials } from "../../helpers";
-import { Memberships } from "../../features/Project/types";
 import ImageViewer, { ImageViewerProps } from "../ImageViewer";
+import { User } from "../../types";
 
 interface Props {
   alt: ImageViewerProps["alt"];
   size?: ImageViewerProps["size"];
-  membership: Memberships | undefined;
+  user: User | undefined;
   badgeColor?: string;
   classNames?: string;
 }
 
-export const Avatar = ({
-  membership,
-  size,
-  alt,
-  badgeColor,
-  ...props
-}: Props) => {
-  if (!membership) {
+export const Avatar = ({ user, size, alt, badgeColor, ...props }: Props) => {
+  if (!user) {
     return null;
   }
 
-  return membership.picture ? (
-    <StyledAvatars alt={alt} size={size} url={membership.picture} {...props} />
+  return user.picture ? (
+    <StyledAvatars alt={alt} size={size} url={user.picture} {...props} />
   ) : (
     <StyledPlaceholders
       className={`badge ${badgeColor} ${size || "md"}`}
       {...props}
     >
-      {getUserInitials(membership.firstName, membership.lastName)}
+      {getUserInitials(user.firstName, user.lastName)}
     </StyledPlaceholders>
   );
 };
