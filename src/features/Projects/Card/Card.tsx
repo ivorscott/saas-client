@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Project } from "../../Project/types";
 import { styled } from "@mui/material/styles";
-import { useTeam, useTeamMemberships } from "../../../hooks/teams";
+import { useTeamMemberships } from "../../../hooks/teams";
 import { Memberships } from "../../Project/types";
 import { Avatar } from "../../../components/Avatar";
 import { useTenantMap } from "../../../hooks/users";
@@ -25,7 +25,6 @@ interface Props {
 export const Card = ({ project }: Props) => {
   const [pinState, setPinState] = useState(getPinState(project));
   const { data: memberships } = useTeamMemberships(project.teamId);
-  const { data: team } = useTeam(project.teamId);
   const { isLoading, isError, data: tmap } = useTenantMap();
   const { pinned, setPinned } = usePinned();
 
@@ -47,7 +46,7 @@ export const Card = ({ project }: Props) => {
     );
 
     if (isPinned) {
-      const updatedPins = pinned.filter((p) => p.projectId != project.id);
+      const updatedPins = pinned.filter((p) => p.projectId !== project.id);
       localStorage.setItem("settings.pinned", JSON.stringify(updatedPins));
       setPinned(updatedPins);
       setPinState(false);

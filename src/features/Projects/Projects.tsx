@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Grid from "@mui/material/Grid";
 import Fab from "@mui/material/Fab";
 import Add from "@mui/icons-material/Add";
 import { List } from "./List";
 import { Modal } from "./Modal";
-import { useCreateProject, useProjects } from "../../hooks/project";
+import { useCreateProject } from "../../hooks/project";
 import { styled } from "@mui/material/styles";
 import { Layout } from "../../Layout";
 
