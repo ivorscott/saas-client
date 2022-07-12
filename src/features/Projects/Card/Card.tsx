@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Project } from "../../Project/types";
 import { styled } from "@mui/material/styles";
@@ -7,33 +7,90 @@ import { Memberships } from "../../Project/types";
 import { Avatar } from "../../../components/Avatar";
 import { useTenantMap } from "../../../hooks/users";
 import { Loader } from "../../../components/Loader";
+import PushPinIcon from "@mui/icons-material/PushPin";
+import {
+  assignColor,
+  getOrgs,
+  getPinState,
+  PinnedProject,
+  orderBy,
+} from "../../../helpers";
+import IconButton from "@mui/material/IconButton";
+import { usePinned } from "../../../services/PinnedProvider";
 
 interface Props {
   project: Project;
-  seq: number;
 }
 
-export const Card = ({ project, seq }: Props) => {
+export const Card = ({ project }: Props) => {
+  const [pinState, setPinState] = useState(getPinState(project));
   const { data: memberships } = useTeamMemberships(project.teamId);
   const { data: team } = useTeam(project.teamId);
-  const { isLoading, isError, data } = useTenantMap();
+  const { isLoading, isError, data: tmap } = useTenantMap();
+  const { pinned, setPinned } = usePinned();
 
-  const color = (seq % 9) + 1;
-
-  if (isLoading || isError || data === undefined) {
+  if (isLoading || isError || !tmap) {
     return <Loader />;
+  }
+
+  const orgs = orderBy("company", getOrgs(tmap)).map(assignColor);
+  const org = (orgs || []).find((org) => org.id === project.tenantId);
+
+  const handlePin = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    e.preventDefault();
+    if (!org) {
+      return;
+    }
+
+    const isPinned = !!pinned.find(
+      (p: PinnedProject) => p.projectId === project.id
+    );
+
+    if (isPinned) {
+      const updatedPins = pinned.filter((p) => p.projectId != project.id);
+      localStorage.setItem("settings.pinned", JSON.stringify(updatedPins));
+      setPinned(updatedPins);
+      setPinState(false);
+    } else {
+      const updatedPins = [
+        ...pinned,
+        {
+          name: project.name,
+          projectId: project.id,
+          tenantPath: org.path,
+        },
+      ];
+
+      localStorage.setItem("settings.pinned", JSON.stringify(updatedPins));
+      setPinned(updatedPins);
+      setPinState(true);
+    }
+  };
+
+  const path = tmap[project.tenantId].path;
+  const link = `/${path}/projects/${project.id}`;
+
+  if (!org) {
+    return <></>;
   }
 
   return (
     <StyledCard className="shade2">
-      <Link
-        key={project.id}
-        to={`/${data[project.tenantId]}/projects/${project.id}`}
-      >
-        <div className={`color-tip badge${color}`} />
+      <Link key={project.id} to={link}>
+        <div className={`color-tip ${org.color}`} />
         <CardHeader>
-          <CardTitle>{project.name}</CardTitle>
-          <CardSubtitle>Developed by {team ? team.name : "Me"}</CardSubtitle>
+          <div className="header">
+            <CardTitle>{project.name}</CardTitle>
+            <CardSubtitle>Developed by {org.name}</CardSubtitle>
+          </div>
+          <div>
+            <IconButton onClick={(e) => handlePin(e)}>
+              <PushPinIcon
+                color={pinState ? "secondary" : "disabled"}
+                fontSize="small"
+              />
+            </IconButton>
+          </div>
         </CardHeader>
         <CardBody>
           <CardText>{project.description}</CardText>
@@ -116,6 +173,10 @@ const CardHeader = styled("div")`
   padding: var(--p16);
   box-sizing: border-box;
   border-bottom: 1px solid var(--gray1);
+  display: flex;
+  justify-content: space-between;
+  .header {
+  }
 `;
 const CardBody = styled("div")`
   display: flex;

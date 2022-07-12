@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Grid from "@mui/material/Grid";
 import Fab from "@mui/material/Fab";
 import Add from "@mui/icons-material/Add";
@@ -10,8 +10,6 @@ import { Layout } from "../../Layout";
 
 export const Projects = () => {
   const [isOpen, setOpen] = useState(false);
-  const projects = useProjects();
-
   const [createProject] = useCreateProject();
 
   const toggleModal = () => {
@@ -28,7 +26,7 @@ export const Projects = () => {
               <Add />
             </Fab>
           </Header>
-          <List isLoading={projects.isLoading} projects={projects.data} />
+          <List />
           <Grid item={true} xs={12}>
             <Modal
               open={isOpen}

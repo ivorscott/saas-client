@@ -29,6 +29,7 @@ import { Loader } from "./components/Loader";
 import { SideBar } from "./components/SideBar";
 import Copyright from "@mui/icons-material/Copyright";
 import { TopBar } from "./components/TopBar/TopBar";
+import { PinnedProvider } from "./services/PinnedProvider";
 
 Amplify.configure({
   ...awsconfig,
@@ -51,6 +52,7 @@ const TenantPath = () => {
   const user = useUser();
   const { tenantPath } = useParams();
   const defaultTenantPath = formatPath(user?.company);
+  queryClient.invalidateQueries("projects").then();
 
   if (user) {
     const activeTenant = user.connections[tenantPath!];
@@ -96,11 +98,13 @@ const App = withAuthenticator(
           <StyledEngineProvider injectFirst>
             <>
               <Container>
-                <SideBar />
-                <Page>
-                  <TopBar />
-                  <AppRoutes />
-                </Page>
+                <PinnedProvider>
+                  <SideBar />
+                  <Page>
+                    <TopBar />
+                    <AppRoutes />
+                  </Page>
+                </PinnedProvider>
               </Container>
               <Footer>
                 <Copyright /> <CopyrightText>Powered by DevPie</CopyrightText>

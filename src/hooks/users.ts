@@ -38,8 +38,12 @@ export function useUser() {
   return data;
 }
 
-interface TMap {
-  [index: string]: string;
+export interface TMap {
+  [index: string]: {
+    path: string;
+    company: string;
+    id: string;
+  };
 }
 
 export function useTenantMap() {
@@ -51,7 +55,11 @@ export function useTenantMap() {
       const obj = data[key];
       return {
         ...acc,
-        [obj.id]: obj.path,
+        [obj.id]: {
+          path: obj.path,
+          id: obj.id,
+          company: obj.companyName,
+        },
       };
     }, {});
   });
