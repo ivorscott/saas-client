@@ -1,5 +1,5 @@
-import "@aws-amplify/ui-react/styles.css";
 import "./index.css";
+import "@aws-amplify/ui-react/styles.css";
 
 import { Image, View, withAuthenticator } from "@aws-amplify/ui-react";
 import Copyright from "@mui/icons-material/Copyright";

@@ -53,7 +53,7 @@ export const columns = [
           <HighlightRed>
             {` ${d.user.firstName} ${d.user.lastName} `}
           </HighlightRed>{" "}
-          d from your account. Are you sure you want to proceed?
+          from your account. Are you sure you want to proceed?
         </DeleteDialog>
       </StyledCell>
     ),

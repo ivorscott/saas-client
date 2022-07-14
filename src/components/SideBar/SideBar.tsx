@@ -7,42 +7,56 @@ import {
 } from "helpers/helpers";
 import { useTenantMap } from "hooks/users";
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { usePinned } from "services/PinnedProvider";
 
 const RenderOrganizations = () => {
   const { isLoading, isError, data: tmap } = useTenantMap();
   const { pinned } = usePinned();
+  const navigate = useNavigate();
 
   if (isLoading || isError || !tmap) {
     return <div></div>;
   }
 
+  const goToProject = (
+    e: React.MouseEvent<HTMLDivElement, MouseEvent>,
+    path: string,
+    id: string
+  ) => {
+    e.preventDefault();
+    navigate(`/${path}/projects/${id}`);
+    console.log(path, id);
+  };
   const orgs = orderBy("company", getOrgs(tmap)).map(assignColor);
+  const isActive = (path: string) =>
+    window.location.pathname.split("/")[1] === path;
 
   return (
-    <>
+    <StyledOrganisations>
       {orgs.map(({ name, path, color }, index) => {
         const pinnedProjects = findPinnedByPath(pinned, path);
-        return (
-          <li key={index}>
-            <OrgLink to={`/${path}/projects`}>
-              <aside className={color}></aside>
-              <p>{name}</p>
-            </OrgLink>
 
-            {(pinnedProjects || []).map((project, index) => (
-              <ProjectLink
-                key={index}
-                to={`/${path}/projects/${project.projectId}`}
-              >
-                {project.name}
-              </ProjectLink>
-            ))}
+        return (
+          <li className={`org ${isActive(path) && "active"}`} key={index}>
+            <OrgLink to={`/${path}/projects`}>
+              <OrgName>
+                <aside className={color}></aside>
+                <p>{name}</p>
+              </OrgName>
+              {(pinnedProjects || []).map((project, index) => (
+                <ProjectLink
+                  key={index}
+                  onClick={(e) => goToProject(e, path, project.projectId)}
+                >
+                  {project.name}
+                </ProjectLink>
+              ))}
+            </OrgLink>
           </li>
         );
       })}
-    </>
+    </StyledOrganisations>
   );
 };
 
@@ -62,8 +76,8 @@ export const SideBar = () => {
             <div>Projects</div>
           </StyledLink>
         </li>
-        <RenderOrganizations />
       </PrimaryNav>
+      <RenderOrganizations />
     </StyledSideBar>
   );
 };
@@ -81,30 +95,43 @@ const StyledSideBar = styled("div")`
     display: none;
   }
 `;
-
+const StyledOrganisations = styled("ul")`
+  padding: 0;
+  li.org.active {
+    background: var(--blue1);
+  }
+`;
 const OrgLink = styled(Link)`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
   font-family: ProximaNova-Semibold;
   font-size: var(--p16);
   color: var(--gray7);
   text-decoration: none;
-
+  padding: var(--p12) var(--p24);
+  display: block;
   aside {
     height: 30px;
     width: 30px;
+    border-radius: 4px;
     margin-right: var(--p14);
   }
 `;
 
-const ProjectLink = styled(Link)`
+const OrgName = styled("div")`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+`;
+
+const ProjectLink = styled("div")`
   margin-left: 44px;
   margin-top: 14px;
-  display: block;
+  display: inline;
   text-decoration: none;
   color: var(--gray7);
   font-family: ProximaNova-Light;
+  &:hover {
+    color: var(--blue6);
+  }
 `;
 
 const PrimaryNav = styled("ul")`
@@ -114,7 +141,7 @@ const PrimaryNav = styled("ul")`
     padding: var(--p12) var(--p24);
   }
   li.bottom {
-    margin-bottom: 52px;
+    margin-bottom: var(--p24);
   }
   p {
     margin: 0;

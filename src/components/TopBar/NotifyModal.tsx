@@ -126,7 +126,7 @@ const NotifyContainer = styled("div")`
   top: var(--p64);
   right: var(--p16);
   height: 70vh;
-  z-index: 3;
+  z-index: 1051;
   width: calc(var(--p384) - var(--p16) - var(--p16));
   padding: var(--p16);
   background: var(--white1);
