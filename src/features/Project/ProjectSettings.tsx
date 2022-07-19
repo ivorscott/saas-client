@@ -107,7 +107,8 @@ export const ProjectSettings = ({ project, users, open, onClose }: Props) => {
 
   const handleDelete = () => {
     deleteProject(project.id);
-    setTimeout(() => navigate("/manage/projects"), 2000);
+    const tenantPath = window.location.pathname.split("/")[1];
+    setTimeout(() => navigate(`/${tenantPath}/projects`), 1000);
   };
 
   const handleSubmit = () => {

@@ -1,12 +1,13 @@
-import React, { useState } from "react";
-import Grid from "@mui/material/Grid";
-import Fab from "@mui/material/Fab";
 import Add from "@mui/icons-material/Add";
-import { List } from "./List";
-import { Modal } from "./Modal";
-import { useCreateProject } from "hooks/project";
+import Fab from "@mui/material/Fab";
+import Grid from "@mui/material/Grid";
 import { styled } from "@mui/material/styles";
 import { Layout } from "components/Layout";
+import { useCreateProject } from "hooks/project";
+import React, { useState } from "react";
+
+import { List } from "./List";
+import { Modal } from "./Modal";
 
 export const Projects = () => {
   const [isOpen, setOpen] = useState(false);

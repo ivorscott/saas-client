@@ -45,17 +45,14 @@ const SelectedProject = lazy(() => import("features/Project"));
 
 const queryClient = new QueryClient();
 
-const container = document.getElementById("root");
-const root = createRoot(container!);
-
 const TenantPath = () => {
   const user = useUser();
   const { tenantPath } = useParams();
   const defaultTenantPath = formatPath(user?.company);
   queryClient.invalidateQueries("projects").then();
 
-  if (user) {
-    const activeTenant = user.connections[tenantPath!];
+  if (user && tenantPath) {
+    const activeTenant = user.connections[tenantPath];
     if (!activeTenant) {
       return <Navigate to={`../${defaultTenantPath}/projects`} replace />;
     }
@@ -119,6 +116,8 @@ const App = withAuthenticator(
   { hideSignUp: true, components }
 );
 
+const container = document.getElementById("root");
+const root = createRoot(container!);
 root.render(<App />);
 
 const Container = styled("div")`

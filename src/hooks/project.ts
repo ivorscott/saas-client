@@ -1,5 +1,4 @@
 import { useMutation, useQuery, useQueryClient } from "react-query";
-import { useNavigate } from "react-router-dom";
 import { client as api } from "services/APIService";
 import { Project } from "types/project";
 
@@ -19,13 +18,16 @@ export function useProjects() {
 
 export function useCreateProject() {
   const queryClient = useQueryClient();
-  const navigate = useNavigate();
   const { mutate } = useMutation<Project, Error, string>(
     (name) => api.post("/projects", { name }),
     {
-      onSuccess: (data, variable) => {
-        queryClient.setQueryData(["projects", { name: variable }], data);
-        navigate(`/manage/projects/${data.id}`);
+      onSuccess: (result) => {
+        queryClient.setQueryData<Project[] | undefined>(["projects"], (old) => {
+          if (!old) {
+            return old;
+          }
+          return [...old, result];
+        });
       },
     }
   );

@@ -1,13 +1,13 @@
+import PushPinIcon from "@mui/icons-material/PushPin";
+import IconButton from "@mui/material/IconButton";
+import { styled } from "@mui/material/styles";
+import { Loader } from "components/Loader";
+import { assignColor, getOrgs, getPinState, orderBy } from "helpers/helpers";
+import { useTenantMap } from "hooks/users";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { styled } from "@mui/material/styles";
-import { useTenantMap } from "hooks/users";
-import { Loader } from "components/Loader";
-import PushPinIcon from "@mui/icons-material/PushPin";
-import { assignColor, getOrgs, getPinState, orderBy } from "helpers/helpers";
-import IconButton from "@mui/material/IconButton";
 import { usePinned } from "services/PinnedProvider";
-import { Project, PinnedProject } from "types/project";
+import { PinnedProject, Project } from "types/project";
 
 interface Props {
   project: Project;
