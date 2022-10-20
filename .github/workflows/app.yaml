@@ -29,11 +29,12 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Amplify setup
         run: |
-          echo "const awsmobile = {
+          cat > ./src/aws-exports.js <<EOF
+          const awsmobile = {
             "aws_project_region": "eu-central-1"
           };
-            
-          export default awsmobile;" >> ./src/aws-exports.js
+          export default awsmobile;
+          EOT
 
       - name: Build and Push Image
         env:
