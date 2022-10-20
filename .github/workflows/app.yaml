@@ -34,7 +34,7 @@ jobs:
             "aws_project_region": "eu-central-1"
           };
           export default awsmobile;
-          EOT
+          EOF
 
       - name: Build and Push Image
         env:
