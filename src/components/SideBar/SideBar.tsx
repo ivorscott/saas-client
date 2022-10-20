@@ -113,6 +113,7 @@ const OrgLink = styled(Link)`
     width: 30px;
     border-radius: 4px;
     margin-right: var(--p14);
+    border: 3px solid #fff;
   }
 `;
 
