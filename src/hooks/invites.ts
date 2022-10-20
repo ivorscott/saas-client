@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "react-query";
-import { Invite } from "types/invite";
 import { client as api } from "services/APIService";
+import { Invite } from "types/invite";
 
 export function useInvites() {
   return useQuery<Invite[], Error>(
