@@ -26,6 +26,8 @@ REACT_APP_BACKEND=https://api.devpie.local/api
 npm install -g @aws-amplify/cli
 amplify configure
 amplify init
+amplify add auth
+amplify status
 ```
 5. Execute
 ```bash
