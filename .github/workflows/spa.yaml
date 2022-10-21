@@ -1,9 +1,9 @@
-name: app
+name: spa
 # TODO: Use repository secrets for required environment variables and amplify setup
 on:
   push:
     paths:
-      - ".github/workflows/app.yaml"
+      - ".github/workflows/spa.yaml"
       - "src/**"
       - "nginx/**"
       - "public/**"
@@ -44,7 +44,7 @@ jobs:
           EOF
       - name: Build and Push Image
         env:
-          IMAGE: app
+          IMAGE: spa
           OWNER: ${{ github.repository_owner }}
         run: |
           export SHA=$(git rev-parse --short HEAD)
