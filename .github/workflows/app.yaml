@@ -1,5 +1,5 @@
 name: app
-
+# TODO: Use repository secrets for required environment variables and amplify setup
 on:
   push:
     paths:
@@ -35,7 +35,13 @@ jobs:
           };
           export default awsmobile;
           EOF
-
+      - name: Environment setup
+        run: |
+          cat > .env <<EOF
+          REACT_APP_USER_POOL_ID=
+          REACT_APP_USER_POOL_CLIENT_ID=
+          REACT_APP_BACKEND=https://api-dev.devpie.io/api
+          EOF
       - name: Build and Push Image
         env:
           IMAGE: app
