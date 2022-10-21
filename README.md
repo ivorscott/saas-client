@@ -16,7 +16,7 @@ REACT_APP_USER_POOL_ID=[YOUR_SHARED_USER_POOL_ID_GOES_HERE]
 REACT_APP_USER_POOL_CLIENT_ID=[YOUR_SHARED_USER_POOL_CLIENT_ID_GOES_HERE]
 REACT_APP_BACKEND=https://api.devpie.local/api
 ```
-3. Copy the self-signed certificates generated from the saas-infra instructions. Place them in the project root. They are used in the package.json file.
+3. Copy the self-signed certificates generated from step 6 in the [saas-core instructions](https://github.com/devpies/saas-core/blob/main/docs/SETUP.md). Place them in the project root. They are used in the package.json file.
 ```
  "scripts": {
     "start": "HTTPS=true SSL_CRT_FILE=./devpie.local.pem SSL_KEY_FILE=./devpie.local-key.pem react-scripts start",
