@@ -21,12 +21,18 @@ REACT_APP_BACKEND=https://api.devpie.local/api
  "scripts": {
     "start": "HTTPS=true SSL_CRT_FILE=./devpie.local.pem SSL_KEY_FILE=./devpie.local-key.pem react-scripts start",
 ```
-4. Run:
+4. Run once:
+```bash
+npm install -g @aws-amplify/cli
+amplify configure
+amplify init
 ```
+5. Execute
+```bash
 npm install
 npm start
 ```
-5. Then navigate to https://devpie.local:3000 
-6. To login as a tenant, you must provision a tenant in the SaaS admin app. Use a real email. You will be sent a password.
+6. Then navigate to https://devpie.local:3000 
+7. To login as a tenant, you must provision a tenant in the SaaS admin app. Use a real email. You will be sent a password.
     ![](docs/img/admin-webapp.png)
 
