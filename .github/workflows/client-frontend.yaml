@@ -1,9 +1,9 @@
-name: spa
+name: client-frontend
 # TODO: Use repository secrets for required environment variables and amplify setup
 on:
   push:
     paths:
-      - ".github/workflows/spa.yaml"
+      - ".github/workflows/client-frontend.yaml"
       - "src/**"
       - "nginx/**"
       - "public/**"
@@ -44,7 +44,7 @@ jobs:
           EOF
       - name: Build and Push Image
         env:
-          IMAGE: spa
+          IMAGE: client
           OWNER: ${{ github.repository_owner }}
         run: |
           export SHA=$(git rev-parse --short HEAD)
@@ -56,7 +56,7 @@ jobs:
 
           cat > patch.sh <<EOF
           #!/bin/bash
-          sed -i 's/$IMAGE:.*/$IMAGE:$SHA/' ./main/manifests/mic-$IMAGE.yaml
+          sed -i 's/$IMAGE:.*/$IMAGE:$SHA/' ./main/manifests/$IMAGE-frontend.yaml
           EOF
 
           chmod +x patch.sh
