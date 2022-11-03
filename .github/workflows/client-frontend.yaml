@@ -16,6 +16,9 @@ on:
 env:
   REACT_APP_USER_POOL_ID: ${{ secrets.REACT_APP_USER_POOL_ID }}
   REACT_APP_USER_POOL_CLIENT_ID: ${{ secrets.REACT_APP_USER_POOL_CLIENT_ID }}
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  AWS_DEFAULT_REGION: eu-central-1
 
 jobs:
   publish:
@@ -108,6 +111,7 @@ jobs:
         id: client
         with:
           name: static-client-assets
+          path: build
 
       - name: Print download path
         run: echo ${{steps.client.outputs.download-path}}
