@@ -1,5 +1,3 @@
-# syntax=docker/dockerfile:1.3-labs
-
 ARG backend
 ARG user_pool_id
 ARG user_pool_client_id
@@ -24,11 +22,9 @@ ARG backend
 ARG user_pool_id
 ARG user_pool_client_id
 
-RUN <<EoF
-echo "REACT_APP_USER_POOL_ID=$user_pool_id" >> .env
-echo "REACT_APP_USER_POOL_CLIENT_ID=$user_pool_client_id" >> .env
-echo "REACT_APP_BACKEND=$backend" >> .env
-EoF
+RUN echo "REACT_APP_USER_POOL_ID=$user_pool_id" >> .env && \
+    echo "REACT_APP_USER_POOL_CLIENT_ID=$user_pool_client_id" >> .env && \
+    echo "REACT_APP_BACKEND=$backend" >> .env
 
 RUN npm run build
 
