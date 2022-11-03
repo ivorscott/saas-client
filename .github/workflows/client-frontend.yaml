@@ -45,6 +45,9 @@ jobs:
           REACT_APP_BACKEND=https://api-dev.devpie.io/api
           EOF
 
+      - name: Install
+        run: npm i
+
       - name: Test
         run: npm test
 
