@@ -9,9 +9,9 @@ terraform {
 	}
 
 	backend "s3" {
-		bucket = "${var.domain_name}-terraform"
+		bucket = "dev.devpie.io-terraform"
 		key    = "prod/terraform.tfstate"
-		region = "eu-west-1"
+		region = "eu-central-1"
 	}
 }
 

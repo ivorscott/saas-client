@@ -38,3 +38,23 @@ npm start
 7. To login as a tenant, you must provision a tenant in the SaaS admin app. Use a real email. You will be sent a password.
     ![](docs/img/admin-webapp.png)
 
+## Building a production image
+
+Pass the required build arguments to build a production image.
+
+```bash
+docker build \
+--target prod
+--build-arg user_pool_id=********** \
+--build-arg user_pool_client_id=********** \
+--build-arg backend=********** \
+-t saas-client:latest .
+```
+## Creating a production container
+
+Create a container for debugging purposes. Nginx will serve the static assets built in
+the image.
+
+```bash
+docker run -p 3000:80 saas-client:latest
+```

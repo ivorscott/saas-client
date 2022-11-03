@@ -5,12 +5,14 @@ resource "aws_s3_bucket" "www_bucket" {
   tags = var.common_tags
 }
 
-resource " aws_s3_bucket_acl" "www_bucket_acl" {
+resource "aws_s3_bucket_policy" "www_bucket_policy" {
+  bucket = var.domain_name
+  policy = templatefile("s3-policy.json", { bucket = "www.${var.domain_name}" })
+}
+
+resource "aws_s3_bucket_acl" "www_bucket_acl" {
   bucket = "www.${var.domain_name}"
   acl    = "public-read"
-  policy = templatefile("s3-policy.json", { bucket = "www.${var.domain_name}" })
-
-  tags = var.common_tags
 }
 
 resource "aws_s3_bucket_cors_configuration" "www_cors_config" {
@@ -43,12 +45,14 @@ resource "aws_s3_bucket" "root_bucket" {
   tags = var.common_tags
 }
 
-resource " aws_s3_bucket_acl" "root_bucket_acl" {
+resource "aws_s3_bucket_policy" "root_bucket_policy" {
+  bucket = var.domain_name
+  policy = templatefile("s3-policy.json", { bucket = var.domain_name })
+}
+
+resource "aws_s3_bucket_acl" "root_bucket_acl" {
   bucket = var.domain_name
   acl    = "public-read"
-  policy = templatefile("s3-policy.json", { bucket = "www.${var.domain_name}" })
-
-  tags = var.common_tags
 }
 
 resource "aws_s3_bucket_cors_configuration" "root_cors_config" {
@@ -63,5 +67,7 @@ resource "aws_s3_bucket_cors_configuration" "root_cors_config" {
 resource "aws_s3_bucket_website_configuration" "root_website_config" {
   bucket = var.domain_name
 
-  redirect_all_requests_to = "https://www.${var.domain_name}"
+  redirect_all_requests_to {
+    host_name = "https://www.${var.domain_name}"
+  }
 }

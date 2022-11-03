@@ -33,18 +33,16 @@ jobs:
 
       - name: Amplify setup
         run: |
-          cat > ./src/aws-exports.js <<EOF
+          cat << EOF > ./src/aws-exports.js
           const awsmobile = {
-            "aws_project_region": "eu-central-1",
-            "aws_user_pools_id": "$REACT_APP_USER_POOL_ID",
-            "aws_user_pools_web_client_id": "$REACT_APP_USER_POOL_CLIENT_ID"
+            "aws_project_region": "eu-central-1"
           };
           export default awsmobile;
           EOF
 
       - name: Environment setup
         run: |
-          cat > .env <<EOF
+          cat << EOF > .env
           REACT_APP_USER_POOL_ID=$REACT_APP_USER_POOL_ID
           REACT_APP_USER_POOL_CLIENT_ID=$REACT_APP_USER_POOL_CLIENT_ID
           REACT_APP_BACKEND=https://api-dev.devpie.io/api
@@ -56,12 +54,11 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: Archive production artifacts
+      - name: Archive artifact
         uses: actions/upload-artifact@v3
         with:
           name: static-client-assets
-          path: |
-            build
+          path: build
 
       - name: Build and Push Image
         env:
@@ -98,7 +95,7 @@ jobs:
           git commit -m "new release: $VERSION"
           git push
   deploy:
-    - name: Download a single artifact
+    - name: Download artifact
       uses: actions/download-artifact@v3
       id: client
       with:
@@ -109,6 +106,7 @@ jobs:
 
     - name: Terraform Apply
       run: |
+        ls -l
         cd infra/dev
         terraform init
         terraform plan && terraform apply --auto-approve

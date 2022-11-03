@@ -51,3 +51,4 @@ devpie.local*
 terraform.tfstate
 terraform.tfstate.backup
 terraform.tfvars*
+!terraform.tfvars.sample

@@ -1,0 +1,6 @@
+acm_certificate  = ""
+hosted_zone  = "eu-central-1"
+domain_name = "dev.example.com"
+common_tags = {
+    stage = "dev"
+}
