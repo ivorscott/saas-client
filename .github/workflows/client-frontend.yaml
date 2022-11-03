@@ -1,5 +1,5 @@
 name: client-frontend
-# TODO: Use repository secrets for required environment variables and amplify setup
+
 on:
   push:
     paths:
@@ -20,9 +20,6 @@ env:
 jobs:
   publish:
     runs-on: ubuntu-latest
-    permissions: # TODO verify if needed
-      contents: read
-      packages: write
     steps:
       - uses: actions/checkout@v2
       - uses: docker/login-action@v1
@@ -95,21 +92,23 @@ jobs:
           git commit -m "new release: $VERSION"
           git push
   deploy:
-    - name: Download artifact
-      uses: actions/download-artifact@v3
-      id: client
-      with:
-        name: static-client-assets
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v3
+        id: client
+        with:
+          name: static-client-assets
 
-    - name: Print download path
-      run: echo ${{steps.client.outputs.download-path}}
+      - name: Print download path
+        run: echo ${{steps.client.outputs.download-path}}
 
-    - name: Terraform Apply
-      run: |
-        ls -l
-        cd infra/dev
-        terraform init
-        terraform plan && terraform apply --auto-approve
-        
-        cd ../../build
-        aws s3 sync . s3://www.dev.devpie.io
+      - name: Terraform Apply
+        run: |
+          ls -l
+          cd infra/dev
+          terraform init
+          terraform plan && terraform apply --auto-approve
+          
+          cd ../../build
+          aws s3 sync . s3://www.dev.devpie.io
