@@ -49,7 +49,7 @@ jobs:
         run: npm i
 
       - name: Test
-        run: npm test
+        run: npm test --passWithNoTests
 
       - name: Build
         run: npm run build
