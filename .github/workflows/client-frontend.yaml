@@ -13,13 +13,16 @@ on:
       - "tsconfig.json"
       - "Dockerfile"
 
+env:
+  REACT_APP_USER_POOL_ID: ${{ secrets.REACT_APP_USER_POOL_ID }}
+  REACT_APP_USER_POOL_CLIENT_ID: ${{ secrets.REACT_APP_USER_POOL_CLIENT_ID }}
+
 jobs:
   publish:
     runs-on: ubuntu-latest
-    permissions:
+    permissions: # TODO verify if needed
       contents: read
       packages: write
-
     steps:
       - uses: actions/checkout@v2
       - uses: docker/login-action@v1
@@ -27,21 +30,39 @@ jobs:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Amplify setup
         run: |
           cat > ./src/aws-exports.js <<EOF
           const awsmobile = {
-            "aws_project_region": "eu-central-1"
+            "aws_project_region": "eu-central-1",
+            "aws_user_pools_id": "$REACT_APP_USER_POOL_ID",
+            "aws_user_pools_web_client_id": "$REACT_APP_USER_POOL_CLIENT_ID"
           };
           export default awsmobile;
           EOF
+
       - name: Environment setup
         run: |
           cat > .env <<EOF
-          REACT_APP_USER_POOL_ID=
-          REACT_APP_USER_POOL_CLIENT_ID=
+          REACT_APP_USER_POOL_ID=$REACT_APP_USER_POOL_ID
+          REACT_APP_USER_POOL_CLIENT_ID=$REACT_APP_USER_POOL_CLIENT_ID
           REACT_APP_BACKEND=https://api-dev.devpie.io/api
           EOF
+
+      - name: Test
+        run: npm test
+
+      - name: Build
+        run: npm run build
+
+      - name: Archive production artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: static-client-assets
+          path: |
+            build
+
       - name: Build and Push Image
         env:
           IMAGE: client
@@ -76,3 +97,21 @@ jobs:
           git add .
           git commit -m "new release: $VERSION"
           git push
+  deploy:
+    - name: Download a single artifact
+      uses: actions/download-artifact@v3
+      id: client
+      with:
+        name: static-client-assets
+
+    - name: Print download path
+      run: echo ${{steps.client.outputs.download-path}}
+
+    - name: Terraform Apply
+      run: |
+        cd infra/dev
+        terraform init
+        terraform plan && terraform apply --auto-approve
+        
+        cd ../../build
+        aws s3 sync . s3://www.dev.devpie.io

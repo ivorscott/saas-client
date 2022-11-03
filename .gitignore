@@ -46,3 +46,8 @@ amplifytools.xcconfig
 **.sample
 #amplify-do-not-edit-end
 devpie.local*
+
+.terraform
+terraform.tfstate
+terraform.tfstate.backup
+terraform.tfvars*
