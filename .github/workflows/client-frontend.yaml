@@ -12,6 +12,7 @@ on:
       - "package-lock.json"
       - "tsconfig.json"
       - "Dockerfile"
+  workflow_dispatch:
 
 env:
   REACT_APP_USER_POOL_ID: ${{ secrets.REACT_APP_USER_POOL_ID }}
