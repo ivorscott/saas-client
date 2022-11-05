@@ -9,17 +9,18 @@ terraform {
 	}
 
 	backend "s3" {
-		bucket = "dev.devpie.io-terraform"
-		key    = "prod/terraform.tfstate"
+		bucket = "devpie.io-terraform"
+		key    = "dev/terraform.tfstate"
 		region = "eu-central-1"
 	}
 }
 
 provider "aws" {
-	region = "eu-west-1"
+	region = "eu-central-1"
 }
 
+# To use an ACM certificate with CloudFront request the certificate in us-east-1
 provider "aws" {
 	alias  = "acm_provider"
-	region = "eu-central-1"
+	region = "us-east-1"
 }
