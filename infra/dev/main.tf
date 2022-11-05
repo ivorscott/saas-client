@@ -10,7 +10,7 @@ terraform {
 
 	backend "s3" {
 		bucket = "devpie.io-terraform"
-		key    = "dev/terraform.tfstate"
+		key    = "dev/client/terraform.tfstate"
 		region = "eu-central-1"
 	}
 }
@@ -21,4 +21,5 @@ module "website" {
 	region = var.region
 	domain_name = var.domain_name
 	common_tags = var.common_tags
+	force_delete = true
 }
