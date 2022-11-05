@@ -1,3 +1,7 @@
+variable "region" {
+  description = "The AWS region."
+}
+
 variable "domain_name" {
   type        = string
   description = "The domain name for the website."

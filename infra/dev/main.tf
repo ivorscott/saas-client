@@ -15,12 +15,10 @@ terraform {
 	}
 }
 
-provider "aws" {
-	region = "eu-central-1"
-}
-
-# To use an ACM certificate with CloudFront request the certificate in us-east-1
-provider "aws" {
-	alias  = "acm_provider"
-	region = "us-east-1"
+module "website" {
+	source = "github.com/devpies/saas-infra//modules/website?ref=main"
+	stage = var.stage
+	region = var.region
+	domain_name = var.domain_name
+	common_tags = var.common_tags
 }
