@@ -83,7 +83,7 @@ export function BasicMenu({
     setAnchorEl(null);
   };
 
-  const defaultTenantPath = formatPath(user?.company);
+  const basePath = formatPath(user?.company);
 
   return (
     <div>
@@ -136,7 +136,7 @@ export function BasicMenu({
         </List>
         <Divider />
         <MenuList>
-          <MenuItem>
+          <MenuLink to={`/${basePath}/account?t=plan`} onClick={onClose}>
             <div>
               <MenuH2 className="slim">Basic Plan</MenuH2>
               <div>
@@ -146,8 +146,8 @@ export function BasicMenu({
                 <Upgrade to={"#"}>Upgrade to Premium</Upgrade>
               </div>
             </div>
-          </MenuItem>
-          <MenuLink to={`/${defaultTenantPath}/account`} onClick={onClose}>
+          </MenuLink>
+          <MenuLink to={`/${basePath}/account`} onClick={onClose}>
             <MenuH2>Manage Account</MenuH2>
           </MenuLink>
           <Divider />

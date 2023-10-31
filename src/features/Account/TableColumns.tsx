@@ -29,14 +29,14 @@ export const columns = [
     title: "Email",
     dataIndex: "email",
     key: "email",
-    width: 250,
+    width: 200,
     render: (value: any) => <StyledCell>{value}</StyledCell>,
   },
   {
     title: "Created At",
     dataIndex: "createdAt",
     key: "createdAt",
-    width: 250,
+    width: 200,
     render: (value: any) => (
       <StyledCell>{new Date(value).toLocaleDateString("en-US")}</StyledCell>
     ),
@@ -45,7 +45,7 @@ export const columns = [
     title: "Actions",
     dataIndex: "actions",
     key: "actions",
-    width: 250,
+    width: 200,
     render: (_: any, d: any, __: number) => (
       <StyledCell>
         <DeleteDialog title="Delete User" userId={d.id} email={d.email}>
