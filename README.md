@@ -1,60 +1,44 @@
 # SaaS-Client
 
-Multi-tenant SaaS app built on AWS
+This project has 3 repositories:
+
+- [sass-core](https://github.com/devpies/saas-core)
+- [sass-client](https://github.com/devpies/saas-client) (this repo)
+- [sass-infra](https://github.com/devpies/saas-infra)
+
+## Overview
+
+SaaS-Client is a multi-tenant SaaS frontend built in React and Typescript.
+It's a simple project management tool like Jira or Trello and communicates 
+with the SaaS-Core backend: a collection of Go services.
 
 ![](docs/img/demo.png)
 
 ## Setup
 
 1. Checkout `saas-infra` and deploy the `local` infrastructure.
-2. You'll need the terraform output values to create the repository's `.env` file.
-- Copy `.env.sample` in the project root and create your own.
-```
-# .env.sample
+2. Create your own `.env` file from the `.env.sample`file.
+You'll need the `shared_user_pool_id` and `shared_user_pool_client_id` from terraform's output values.
 
-REACT_APP_USER_POOL_ID=[YOUR_SHARED_USER_POOL_ID_GOES_HERE]
-REACT_APP_USER_POOL_CLIENT_ID=[YOUR_SHARED_USER_POOL_CLIENT_ID_GOES_HERE]
-REACT_APP_BACKEND=https://api.devpie.local/api
-```
-3. Copy the self-signed certificates generated from step 6 in the [saas-core instructions](https://github.com/devpies/saas-core/blob/main/docs/SETUP.md). Place them in the project root. They are used in the package.json file.
-```
- "scripts": {
-    "start": "HTTPS=true SSL_CRT_FILE=./devpie.local.pem SSL_KEY_FILE=./devpie.local-key.pem react-scripts start",
-```
-4. Run once:
-```bash
-npm install -g @aws-amplify/cli
-amplify configure
-amplify init
-amplify add auth
-amplify status
-```
-5. Execute
-```bash
-npm install
-npm start
-```
-6. Then navigate to https://devpie.local:3000 
-7. To login as a tenant, you must provision a tenant in the SaaS admin app. Use a real email. You will be sent a password.
-    ![](docs/img/admin-webapp.png)
+    ```
+    REACT_APP_USER_POOL_ID=[YOUR_SHARED_USER_POOL_ID_GOES_HERE]
+    REACT_APP_USER_POOL_CLIENT_ID=[YOUR_SHARED_USER_POOL_CLIENT_ID_GOES_HERE]
+    REACT_APP_BACKEND=https://api.devpie.local/api
+    ```
+3. Fetch the self-signed certificates generated from step 6 in the [saas-core instructions](https://github.com/devpies/saas-core/blob/main/docs/SETUP.md). Copy them into the root of this project. They are used in the start command of the
+`package.json` file:
+    ```
+     "scripts": {
+        "start": "HTTPS=true SSL_CRT_FILE=./devpie.local.pem SSL_KEY_FILE=./devpie.local-key.pem react-scripts start",
+    ```
 
-## Building a production image
+4. Finally run:
+    ```bash
+    npm install
+    npm start
+    ```
+5. Navigate to https://devpie.local:3000
 
-Pass the required build arguments to build a production image.
 
-```bash
-docker build \
---target prod
---build-arg user_pool_id=********** \
---build-arg user_pool_client_id=********** \
---build-arg backend=********** \
--t saas-client:latest .
-```
-## Creating a production container
+__NOTE:__ Requests using localhost:3000 will be blocked by CORS!
 
-Create a container for debugging purposes. Nginx will serve the static assets built in
-the image.
-
-```bash
-docker run -p 3000:80 saas-client:latest
-```
