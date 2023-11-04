@@ -2,9 +2,9 @@
 
 This project has 3 repositories:
 
-- [sass-core](https://github.com/devpies/saas-core)
-- [sass-client](https://github.com/devpies/saas-client) (this repo)
-- [sass-infra](https://github.com/devpies/saas-infra)
+- [saas-core](https://github.com/devpies/saas-core)
+- [saas-client](https://github.com/devpies/saas-client) (this repo)
+- [saas-infra](https://github.com/devpies/saas-infra)
 
 ## Overview
 
