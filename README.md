@@ -23,6 +23,7 @@ You'll need the `shared_user_pool_id` and `shared_user_pool_client_id` from terr
     ```
     REACT_APP_USER_POOL_ID=[YOUR_SHARED_USER_POOL_ID_GOES_HERE]
     REACT_APP_USER_POOL_CLIENT_ID=[YOUR_SHARED_USER_POOL_CLIENT_ID_GOES_HERE]
+    REACT_APP_STRIPE_KEY=[YOUR_STRIPE_KEY_GOES_HERE]
     REACT_APP_BACKEND=https://api.devpie.local/api
     ```
 3. Fetch the self-signed certificates generated from step 6 in the [saas-core instructions](https://github.com/devpies/saas-core/blob/main/docs/SETUP.md). Copy them into the root of this project. They are used in the start command of the
