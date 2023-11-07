@@ -3,12 +3,12 @@
   "version": "0.0.0",
   "private": true,
   "dependencies": {
-    "@aws-amplify/ui-react": "^3.5.9",
+    "@aws-amplify/ui-react": "^5.3.1",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.9.3",
     "@mui/icons-material": "^5.8.4",
     "@mui/material": "^5.8.7",
-    "aws-amplify": "4.3.43",
+    "aws-amplify": "^5.3.12",
     "axios": "^0.21.1",
     "dayjs": "^1.10.4",
     "konva": "^8.0.2",
@@ -38,8 +38,8 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-simple-import-sort": "^7.0.0",
     "i": "^0.3.7",
-    "npm": "^8.13.2",
-    "react-scripts": "5.0.1"
+    "npm": "^10.2.3",
+    "react-scripts": "^5.0.1"
   },
   "scripts": {
     "start": "HTTPS=true SSL_CRT_FILE=./devpie.local.pem SSL_KEY_FILE=./devpie.local-key.pem react-scripts start",

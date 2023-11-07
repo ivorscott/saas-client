@@ -8,7 +8,7 @@ import {
   StyledEngineProvider,
   ThemeProvider,
 } from "@mui/material/styles";
-import Amplify from "aws-amplify";
+import { Amplify } from "aws-amplify";
 import { Loader } from "components/Loader";
 import { SideBar } from "components/SideBar";
 import { TopBar } from "components/TopBar/TopBar";
