@@ -63,8 +63,9 @@ export const Account = () => {
   const tab = searchParams.get("t");
   const basePath = "/" + formatPath(userInfo?.company);
 
-  const handleChange = (event: React.SyntheticEvent, tab: string) => {
-    if (AccountTab.Users == tab) {
+  const handleChange = (event: React.SyntheticEvent) => {
+    const button = event.target as HTMLButtonElement;
+    if (AccountTab.Users == button.innerText.toLowerCase()) {
       const path = `${basePath}/account?t=${AccountTab.Users}`;
       navigate(path);
     } else {
