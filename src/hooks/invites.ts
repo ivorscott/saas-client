@@ -5,7 +5,8 @@ import { Invite } from "types/invite";
 export function useInvites() {
   return useQuery<Invite[], Error>(
     "invites",
-    async () => await api.get("/users/teams/invites")
+    async () => []
+    // async () => await api.get("/users/invites")
   );
 }
 
@@ -17,7 +18,7 @@ export function useInviteDecision() {
     { invite: Invite; accepted: boolean }
   >(
     ({ invite, accepted }) =>
-      api.patch(`/users/teams/${invite.teamId}/invites/${invite.id}`, {
+      api.patch(`/users/invites/${invite.id}`, {
         accepted,
       }),
     {

@@ -143,7 +143,7 @@ export function BasicMenu({
                 <Seats>
                   {seatsAvailable} of {maxSeats} seats available
                 </Seats>
-                <Upgrade to={"#"}>Upgrade to Premium</Upgrade>
+                <Upgrade>Upgrade to Premium</Upgrade>
               </div>
             </div>
           </MenuLink>
@@ -221,7 +221,7 @@ const Seats = styled("p")`
   font-size: var(--p12);
   margin: 0;
 `;
-const Upgrade = styled(Link)`
+const Upgrade = styled("span")`
   color: var(--blue6) !important;
   font-size: var(--p12);
 `;

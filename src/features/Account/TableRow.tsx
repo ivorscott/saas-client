@@ -27,7 +27,7 @@ const StyledRow = styled("tr")`
       transition: all 0.3s;
     }
 
-    &:first-child div {
+    &:first-of-type div {
       justify-content: flex-start;
       border-radius: 4px 0 0 4px;
     }

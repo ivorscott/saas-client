@@ -1,16 +1,18 @@
 import { Box, Tab, Tabs, Typography } from "@mui/material";
+import Button from "@mui/material/Button";
 import { styled } from "@mui/material/styles";
 import { Auth } from "aws-amplify";
 import { Layout } from "components/Layout";
 import { useSeatsAvailable, useTableUsers, useUsers } from "hooks/users";
 import Table from "rc-table";
 import React, { useEffect, useState } from "react";
-import { Link, useSearchParams } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 
 import { formatPath } from "../../helpers/helpers";
 import { Modal as AddUser } from "./Modal";
 import { columns } from "./TableColumns";
 import { components } from "./TableRow";
+import { UpgradeModal } from "./UpgradeModal";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -41,20 +43,27 @@ const getTabIndex = (tab: string | null): number => {
 export const Account = () => {
   const [userInfo, setUserInfo] = useState<{ company: string }>();
   const [value, setValue] = React.useState(0);
-  const [isOpen, setOpen] = useState(false);
+  const [isOpen, setOpen] = useState(true);
 
   const [searchParams] = useSearchParams();
   const seatsResult = useSeatsAvailable();
+  const navigate = useNavigate();
   const result = useUsers();
   const users = useTableUsers(result);
 
   const tab = searchParams.get("t");
+  const basePath = "/" + formatPath(userInfo?.company);
 
-  const handleChange = (
-    event: React.MouseEvent<HTMLAnchorElement>,
-    tab: string
-  ) => {
-    setValue(getTabIndex(tab));
+  const handleChange = (event: React.SyntheticEvent, tab: string) => {
+    const button = event.target as HTMLButtonElement;
+
+    if (AccountTab.Users == button.innerText.toLowerCase()) {
+      const path = `${basePath}/account?t=${AccountTab.Users}`;
+      navigate(path);
+    } else {
+      const path = `${basePath}/account?t=${AccountTab.Plan}`;
+      navigate(path);
+    }
   };
 
   const toggleModal = () => {
@@ -88,11 +97,7 @@ export const Account = () => {
         aria-labelledby={`simple-tab-${index}`}
         {...other}
       >
-        {value === index && (
-          <Box>
-            <Typography>{children}</Typography>
-          </Box>
-        )}
+        {value === index && <Box>{children}</Box>}
       </div>
     );
   }
@@ -113,25 +118,13 @@ export const Account = () => {
       </StyledHeader>
       <br />
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-        <Tabs value={value} aria-label="basic tabs example">
-          <Link
-            to={`/${formatPath(userInfo?.company)}/account?t=${
-              AccountTab.Users
-            }`}
-            style={{ color: "black" }}
-            onClick={(e) => handleChange(e, AccountTab.Users)}
-          >
-            <Tab label="Users" />
-          </Link>
-          <Link
-            to={`/${formatPath(userInfo?.company)}/account?t=${
-              AccountTab.Plan
-            }`}
-            style={{ color: "black" }}
-            onClick={(e) => handleChange(e, AccountTab.Plan)}
-          >
-            <Tab label="Plan" />
-          </Link>
+        <Tabs
+          onChange={handleChange}
+          value={value}
+          aria-label="basic tabs example"
+        >
+          <Tab label={AccountTab.Users} />
+          <Tab label={AccountTab.Plan} />
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
@@ -149,7 +142,19 @@ export const Account = () => {
           <>
             <h2>Basic Plan</h2>
 
-            <p onClick={toggleModal}>Upgrade to Premium</p>
+            <StyledPremiumButton variant="contained" onClick={toggleModal}>
+              Upgrade to Premium
+            </StyledPremiumButton>
+
+            <UpgradeModal
+              open={isOpen}
+              onClose={() => {
+                return;
+              }}
+              onSubmit={() => {
+                return;
+              }}
+            />
           </>
         ) : (
           <h2>Premium Plan</h2>
@@ -181,5 +186,13 @@ const StyledTable = styled(Table)`
     font-family: ProximaNova-Extrabold;
     font-size: var(--p14);
     color: var(--gray7);
+  }
+`;
+
+const StyledPremiumButton = styled(Button)`
+  background: var(--blue7);
+
+  &:hover {
+    background: var(--blue8);
   }
 `;
