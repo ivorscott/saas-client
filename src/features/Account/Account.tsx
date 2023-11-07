@@ -1,14 +1,18 @@
-import { Box, Tab, Tabs, Typography } from "@mui/material";
+import { Box, Tab, Tabs } from "@mui/material";
 import Button from "@mui/material/Button";
 import { styled } from "@mui/material/styles";
+import { Elements } from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
 import { Auth } from "aws-amplify";
 import { Layout } from "components/Layout";
 import { useSeatsAvailable, useTableUsers, useUsers } from "hooks/users";
 import Table from "rc-table";
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 import { formatPath } from "../../helpers/helpers";
+import { client as api } from "../../services/APIService";
+import { Intent } from "../../types/intent";
 import { Modal as AddUser } from "./Modal";
 import { columns } from "./TableColumns";
 import { components } from "./TableRow";
@@ -40,10 +44,15 @@ const getTabIndex = (tab: string | null): number => {
   return index;
 };
 
+// Make sure to call `loadStripe` outside of a component’s render to avoid
+// recreating the `Stripe` object on every render.
+const stripePromise = loadStripe(`${process.env.REACT_APP_STRIPE_KEY}`);
+
 export const Account = () => {
   const [userInfo, setUserInfo] = useState<{ company: string }>();
   const [value, setValue] = React.useState(0);
-  const [isOpen, setOpen] = useState(true);
+  const [isOpen, setOpen] = useState(false);
+  const [options, setOptions] = useState<{ clientSecret: string }>();
 
   const [searchParams] = useSearchParams();
   const seatsResult = useSeatsAvailable();
@@ -55,9 +64,7 @@ export const Account = () => {
   const basePath = "/" + formatPath(userInfo?.company);
 
   const handleChange = (event: React.SyntheticEvent, tab: string) => {
-    const button = event.target as HTMLButtonElement;
-
-    if (AccountTab.Users == button.innerText.toLowerCase()) {
+    if (AccountTab.Users == tab) {
       const path = `${basePath}/account?t=${AccountTab.Users}`;
       navigate(path);
     } else {
@@ -70,12 +77,15 @@ export const Account = () => {
     setOpen(!isOpen);
   };
 
-  const handleUpgrade = () => {
-    return;
-  };
-
   useEffect(() => {
     const fn = async (tab: string | null) => {
+      const pi = (await api.post("/billing/payment-intent", {
+        currency: "eur",
+        amount: 1000,
+      })) as Intent;
+
+      setOptions({ clientSecret: pi.client_secret });
+
       // get company
       const session = await Auth.currentSession();
       const data = session.getIdToken().payload;
@@ -146,15 +156,15 @@ export const Account = () => {
               Upgrade to Premium
             </StyledPremiumButton>
 
-            <UpgradeModal
-              open={isOpen}
-              onClose={() => {
-                return;
-              }}
-              onSubmit={() => {
-                return;
-              }}
-            />
+            <Elements stripe={stripePromise} options={options}>
+              <UpgradeModal
+                open={isOpen}
+                onClose={toggleModal}
+                onSubmit={() => {
+                  return;
+                }}
+              />
+            </Elements>
           </>
         ) : (
           <h2>Premium Plan</h2>

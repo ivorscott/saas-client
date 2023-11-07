@@ -4,12 +4,12 @@ import Dialog from "@mui/material/Dialog";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import { styled } from "@mui/material/styles";
+import {
+  PaymentElement,
+  useElements,
+  useStripe,
+} from "@stripe/react-stripe-js";
 import React from "react";
-// import {
-//   PaymentElement,
-//   useElements,
-//   useStripe,
-// } from "@stripe/react-stripe-js";
 
 interface Props {
   open: boolean;
@@ -18,6 +18,38 @@ interface Props {
 }
 
 export const UpgradeModal = ({ open, onClose, onSubmit }: Props) => {
+  const stripe = useStripe();
+  const elements = useElements();
+
+  const handleSubmit = async (event: React.MouseEvent<HTMLButtonElement>) => {
+    // We don't want to let default form submission happen here,
+    // which would refresh the page.
+    event.preventDefault();
+
+    if (!stripe || !elements) {
+      // Stripe.js hasn't yet loaded.
+      // Make sure to disable form submission until Stripe.js has loaded.
+      return;
+    }
+
+    const result = await stripe.confirmPayment({
+      //`Elements` instance that was used to create the Payment Element
+      elements,
+      confirmParams: {
+        return_url: "https://example.com/order/123/complete",
+      },
+    });
+
+    if (result.error) {
+      // Show error to your customer (for example, payment details incomplete)
+      console.log(result.error.message);
+    } else {
+      // Your customer will be redirected to your `return_url`. For some payment
+      // methods like iDEAL, your customer will be redirected to an intermediate
+      // site first to authorize the payment, then redirected to the `return_url`.
+    }
+  };
+
   return (
     <StyledDialog
       data-test="component-projects-modal"
@@ -30,22 +62,23 @@ export const UpgradeModal = ({ open, onClose, onSubmit }: Props) => {
         <StyledDialogTitle id="responsive-dialog-title">
           Upgrade to Premium
         </StyledDialogTitle>
-        <DialogContentText>A project represents a product.</DialogContentText>
-
-        <DialogContent></DialogContent>
+        <DialogContentText>Please provide your card details.</DialogContentText>
+        <br />
+        <DialogContent>
+          <PaymentElement />
+        </DialogContent>
 
         <StyledDialogActions>
           <Button className="opt-out" onClick={onClose}>
             Cancel
           </Button>
           <Button
+            disabled={!stripe}
             variant="contained"
-            onClick={() => {
-              return;
-            }}
+            onClick={handleSubmit}
             color="primary"
           >
-            Create
+            Submit
           </Button>
         </StyledDialogActions>
       </DialogContainer>
