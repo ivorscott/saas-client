@@ -1,3 +1,4 @@
+import { Auth } from "aws-amplify";
 import { useMutation, useQuery } from "react-query";
 
 import { client as api } from "../services/APIService";
@@ -9,14 +10,13 @@ export function useCreateSubscription() {
   );
 }
 
-export function useSubscriptionInfo(tenantId?: string) {
+export function useSubscriptionInfo() {
   const { isLoading, isError, data } = useQuery<SubscriptionInfo, Error>(
-    "billing",
-    async () => {
-      if (!tenantId) {
-        return;
-      }
-      return api.get(`/subscriptions/${tenantId}`);
+    "subscriptions",
+    async (): Promise<SubscriptionInfo> => {
+      const session = await Auth.currentSession();
+      const { payload } = session.getIdToken();
+      return api.get(`/subscriptions/${payload["custom:tenant-id"]}`);
     }
   );
 

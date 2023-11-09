@@ -15,13 +15,14 @@ import {
 export function useUser() {
   const { isLoading, isError, data } = useQuery<CurrentUser, Error>(
     "auth",
-    async () => {
-      const data = await api.get("/users/me");
+    async (): Promise<CurrentUser> => {
+      const data = await api.get<User>("/users/me");
       const session = await Auth.currentSession();
       const { payload } = session.getIdToken();
 
       return {
         ...data,
+        tenantId: payload["custom:tenantId"],
         company: payload["custom:company-name"],
         username: payload["cognito:username"],
         emailVerified: payload["email_verified"],
@@ -72,8 +73,8 @@ export function useDeleteUser() {
   const queryClient = useQueryClient();
 
   return useMutation<void, Error, DeleteUserInput>(
-    async ({ userId }) => {
-      return api.delete(`/users/${userId}`);
+    async (d): Promise<void> => {
+      return await api.delete(`/users/${d.userId}`);
     },
     {
       onSuccess: async (_, userId) => {
@@ -89,12 +90,15 @@ export function useDeleteUser() {
 }
 
 export function useUsers() {
-  return useQuery<User[], Error>("users", async () => await api.get("/users"));
+  return useQuery<User[], Error>(
+    "users",
+    async () => await api.get<User[]>("/users")
+  );
 }
 
 export function useSeatsAvailable() {
   const result = useQuery<SeatsAvailable, Error>("seats", async () => {
-    return await api.get("/users/available-seats");
+    return await api.get<SeatsAvailable>("/users/available-seats");
   });
 
   if (result.isLoading || result.isError || !result.data) {

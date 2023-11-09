@@ -7,23 +7,23 @@ class APIService {
     this.baseUrl = process.env.REACT_APP_BACKEND || "http://localhost/api";
   }
 
-  post<T>(path: string, data: T) {
-    return this.request<T>("POST", path, data);
+  post<T, R>(path: string, data: T): Promise<R> {
+    return this.request<T, R>("POST", path, data);
   }
 
-  put<T>(path: string, data: T) {
-    return this.request<T>("PUT", path, data);
+  put<T, R>(path: string, data: T): Promise<R> {
+    return this.request<T, R>("PUT", path, data);
   }
 
-  patch<T>(path: string, data: T) {
-    return this.request<T>("PATCH", path, data);
+  patch<T, R>(path: string, data: T): Promise<R> {
+    return this.request<T, R>("PATCH", path, data);
   }
 
-  get(path: string) {
-    return this.request("GET", path);
+  get<R>(path: string): Promise<R> {
+    return this.request<string, R>("GET", path);
   }
 
-  delete(path: string) {
+  delete<T>(path: string): Promise<T> {
     return this.request("DELETE", path);
   }
 
@@ -40,7 +40,7 @@ class APIService {
     return window.location.pathname.split("/")[1];
   }
 
-  async request<T>(method: string, path: string, data?: T) {
+  async request<T, R>(method: string, path: string, data?: T): Promise<R> {
     const url = `${this.baseUrl}${path}`;
     const session = await Auth.currentSession();
     const accessToken = session.getIdToken().getJwtToken();
@@ -66,7 +66,7 @@ class APIService {
         }
         return json;
       });
-    } catch (err) {
+    } catch (err: any) {
       return err;
     }
   }

@@ -14,11 +14,16 @@ import { formatPath } from "../../helpers/helpers";
 import { useSubscriptionInfo } from "../../hooks/subscription";
 import { client as api } from "../../services/APIService";
 import { Intent } from "../../types/intent";
+import { Billing } from "./Billing";
 import { Modal as AddUser } from "./Modal";
-import { SubscriptionInfoSection } from "./SubscriptionInfoSection";
 import { columns } from "./TableColumns";
 import { components } from "./TableRow";
 import { UpgradeModal } from "./UpgradeModal";
+
+interface UserInfoState {
+  company: string;
+  tenantId: string;
+}
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -26,85 +31,97 @@ interface TabPanelProps {
   value: number;
 }
 
+interface StripeOptionsState {
+  clientSecret: string;
+}
+
+interface PaymentIntentData {
+  currency: string;
+  amount: number;
+}
+
 enum AccountTab {
   Plan = "plan",
   Users = "users",
 }
-
-const getTabIndex = (tab: string | null): number => {
-  if (tab == null) {
-    tab = AccountTab.Users;
-  }
-  let index = 0;
-  switch (tab) {
-    case AccountTab.Plan:
-      break;
-    case AccountTab.Users:
-      index = 1;
-      break;
-  }
-  return index;
-};
 
 // Make sure to call `loadStripe` outside of a component’s render to avoid
 // recreating the `Stripe` object on every render.
 const stripePromise = loadStripe(`${process.env.REACT_APP_STRIPE_KEY}`);
 
 export const Account = () => {
-  const [userInfo, setUserInfo] = useState<{
-    company: string;
-    tenantId: string;
-  }>();
-  const [value, setValue] = React.useState(0);
+  const [userInfo, setUserInfo] = useState<UserInfoState>();
+  const [tabValue, setTab] = React.useState<number>(0);
   const [isOpen, setOpen] = useState(false);
-  const [options, setOptions] = useState<{ clientSecret: string }>();
+  const [options, setOptions] = useState<StripeOptionsState>();
 
   const [searchParams] = useSearchParams();
   const seatsResult = useSeatsAvailable();
   const navigate = useNavigate();
   const result = useUsers();
   const users = useTableUsers(result);
-  const info = useSubscriptionInfo(userInfo?.tenantId);
+  const info = useSubscriptionInfo();
 
   const tab = searchParams.get("t");
-  const basePath = "/" + formatPath(userInfo?.company);
+
+  const getTabIndex = (tab: string | null): number => {
+    if (tab == null) {
+      tab = AccountTab.Users;
+    }
+    let index = 0;
+    switch (tab) {
+      case AccountTab.Plan:
+        break;
+      case AccountTab.Users:
+        index = 1;
+        break;
+    }
+    return index;
+  };
 
   const handleChange = (event: React.SyntheticEvent) => {
     const button = event.target as HTMLButtonElement;
-    if (AccountTab.Users == button.innerText.toLowerCase()) {
-      const path = `${basePath}/account?t=${AccountTab.Users}`;
-      navigate(path);
-    } else {
+    const basePath = "/" + formatPath(userInfo?.company);
+
+    if (AccountTab.Plan == button.innerText.toLowerCase()) {
       const path = `${basePath}/account?t=${AccountTab.Plan}`;
       navigate(path);
+      setTab(0);
+    } else {
+      const path = `${basePath}/account?t=${AccountTab.Users}`;
+      navigate(path);
+      setTab(1);
     }
   };
+
+  useEffect(() => {
+    const fn = async () => {
+      const pi = await api.post<PaymentIntentData, Intent>(
+        "/subscriptions/payment-intent",
+        {
+          currency: "eur",
+          amount: 1000,
+        }
+      );
+      const session = await Auth.currentSession();
+      return { pi, session };
+    };
+
+    fn().then(({ pi, session }) => {
+      const data = session.getIdToken().payload;
+      const company = data["custom:company-name"];
+      const tenantId = data["custom:tenant-id"];
+      setOptions({ clientSecret: pi.client_secret });
+      setUserInfo({ company, tenantId });
+      setTab(getTabIndex(tab));
+    });
+  }, [tab]);
 
   const toggleModal = () => {
     setOpen(!isOpen);
   };
 
-  useEffect(() => {
-    const fn = async (tab: string | null) => {
-      const pi = (await api.post("/subscriptions/payment-intent", {
-        currency: "eur",
-        amount: 1000,
-      })) as Intent;
-
-      setOptions({ clientSecret: pi.client_secret });
-
-      // get company
-      const session = await Auth.currentSession();
-      const data = session.getIdToken().payload;
-      const company = data["custom:company-name"];
-      const tenantId = data["custom:tenant-id"];
-      setUserInfo({ company, tenantId });
-      setValue(getTabIndex(tab));
-    };
-    fn(tab);
-  }, [tab]);
-
-  function CustomTabPanel(props: TabPanelProps) {
+  const CustomTabPanel = (props: TabPanelProps) => {
     const { children, value, index, ...other } = props;
 
     return (
@@ -118,7 +135,7 @@ export const Account = () => {
         {value === index && <Box>{children}</Box>}
       </div>
     );
-  }
+  };
 
   return (
     <Layout>
@@ -138,18 +155,18 @@ export const Account = () => {
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs
           onChange={handleChange}
-          value={value}
+          value={tabValue}
           aria-label="basic tabs example"
         >
           <Tab label={AccountTab.Plan} />
           <Tab label={AccountTab.Users} />
         </Tabs>
       </Box>
-      <CustomTabPanel value={value} index={0}>
+      <CustomTabPanel value={tabValue} index={0}>
         {seatsResult.maxSeats == 3 ? (
           <>
             <h2>Basic Plan</h2>
-            {info && <SubscriptionInfoSection {...info} />}
+            {info && <Billing {...info} />}
             <StyledPremiumButton variant="contained" onClick={toggleModal}>
               Upgrade to Premium
             </StyledPremiumButton>
@@ -168,7 +185,7 @@ export const Account = () => {
           <h2>Premium Plan</h2>
         )}
       </CustomTabPanel>
-      <CustomTabPanel value={value} index={1}>
+      <CustomTabPanel value={tabValue} index={1}>
         <StyledTable
           columns={columns}
           data={users}

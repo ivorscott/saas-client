@@ -8,6 +8,8 @@ import { useParams } from "react-router-dom";
 import { client as api } from "services/APIService";
 import { Project } from "types/project";
 
+import { useProject } from "../../../../../hooks/project";
+
 interface AddTaskProps {
   isCreating: boolean;
   toggleCreating: () => void;
@@ -65,11 +67,7 @@ export const AddTask = ({
   onAddTask,
 }: AddTaskProps) => {
   const { id } = useParams();
-  const { data: selected } = useQuery<Project, AxiosError>(
-    ["project", id],
-    async () => await api.get(`/projects/${id}`)
-  );
-
+  const { data: selected } = useProject(id);
   const [task, setTask] = useState("");
 
   const handleSubmit = () => {

@@ -7,7 +7,7 @@ import { PremiumPlan } from "./constants";
 import { transactionColumns } from "./TableColumns";
 import { components } from "./TableRow";
 
-export const SubscriptionInfoSection = (props: SubscriptionInfo) => {
+export const Billing = (props: SubscriptionInfo) => {
   return (
     <div>
       {props.defaultPaymentMethod ? (

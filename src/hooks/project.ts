@@ -3,16 +3,15 @@ import { client as api } from "services/APIService";
 import { Project } from "types/project";
 
 export function useProject(projectId: string | undefined) {
-  return useQuery<Project, Error>(
-    ["project", projectId],
-    async () => await api.get(`/projects/${projectId}`)
+  return useQuery<Project, Error>(["project", projectId], async () =>
+    api.get<Project>(`/projects/${projectId}`)
   );
 }
 
 export function useProjects() {
   return useQuery<Project[], Error>(
     "projects",
-    async () => await api.get("/projects")
+    async () => await api.get<Project[]>("/projects")
   );
 }
 
@@ -63,7 +62,7 @@ export function useUpdateProject() {
 
 export function useDeleteProject() {
   const queryClient = useQueryClient();
-  const { mutate } = useMutation<null, Error, string>(
+  const { mutate } = useMutation<void, Error, string>(
     (id) => api.delete(`/projects/${id}`),
     {
       onSuccess: async (_, projectId) => {

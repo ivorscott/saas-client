@@ -3,14 +3,20 @@ import { client as api } from "services/APIService";
 import { AddTask, Column, DeleteTask, MoveTask, Task } from "types/board";
 
 export function useColumns(projectId: string) {
-  return useQuery<Column[], Error>(["project", projectId, "columns"], () => {
-    return api.get(`/projects/${projectId}/columns`);
-  });
+  return useQuery<Column[], Error>(
+    ["project", projectId, "columns"],
+    (): Promise<Column[]> => {
+      return api.get(`/projects/${projectId}/columns`);
+    }
+  );
 }
 export function useTasks(projectId: string) {
-  return useQuery<Task[], Error>(["project", projectId, "tasks"], () => {
-    return api.get(`/projects/${projectId}/tasks`);
-  });
+  return useQuery<Task[], Error>(
+    ["project", projectId, "tasks"],
+    (): Promise<Task[]> => {
+      return api.get(`/projects/${projectId}/tasks`);
+    }
+  );
 }
 
 export function useAddTask() {
@@ -60,7 +66,7 @@ export function useDeleteTask() {
 
   const { mutate } = useMutation<Task, Error, DeleteTask>(
     ({ columnId, taskId }) =>
-      api.delete(`/projects/columns/${columnId}/tasks/${taskId}`),
+      api.delete<Task>(`/projects/columns/${columnId}/tasks/${taskId}`),
     {
       onSuccess: (_, variables) => {
         queryClient.setQueryData<Task[]>(
