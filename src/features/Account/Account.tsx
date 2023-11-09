@@ -11,9 +11,11 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
 import { formatPath } from "../../helpers/helpers";
+import { useSubscriptionInfo } from "../../hooks/subscription";
 import { client as api } from "../../services/APIService";
 import { Intent } from "../../types/intent";
 import { Modal as AddUser } from "./Modal";
+import { SubscriptionInfoSection } from "./SubscriptionInfoSection";
 import { columns } from "./TableColumns";
 import { components } from "./TableRow";
 import { UpgradeModal } from "./UpgradeModal";
@@ -49,7 +51,10 @@ const getTabIndex = (tab: string | null): number => {
 const stripePromise = loadStripe(`${process.env.REACT_APP_STRIPE_KEY}`);
 
 export const Account = () => {
-  const [userInfo, setUserInfo] = useState<{ company: string }>();
+  const [userInfo, setUserInfo] = useState<{
+    company: string;
+    tenantId: string;
+  }>();
   const [value, setValue] = React.useState(0);
   const [isOpen, setOpen] = useState(false);
   const [options, setOptions] = useState<{ clientSecret: string }>();
@@ -59,6 +64,7 @@ export const Account = () => {
   const navigate = useNavigate();
   const result = useUsers();
   const users = useTableUsers(result);
+  const info = useSubscriptionInfo(userInfo?.tenantId);
 
   const tab = searchParams.get("t");
   const basePath = "/" + formatPath(userInfo?.company);
@@ -80,7 +86,7 @@ export const Account = () => {
 
   useEffect(() => {
     const fn = async (tab: string | null) => {
-      const pi = (await api.post("/billing/payment-intent", {
+      const pi = (await api.post("/subscriptions/payment-intent", {
         currency: "eur",
         amount: 1000,
       })) as Intent;
@@ -91,7 +97,8 @@ export const Account = () => {
       const session = await Auth.currentSession();
       const data = session.getIdToken().payload;
       const company = data["custom:company-name"];
-      setUserInfo({ company });
+      const tenantId = data["custom:tenant-id"];
+      setUserInfo({ company, tenantId });
       setValue(getTabIndex(tab));
     };
     fn(tab);
@@ -152,7 +159,7 @@ export const Account = () => {
         {seatsResult.maxSeats == 3 ? (
           <>
             <h2>Basic Plan</h2>
-
+            {info && <SubscriptionInfoSection {...info} />}
             <StyledPremiumButton variant="contained" onClick={toggleModal}>
               Upgrade to Premium
             </StyledPremiumButton>

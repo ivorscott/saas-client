@@ -60,6 +60,47 @@ export const columns = [
   },
 ];
 
+export const transactionColumns = [
+  {
+    title: "Date",
+    dataIndex: "id",
+    key: "id",
+    width: 250,
+    render: (value: string) => <StyledCell>{value}</StyledCell>,
+  },
+  {
+    title: "Description",
+    dataIndex: "lastFour",
+    key: "lastFour",
+    width: 150,
+    render: (value: string) => <StyledCell>{value}</StyledCell>,
+  },
+  {
+    title: "Amount",
+    dataIndex: "amount",
+    key: "amount",
+    width: 150,
+    render: (value: number) => <StyledCell>{value}</StyledCell>,
+  },
+  {
+    title: "Actions",
+    dataIndex: "actions",
+    key: "actions",
+    width: 200,
+    render: (_: any, d: any, __: number) => (
+      <StyledCell>
+        <DeleteDialog title="Delete User" userId={d.id} email={d.email}>
+          Remove
+          <HighlightRed>
+            {` ${d.user.firstName} ${d.user.lastName} `}
+          </HighlightRed>{" "}
+          from your account. Are you sure you want to proceed?
+        </DeleteDialog>
+      </StyledCell>
+    ),
+  },
+];
+
 export const Cell = ({ alignment, children }: any) => {
   return (
     <div className={`table-cell ${alignment || ""}`}>
