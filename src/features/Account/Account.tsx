@@ -27,8 +27,8 @@ interface TabPanelProps {
 }
 
 enum AccountTab {
-  Users = "users",
   Plan = "plan",
+  Users = "users",
 }
 
 const getTabIndex = (tab: string | null): number => {
@@ -37,9 +37,9 @@ const getTabIndex = (tab: string | null): number => {
   }
   let index = 0;
   switch (tab) {
-    case AccountTab.Users:
-      break;
     case AccountTab.Plan:
+      break;
+    case AccountTab.Users:
       index = 1;
       break;
   }
@@ -141,21 +141,11 @@ export const Account = () => {
           value={value}
           aria-label="basic tabs example"
         >
-          <Tab label={AccountTab.Users} />
           <Tab label={AccountTab.Plan} />
+          <Tab label={AccountTab.Users} />
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
-        <StyledTable
-          columns={columns}
-          data={users}
-          rowKey="id"
-          components={components}
-          tableLayout="auto"
-          emptyText={"No users"}
-        />
-      </CustomTabPanel>
-      <CustomTabPanel value={value} index={1}>
         {seatsResult.maxSeats == 3 ? (
           <>
             <h2>Basic Plan</h2>
@@ -177,6 +167,16 @@ export const Account = () => {
         ) : (
           <h2>Premium Plan</h2>
         )}
+      </CustomTabPanel>
+      <CustomTabPanel value={value} index={1}>
+        <StyledTable
+          columns={columns}
+          data={users}
+          rowKey="id"
+          components={components}
+          tableLayout="auto"
+          emptyText={"No users"}
+        />
       </CustomTabPanel>
     </Layout>
   );
