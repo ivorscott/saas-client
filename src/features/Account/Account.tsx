@@ -5,7 +5,12 @@ import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import { Auth } from "aws-amplify";
 import { Layout } from "components/Layout";
-import { useSeatsAvailable, useTableUsers, useUsers } from "hooks/users";
+import {
+  useSeatsAvailable,
+  useTableUsers,
+  useUser,
+  useUsers,
+} from "hooks/users";
 import Table from "rc-table";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
@@ -19,11 +24,6 @@ import { Modal as AddUser } from "./Modal";
 import { columns } from "./TableColumns";
 import { components } from "./TableRow";
 import { UpgradeModal } from "./UpgradeModal";
-
-interface UserInfoState {
-  company: string;
-  tenantId: string;
-}
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -50,7 +50,6 @@ enum AccountTab {
 const stripePromise = loadStripe(`${process.env.REACT_APP_STRIPE_KEY}`);
 
 export const Account = () => {
-  const [userInfo, setUserInfo] = useState<UserInfoState>();
   const [tabValue, setTab] = React.useState<number>(0);
   const [isOpen, setOpen] = useState(false);
   const [options, setOptions] = useState<StripeOptionsState>();
@@ -59,6 +58,7 @@ export const Account = () => {
   const seatsResult = useSeatsAvailable();
   const navigate = useNavigate();
   const result = useUsers();
+  const user = useUser();
   const users = useTableUsers(result);
   const info = useSubscriptionInfo();
 
@@ -81,7 +81,7 @@ export const Account = () => {
 
   const handleChange = (event: React.SyntheticEvent) => {
     const button = event.target as HTMLButtonElement;
-    const basePath = "/" + formatPath(userInfo?.company);
+    const basePath = "/" + formatPath(user?.company);
 
     if (AccountTab.Plan == button.innerText.toLowerCase()) {
       const path = `${basePath}/account?t=${AccountTab.Plan}`;
@@ -103,18 +103,12 @@ export const Account = () => {
           amount: 1000,
         }
       );
-      const session = await Auth.currentSession();
-      return { pi, session };
-    };
 
-    fn().then(({ pi, session }) => {
-      const data = session.getIdToken().payload;
-      const company = data["custom:company-name"];
-      const tenantId = data["custom:tenant-id"];
+      console.log(pi);
       setOptions({ clientSecret: pi.client_secret });
-      setUserInfo({ company, tenantId });
       setTab(getTabIndex(tab));
-    });
+    };
+    fn();
   }, [tab]);
 
   const toggleModal = () => {
@@ -143,7 +137,7 @@ export const Account = () => {
         <header>
           <h1>Manage Account</h1>
           <h2>
-            <span>{userInfo?.company}</span>{" "}
+            <span>{user?.company}</span>{" "}
           </h2>
         </header>
 
@@ -162,24 +156,16 @@ export const Account = () => {
           <Tab label={AccountTab.Users} />
         </Tabs>
       </Box>
+
       <CustomTabPanel value={tabValue} index={0}>
         {seatsResult.maxSeats == 3 ? (
           <>
             <h2>Basic Plan</h2>
+
             {info && <Billing {...info} />}
             <StyledPremiumButton variant="contained" onClick={toggleModal}>
               Upgrade to Premium
             </StyledPremiumButton>
-
-            <Elements stripe={stripePromise} options={options}>
-              <UpgradeModal
-                open={isOpen}
-                onClose={toggleModal}
-                onSubmit={() => {
-                  return;
-                }}
-              />
-            </Elements>
           </>
         ) : (
           <h2>Premium Plan</h2>
@@ -195,6 +181,18 @@ export const Account = () => {
           emptyText={"No users"}
         />
       </CustomTabPanel>
+      {options && user && (
+        <Elements stripe={stripePromise} options={options}>
+          <UpgradeModal
+            open={isOpen}
+            user={user}
+            onClose={toggleModal}
+            onSubmit={() => {
+              return;
+            }}
+          />
+        </Elements>
+      )}
     </Layout>
   );
 };

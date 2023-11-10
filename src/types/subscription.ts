@@ -41,11 +41,11 @@ export interface StripePayload {
   productId: string;
   firstName: string;
   lastName: string;
-  paymentMethod: string;
+  paymentMethod: string | undefined;
   email: string;
   amount: number;
-  lastFour: string;
-  cardBrand: string;
-  expirationMonth: number;
-  expirationYear: number;
+  lastFour: string | undefined;
+  cardBrand: string | undefined;
+  expirationMonth: number | undefined;
+  expirationYear: number | undefined;
 }

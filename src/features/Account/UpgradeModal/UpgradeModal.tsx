@@ -4,22 +4,29 @@ import Dialog from "@mui/material/Dialog";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import { styled } from "@mui/material/styles";
-import {
-  PaymentElement,
-  useElements,
-  useStripe,
-} from "@stripe/react-stripe-js";
-import React from "react";
+import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
+import React, { useState } from "react";
+
+import { useCreateSubscription } from "../../../hooks/subscription";
+import { StripePayload } from "../../../types/subscription";
+import { CurrentUser } from "../../../types/user";
+import { PremiumPlan } from "../constants";
 
 interface Props {
   open: boolean;
   onClose: () => void;
+  user: CurrentUser;
   onSubmit: (name: string) => void;
 }
 
-export const UpgradeModal = ({ open, onClose, onSubmit }: Props) => {
+export const UpgradeModal = ({ user, open, onClose, onSubmit }: Props) => {
   const stripe = useStripe();
   const elements = useElements();
+  const [cardHolderName, setCardHolderName] = useState<string>();
+  const mutation = useCreateSubscription();
+  const handleCardHolderName = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setCardHolderName(event.target.value);
+  };
 
   const handleSubmit = async (event: React.MouseEvent<HTMLButtonElement>) => {
     // We don't want to let default form submission happen here,
@@ -27,27 +34,36 @@ export const UpgradeModal = ({ open, onClose, onSubmit }: Props) => {
     event.preventDefault();
 
     if (!stripe || !elements) {
-      // Stripe.js hasn't yet loaded.
-      // Make sure to disable form submission until Stripe.js has loaded.
       return;
     }
 
-    const result = await stripe.confirmPayment({
-      //`Elements` instance that was used to create the Payment Element
-      elements,
-      confirmParams: {
-        return_url: "https://example.com/order/123/complete",
-      },
-    });
-
-    if (result.error) {
-      // Show error to your customer (for example, payment details incomplete)
-      console.log(result.error.message);
-    } else {
-      // Your customer will be redirected to your `return_url`. For some payment
-      // methods like iDEAL, your customer will be redirected to an intermediate
-      // site first to authorize the payment, then redirected to the `return_url`.
-    }
+    stripe
+      .createPaymentMethod({
+        elements,
+        params: {
+          billing_details: {
+            email: user.email,
+            name: cardHolderName,
+          },
+        },
+      })
+      .then(function (result) {
+        const payload: StripePayload = {
+          plan: PremiumPlan["eur"].plan,
+          currency: "eur",
+          productId: PremiumPlan["eur"].productId,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          paymentMethod: result.paymentMethod?.id,
+          email: user.email,
+          amount: PremiumPlan["eur"].amount,
+          lastFour: result.paymentMethod?.card?.last4,
+          cardBrand: result.paymentMethod?.card?.brand,
+          expirationMonth: result.paymentMethod?.card?.exp_month,
+          expirationYear: result.paymentMethod?.card?.exp_year,
+        };
+        mutation.mutate(payload);
+      });
   };
 
   return (
@@ -65,7 +81,18 @@ export const UpgradeModal = ({ open, onClose, onSubmit }: Props) => {
         <DialogContentText>Please provide your card details.</DialogContentText>
         <br />
         <DialogContent>
-          <PaymentElement />
+          <label>Cardholder Name</label>
+          <Field
+            id="name"
+            type="text"
+            fullWidth={true}
+            placeholder="Jane Doe"
+            required
+            autoComplete="name"
+            value={cardHolderName}
+            onChange={handleCardHolderName}
+          />
+          <CardElement />
         </DialogContent>
 
         <StyledDialogActions>
@@ -119,6 +146,8 @@ const Field = styled(TextField)`
   background: var(--secondary);
   border-radius: var(--p4);
   border: 1px solid var(--gray2);
+  margin-bottom: var(--p16);
+
   & fieldset {
     border: none;
   }
