@@ -12,7 +12,7 @@ const StyledRow = styled("tr")`
     padding: 0;
 
     div.table-cell {
-      box-shadow: 0 3px 6px rgb(0 0 0 / 10%), 0 10px 20px rgb(0 0 0 / 15%);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12), 0 3px 6px rgba(0, 0, 0, 0.15);
     }
     div.table-value {
       display: flex;

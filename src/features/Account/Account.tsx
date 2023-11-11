@@ -1,9 +1,7 @@
 import { Box, Tab, Tabs } from "@mui/material";
-import Button from "@mui/material/Button";
 import { styled } from "@mui/material/styles";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
-import { Auth } from "aws-amplify";
 import { Layout } from "components/Layout";
 import {
   useSeatsAvailable,
@@ -19,6 +17,7 @@ import { formatPath } from "../../helpers/helpers";
 import { useSubscriptionInfo } from "../../hooks/subscription";
 import { client as api } from "../../services/APIService";
 import { Intent } from "../../types/intent";
+import { SubscriptionStatus } from "../../types/subscription";
 import { Billing } from "./Billing";
 import { Modal as AddUser } from "./Modal";
 import { columns } from "./TableColumns";
@@ -60,7 +59,7 @@ export const Account = () => {
   const result = useUsers();
   const user = useUser();
   const users = useTableUsers(result);
-  const info = useSubscriptionInfo();
+  const subInfo = useSubscriptionInfo();
 
   const tab = searchParams.get("t");
 
@@ -96,20 +95,23 @@ export const Account = () => {
 
   useEffect(() => {
     const fn = async () => {
-      const pi = await api.post<PaymentIntentData, Intent>(
-        "/subscriptions/payment-intent",
-        {
-          currency: "eur",
-          amount: 1000,
-        }
-      );
-
-      console.log(pi);
-      setOptions({ clientSecret: pi.client_secret });
+      if (
+        !subInfo ||
+        subInfo.subscription.statusId != SubscriptionStatus.Cleared
+      ) {
+        const pi = await api.post<PaymentIntentData, Intent>(
+          "/subscriptions/payment-intent",
+          {
+            currency: "eur",
+            amount: 1000,
+          }
+        );
+        setOptions({ clientSecret: pi.client_secret });
+      }
       setTab(getTabIndex(tab));
     };
     fn();
-  }, [tab]);
+  }, [subInfo, tab]);
 
   const toggleModal = () => {
     setOpen(!isOpen);
@@ -145,7 +147,9 @@ export const Account = () => {
           <AddUser />
         </div>
       </StyledHeader>
+
       <br />
+
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs
           onChange={handleChange}
@@ -158,19 +162,9 @@ export const Account = () => {
       </Box>
 
       <CustomTabPanel value={tabValue} index={0}>
-        {seatsResult.maxSeats == 3 ? (
-          <>
-            <h2>Basic Plan</h2>
-
-            {info && <Billing {...info} />}
-            <StyledPremiumButton variant="contained" onClick={toggleModal}>
-              Upgrade to Premium
-            </StyledPremiumButton>
-          </>
-        ) : (
-          <h2>Premium Plan</h2>
-        )}
+        <Billing onToggle={toggleModal} subInfo={subInfo} />
       </CustomTabPanel>
+
       <CustomTabPanel value={tabValue} index={1}>
         <StyledTable
           columns={columns}
@@ -181,6 +175,7 @@ export const Account = () => {
           emptyText={"No users"}
         />
       </CustomTabPanel>
+
       {options && user && (
         <Elements stripe={stripePromise} options={options}>
           <UpgradeModal
@@ -219,13 +214,5 @@ const StyledTable = styled(Table)`
     font-family: ProximaNova-Extrabold;
     font-size: var(--p14);
     color: var(--gray7);
-  }
-`;
-
-const StyledPremiumButton = styled(Button)`
-  background: var(--blue7);
-
-  &:hover {
-    background: var(--blue8);
   }
 `;

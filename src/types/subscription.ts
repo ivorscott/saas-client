@@ -1,16 +1,25 @@
 import { PaymentMethod } from "@stripe/stripe-js";
 
+export enum SubscriptionStatus {
+  // Subscription Status Cleared represents a successfully cleared subscription.
+  Cleared,
+  // Subscription Status Refunded represents a refunded subscription.
+  Refunded,
+  // Subscription Status Cancelled represents a cancelled subscription.
+  Cancelled,
+}
+
 export interface SubscriptionInfo {
   subscription: Subscription;
   transactions: Transaction[];
-  defaultPaymentMethod: PaymentMethod;
+  paymentMethod: PaymentMethod;
 }
 
 export interface Subscription {
   id: string;
   plan: string;
   transactionId: string;
-  statusId: string;
+  statusId: number;
   amount: number;
   tenantId: string;
   customerId: string;

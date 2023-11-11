@@ -1,5 +1,6 @@
 import { styled } from "@mui/material/styles";
 import React from "react";
+import { Link } from "react-router-dom";
 
 import { DeleteDialog } from "./DeleteDialog";
 
@@ -14,7 +15,7 @@ export const columns = [
       _: any,
       index: number
     ) => (
-      <StyledCell>
+      <Cell>
         <StyledImage />
         <StyledUserTitle>
           <StyledName>
@@ -22,7 +23,7 @@ export const columns = [
           </StyledName>
           {value.role && <StyledSubtitle>{value.role}</StyledSubtitle>}
         </StyledUserTitle>
-      </StyledCell>
+      </Cell>
     ),
   },
   {
@@ -30,7 +31,7 @@ export const columns = [
     dataIndex: "email",
     key: "email",
     width: 200,
-    render: (value: any) => <StyledCell>{value}</StyledCell>,
+    render: (value: any) => <Cell>{value}</Cell>,
   },
   {
     title: "Created At",
@@ -38,7 +39,7 @@ export const columns = [
     key: "createdAt",
     width: 200,
     render: (value: any) => (
-      <StyledCell>{new Date(value).toLocaleDateString("en-US")}</StyledCell>
+      <Cell>{new Date(value).toLocaleDateString("en-US")}</Cell>
     ),
   },
   {
@@ -47,7 +48,7 @@ export const columns = [
     key: "actions",
     width: 200,
     render: (_: any, d: any, __: number) => (
-      <StyledCell>
+      <Cell>
         <DeleteDialog title="Delete User" userId={d.id} email={d.email}>
           Remove
           <HighlightRed>
@@ -55,7 +56,7 @@ export const columns = [
           </HighlightRed>{" "}
           from your account. Are you sure you want to proceed?
         </DeleteDialog>
-      </StyledCell>
+      </Cell>
     ),
   },
 ];
@@ -63,40 +64,56 @@ export const columns = [
 export const transactionColumns = [
   {
     title: "Date",
-    dataIndex: "id",
-    key: "id",
-    width: 250,
-    render: (value: string) => <StyledCell>{value}</StyledCell>,
+    dataIndex: "createdAt",
+    key: "createdAt",
+    width: 200,
+    render: (createdAt: string) => {
+      const date = new Date(createdAt);
+      const [month, day, year] = [
+        date.toLocaleString("default", { month: "long" }),
+        date.getDate(),
+        date.getFullYear(),
+      ];
+      return (
+        <Cell>
+          <StyledDate>
+            {month}, {day} {year}
+          </StyledDate>
+        </Cell>
+      );
+    },
   },
   {
     title: "Description",
-    dataIndex: "lastFour",
-    key: "lastFour",
-    width: 150,
-    render: (value: string) => <StyledCell>{value}</StyledCell>,
+    dataIndex: "invoice",
+    key: "invoice",
+    width: 200,
+    render: (invoice: string) => <Cell>Invoice for Premium Plan</Cell>,
   },
   {
     title: "Amount",
     dataIndex: "amount",
     key: "amount",
     width: 150,
-    render: (value: number) => <StyledCell>{value}</StyledCell>,
+    render: (amount: number) => {
+      const value = amount / 100;
+      const formatter = new Intl.NumberFormat("en-US", {
+        style: "currency",
+        currency: "USD",
+      });
+
+      return <Cell>{formatter.format(value)}</Cell>;
+    },
   },
   {
     title: "Actions",
-    dataIndex: "actions",
-    key: "actions",
+    dataIndex: "",
+    key: "",
     width: 200,
-    render: (_: any, d: any, __: number) => (
-      <StyledCell>
-        <DeleteDialog title="Delete User" userId={d.id} email={d.email}>
-          Remove
-          <HighlightRed>
-            {` ${d.user.firstName} ${d.user.lastName} `}
-          </HighlightRed>{" "}
-          from your account. Are you sure you want to proceed?
-        </DeleteDialog>
-      </StyledCell>
+    render: () => (
+      <Cell>
+        <Link to="?t=plan">PDF</Link>
+      </Cell>
     ),
   },
 ];
@@ -114,10 +131,8 @@ const HighlightRed = styled("span")`
   color: var(--red5);
 `;
 
-const StyledCell = styled(Cell)`
-  display: flex;
-  justify-content: flex-start;
-  align-content: center;
+const StyledDate = styled("div")`
+  padding-left: var(--p8);
 `;
 
 const StyledImage = styled("aside")`

@@ -199,14 +199,15 @@ h1 {
 }
 
 h2 {
-  font-size: var(--p18);
+  font-size: var(--p20);
   color: var(--gray7);
   font-family: ProximaNova-Bold;
 }
 
 h3 {
   font-size: var(--p16);
-  font-family: ProximaNova-Semibold;
+  color: var(--gray7);
+  font-family: ProximaNova-Bold;
 }
 header h1,
 header h2,
