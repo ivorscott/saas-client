@@ -399,3 +399,8 @@ table {
   cursor: pointer;
   background: transparent;
 }
+
+[data-amplify-authenticator][data-variation=modal] {
+  background-image: url("/public/landing-page.png");
+  background-position: center;
+}
