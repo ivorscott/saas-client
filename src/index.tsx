@@ -29,7 +29,10 @@ import {
 import { PinnedProvider } from "services/PinnedProvider";
 
 import awsconfig from "./aws-exports";
+import { features } from "./services/FeatureService";
 import { theme } from "./theme";
+
+features.applyOverrides();
 
 Amplify.configure({
   ...awsconfig,
@@ -113,7 +116,7 @@ const App = withAuthenticator(
       </BrowserRouter>
     </QueryClientProvider>
   ),
-  { hideSignUp: true, components }
+  { hideSignUp: features.flags["F001"], components }
 );
 
 const container = document.getElementById("root");
