@@ -3,6 +3,8 @@ import "@aws-amplify/ui-react/styles.css";
 
 import { Image, View, withAuthenticator } from "@aws-amplify/ui-react";
 import Copyright from "@mui/icons-material/Copyright";
+import { TextField } from "@mui/material";
+import Button from "@mui/material/Button";
 import {
   styled,
   StyledEngineProvider,
@@ -29,6 +31,7 @@ import {
 import { PinnedProvider } from "services/PinnedProvider";
 
 import awsconfig from "./aws-exports";
+import { EarlyAccessForm } from "./components/EarlyAccessForm";
 import { features } from "./services/FeatureService";
 import { theme } from "./theme";
 
@@ -85,6 +88,13 @@ const components = {
     return (
       <View textAlign="center">
         <Image width={200} alt="Amplify logo" src="/logo.png" />
+      </View>
+    );
+  },
+  Footer() {
+    return (
+      <View textAlign="center">
+        {features.flags["F001"] && <EarlyAccessForm />}
       </View>
     );
   },
