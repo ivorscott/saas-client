@@ -32,10 +32,10 @@ import { PinnedProvider } from "services/PinnedProvider";
 
 import awsconfig from "./aws-exports";
 import { EarlyAccessForm } from "./components/EarlyAccessForm";
-import { features } from "./services/FeatureService";
+import { feature } from "./services/FeatureService";
 import { theme } from "./theme";
 
-features.applyOverrides();
+feature.applyOverrides();
 
 Amplify.configure({
   ...awsconfig,
@@ -94,7 +94,7 @@ const components = {
   Footer() {
     return (
       <View textAlign="center">
-        {features.flags["F001"] && <EarlyAccessForm />}
+        {feature.flags["F001"] && <EarlyAccessForm />}
       </View>
     );
   },
@@ -126,7 +126,7 @@ const App = withAuthenticator(
       </BrowserRouter>
     </QueryClientProvider>
   ),
-  { hideSignUp: features.flags["F001"], components }
+  { hideSignUp: feature.flags["F001"], components }
 );
 
 const container = document.getElementById("root");

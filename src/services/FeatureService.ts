@@ -25,4 +25,4 @@ class FeatureService {
   }
 }
 
-export const features = new FeatureService();
+export const feature = new FeatureService();
